@@ -7,6 +7,19 @@ CreateTestDriver( RLEImage "${RLEImage-Test_LIBRARIES}" "${RLEImageTests}" )
 add_executable(runFromIDE manualTest.cxx ${RLEImageTests})
 target_link_libraries(runFromIDE ${RLEImage-Test_LIBRARIES})
 
+ADD_EXECUTABLE(iteratorTests
+    itkRegionOfInterestImageFilterTest.cxx
+    itkIteratorTests.cxx
+    itkImageIteratorsForwardBackwardTest.cxx
+    itkImageIteratorTest.cxx
+    itkImageIteratorWithIndexTest.cxx
+    itkImageRegionConstIteratorWithOnlyIndexTest.cxx
+    itkImageRegionIteratorTest.cxx
+    itkImageScanlineIteratorTest1.cxx
+    iteratorTests.cxx)
+TARGET_LINK_LIBRARIES(iteratorTests ${ITK_LIBRARIES})
+itk_add_test( NAME iteratorTests COMMAND iteratorTests)
+
 function(ReadWriteTest ImageName Ext)
   set(outImage "${ITK_TEST_OUTPUT_DIR}/${ImageName}.${Ext}")
   itk_add_test( NAME ${ImageName}
@@ -35,9 +48,10 @@ ReadWriteTest(ManyToMany16 nrrd)
 ReadWriteTest(ManyToMany nrrd)
 ReadWriteTest(GridSeg nrrd)
 ReadWriteTest(GridSeg2 nrrd)
-ReadWriteTest(FaceRoI nrrd)
-ReadWriteTest(BigZ nrrd)
 ReadWriteTest(FourD nrrd)
+ReadWriteTest(2D png)
+ReadWriteTest(BigZ nrrd)
+ReadWriteTest(FaceRoI nrrd)
 
 # Paul's test images
 ReadWriteTest(105769moving nii.gz)
@@ -47,15 +61,4 @@ ReadWriteTest(64816L_amygdala_int nii.gz)
 ReadWriteTest(65239R_amygdala_fin nii.gz)
 ReadWriteTest(65239R_amygdala_int nii.gz)
 
-ADD_EXECUTABLE(iteratorTests
-    itkRegionOfInterestImageFilterTest.cxx
-    itkIteratorTests.cxx
-    itkImageIteratorsForwardBackwardTest.cxx
-    itkImageIteratorTest.cxx
-    itkImageIteratorWithIndexTest.cxx
-    itkImageRegionConstIteratorWithOnlyIndexTest.cxx
-    itkImageRegionIteratorTest.cxx
-    itkImageScanlineIteratorTest1.cxx
-    iteratorTests.cxx)
-TARGET_LINK_LIBRARIES(iteratorTests ${ITK_LIBRARIES})
 

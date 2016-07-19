@@ -89,6 +89,11 @@ int itkRLEImageTest( int argc, char* argv[] )
   try
     {
     //unused cases are not instantiated because they greatly increase compile time
+    if (numDimensions==2 && pixelType == itk::ImageIOBase::UCHAR)
+      {
+      doTest<itk::Image<unsigned char, 2> >(inputImageFileName, outputImageFileName);
+      return EXIT_SUCCESS;
+      }
     if (numDimensions==3 && (pixelType == itk::ImageIOBase::SHORT
       || pixelType == itk::ImageIOBase::USHORT))
       {
