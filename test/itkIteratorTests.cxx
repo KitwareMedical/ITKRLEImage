@@ -26,7 +26,7 @@
 int itkIteratorTests(int, char* [] )
 {
   std::cout << "Creating an image" << std::endl;
-  typedef RLEImage<unsigned short> ScalarImage;
+  typedef itk::RLEImage<unsigned short> ScalarImage;
   ScalarImage::Pointer  o3 = ScalarImage::New();
 
   double origin3D[3] = { 5, 2.1, 8.1};

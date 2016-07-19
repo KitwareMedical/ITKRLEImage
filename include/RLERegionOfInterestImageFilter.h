@@ -4,7 +4,7 @@
 #include "itkImageToImageFilter.h"
 #include "itkSmartPointer.h"
 #include "itkRegionOfInterestImageFilter.h"
-#include "RLEImage.h"
+#include "itkRLEImage.h"
 
 namespace itk
 {
@@ -113,7 +113,7 @@ class RegionOfInterestImageFilter<Image<TPixel, VImageDimension>, RLEImage<TPixe
 public:
     /** Standard class typedefs. */
     typedef RegionOfInterestImageFilter                    Self;
-    typedef RLEImage<TPixel, VImageDimension, CounterType> RLEImageType;
+    typedef itk::RLEImage<TPixel, VImageDimension, CounterType> RLEImageType;
     typedef Image<TPixel, VImageDimension>                 ImageType;
     typedef ImageToImageFilter< ImageType, RLEImageType >  Superclass;
     typedef SmartPointer< Self >                           Pointer;
@@ -197,7 +197,7 @@ class RegionOfInterestImageFilter< RLEImage<TPixel, VImageDimension, CounterType
 public:
     /** Standard class typedefs. */
     typedef RegionOfInterestImageFilter                     Self;
-    typedef RLEImage<TPixel, VImageDimension, CounterType>  RLEImageType;
+    typedef itk::RLEImage<TPixel, VImageDimension, CounterType>  RLEImageType;
     typedef Image<TPixel, VImageDimension>                  ImageType;
     typedef ImageToImageFilter< RLEImageType, ImageType >   Superclass;
     typedef SmartPointer< Self >                            Pointer;

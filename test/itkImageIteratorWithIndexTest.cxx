@@ -29,7 +29,7 @@ class itkImageIteratorWithIndexTestIteratorTester
   public:
     typedef TPixelType                  PixelType;
 
-    typedef RLEImage< PixelType > ImageType;
+    typedef itk::RLEImage< PixelType > ImageType;
 
     typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
@@ -90,7 +90,7 @@ class itkImageIteratorWithIndexTestIteratorTester
        }
      return true;
     }
-    
+
     bool TestReverseIteration()
     {
      ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
@@ -106,7 +106,7 @@ class itkImageIteratorWithIndexTestIteratorTester
        --it;
        }
      return true;
-    }    
+    }
 
   private:
 

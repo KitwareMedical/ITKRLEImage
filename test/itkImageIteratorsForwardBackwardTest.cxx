@@ -24,7 +24,7 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
 {
 
   std::cout << "Creating an image" << std::endl;
-  typedef RLEImage<unsigned short> ImageType;
+  typedef itk::RLEImage<unsigned short> ImageType;
 
   ImageType::Pointer myImage = ImageType::New();
 
@@ -146,7 +146,7 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   std::cout << "Const Iterator : Verifying the data backwards... ";
 
   cot.GoToEnd();
-  do 
+  do
   {
     --cot;
     if( cot.Get() != value )

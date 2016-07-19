@@ -88,7 +88,7 @@ public:
 
     /** Test if the index is at the end of line. */
     inline bool IsAtEndOfLine(void)
-    { 
+    {
         return this->m_Index0 == this->m_EndIndex0;
     }
 

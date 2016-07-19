@@ -24,14 +24,13 @@
 int itkRegionOfInterestImageFilterTest(int, char* [] )
 {
 
-  const unsigned int               Dimension = 3;
-  typedef itk::Index<Dimension>    PixelType;
+  const unsigned int                 Dimension = 3;
+  typedef itk::Index<Dimension>      PixelType;
 
-  typedef RLEImage< PixelType >    ImageType;
+  typedef itk::RLEImage< PixelType > ImageType;
 
   typedef itk::RegionOfInterestImageFilter<
-                                      ImageType,
-                                      ImageType  > FilterType;
+              ImageType, ImageType > FilterType;
 
 
   typedef ImageType::RegionType    RegionType;
