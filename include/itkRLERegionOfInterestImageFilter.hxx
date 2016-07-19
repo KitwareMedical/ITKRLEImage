@@ -1,5 +1,7 @@
-#ifndef RLERegionOfInterestImageFilter_txx
-#define RLERegionOfInterestImageFilter_txx
+#ifndef itkRLERegionOfInterestImageFilter_hxx
+#define itkRLERegionOfInterestImageFilter_hxx
+
+#include "itkRLERegionOfInterestImageFilter.h"
 
 #include "itkRegionOfInterestImageFilter.h"
 #include "itkImageAlgorithm.h"
@@ -530,4 +532,4 @@ void RegionOfInterestImageFilter<RLEImage<TPixel, VImageDimension, CounterType>,
 }
 } // end namespace itk
 
-#endif //RLERegionOfInterestImageFilter_txx
+#endif //itkRLERegionOfInterestImageFilter_hxx

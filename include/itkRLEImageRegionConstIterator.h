@@ -1,7 +1,7 @@
-#ifndef RLEImageRegionConstIterator_h
-#define RLEImageRegionConstIterator_h
+#ifndef itkRLEImageRegionConstIterator_h
+#define itkRLEImageRegionConstIterator_h
 
-#include "RLEImageConstIterator.h"
+#include "itkRLEImageConstIterator.h"
 #include "itkImageRegionConstIterator.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkImageRegionConstIteratorWithOnlyIndex.h"
@@ -220,4 +220,4 @@ public:
 
 } // end namespace itk
 
-#endif //RLEImageRegionConstIterator_h
+#endif //itkRLEImageRegionConstIterator_h
