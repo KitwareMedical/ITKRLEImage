@@ -16,7 +16,7 @@
 *
 *=========================================================================*/
 
-#include "itkRLEImageScanlineIterator.h"
+#include "itkRLEImage.h"
 
 extern int itkImageScanlineIteratorTest1(int argc, char *argv[]);
 extern int itkIteratorTests(int argc, char *argv[]);
