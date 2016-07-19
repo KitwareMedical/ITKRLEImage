@@ -6,6 +6,7 @@ convert to and from regular itk::Image.")
 itk_module(RLEImage
   DEPENDS
     ITKCommon
+    ITKImageGrid
   TEST_DEPENDS
     ITKIOImageBase
     ITKTestKernel
