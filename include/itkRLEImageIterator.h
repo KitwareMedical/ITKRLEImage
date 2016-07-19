@@ -88,8 +88,8 @@ public:
   void Set(const PixelType & value) const
   {
       const_cast<ImageType *>(this->m_Image.GetPointer())->
-          SetPixel(*const_cast<typename ImageType::RLLine *>(this->rlLine),
-          this->segmentRemainder, this->realIndex, value);
+          SetPixel(*const_cast<typename ImageType::RLLine *>(this->m_RunLengthLine),
+          this->m_SegmentRemainder, this->m_RealIndex, value);
   }
 
   ///** Return a reference to the pixel
@@ -98,7 +98,7 @@ public:
   // * we would isolate this pixel into its own segment. */
   //PixelType & Value(void)
   //{
-  //    return m_Buffer[m_Index[2]][m_Index[1]][realIndex].second;
+  //    return m_Buffer[m_Index[2]][m_Index[1]][m_RealIndex].second;
   //}
 
   /** Get the image that this iterator walks. */
@@ -154,8 +154,8 @@ public:
     void Set(const TPixel & value) const
     {
         const_cast<ImageType *>(this->m_Image.GetPointer())->
-            SetPixel(*const_cast<typename ImageType::RLLine *>(this->rlLine),
-            this->segmentRemainder, this->realIndex, value);
+            SetPixel(*const_cast<typename ImageType::RLLine *>(this->m_RunLengthLine),
+            this->m_SegmentRemainder, this->m_RealIndex, value);
     }
 
     /** Get the image that this iterator walks. */
