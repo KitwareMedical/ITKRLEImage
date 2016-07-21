@@ -1,10 +1,10 @@
-RLEImage
-========
+ITKRLEImage
+===========
 
-.. image:: https://circleci.com/gh/KitwareMedical/itkRLEImage.svg?style=svg
-  :target: https://circleci.com/gh/KitwareMedical/itkRLEImage
+.. image:: https://circleci.com/gh/KitwareMedical/ITKRLEImage.svg?style=svg
+  :target: https://circleci.com/gh/KitwareMedical/ITKRLEImage
 
-Run-length encoded memory compression scheme for an `itk <http://itk.org>`::Image.
+Run-length encoded memory compression scheme for an `ITK <http://itk.org>`_ image.
 
 Acknowledgements
 ----------------
