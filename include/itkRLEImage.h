@@ -243,9 +243,9 @@ public:
 
 
 protected:
-    RLEImage() : itk::ImageBase < VImageDimension >()
+    RLEImage() : itk::ImageBase < VImageDimension >(), m_OnTheFlyCleanup(true)
     {
-        m_OnTheFlyCleanup = true;
+        //m_OnTheFlyCleanup = true;
         m_Buffer = BufferType::New();
     }
     void PrintSelf(std::ostream & os, itk::Indent indent) const;
