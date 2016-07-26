@@ -32,11 +32,12 @@ namespace itk
 *  \ingroup ITKCommon
 */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > > : public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageScanlineIterator Self;
+  typedef ImageScanlineIterator                                                          Self;
   typedef ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > Superclass;
 
   /** Types inherited from the Superclass */
@@ -51,15 +52,13 @@ public:
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineIterator()
     : ImageScanlineConstIterator< ImageType >()
-  {
-  }
+  {}
 
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
   ImageScanlineIterator( ImageType* ptr, const RegionType& region )
     : ImageScanlineConstIterator< ImageType >( ptr, region )
-  {
-  }
+  {}
 
   /** Constructor that can be used to cast from an ImageIterator to an
   * ImageScanlineIterator. Many routines return an ImageIterator but for a
@@ -69,8 +68,7 @@ public:
   * ImageIterator to a ImageScanlineIterator. */
   ImageScanlineIterator( const ImageIterator< ImageType >& it )
     : ImageScanlineConstIterator< ImageType >( it )
-  {
-  }
+  {}
 
   /** Set the pixel value */
   void
@@ -92,8 +90,7 @@ protected:
   in order to enforce const correctness. */
   ImageScanlineIterator( const ImageScanlineConstIterator< ImageType >& it )
     : ImageScanlineConstIterator< ImageType >( it )
-  {
-  }
+  {}
   Self&
   operator=( const ImageScanlineConstIterator< ImageType >& it )
   {

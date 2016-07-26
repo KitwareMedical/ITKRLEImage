@@ -49,7 +49,8 @@ namespace itk
  *  \ingroup RLEImage
  */
 template < typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short >
-class RLEImage : public itk::ImageBase< VImageDimension >
+class RLEImage :
+  public itk::ImageBase< VImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -196,7 +197,10 @@ public:
 
   /** \brief Access a pixel. This version can only be an rvalue.
   * SLOW -> Use iterators instead. */
-  const TPixel& operator[]( const IndexType& index ) const { return this->GetPixel( index ); }
+  const TPixel& operator[]( const IndexType& index ) const
+  {
+    return this->GetPixel( index );
+  }
   virtual unsigned int
   GetNumberOfComponentsPerPixel() const
   {
@@ -254,10 +258,14 @@ public:
   SetOnTheFlyCleanup( bool value )
   {
     if ( value == m_OnTheFlyCleanup )
+      {
       return;
+      }
     m_OnTheFlyCleanup = value;
     if ( m_OnTheFlyCleanup )
+      {
       CleanUp(); // put the image into a clean state
+      }
   }
 
 

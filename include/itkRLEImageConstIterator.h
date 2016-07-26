@@ -41,7 +41,7 @@ namespace itk
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
-  friend class ::MultiLabelMeshPipeline;
+friend class ::MultiLabelMeshPipeline;
 
 public:
   /** Standard class typedefs. */
@@ -137,16 +137,16 @@ public:
   {
     if ( this != &it )
       {
-        m_Buffer = it.m_Buffer;
-        m_RunLengthLine = it.m_RunLengthLine;
-        m_Image = it.m_Image; // copy the smart pointer
-        m_Index0 = it.m_Index0;
-        m_BI = it.m_BI;
+      m_Buffer = it.m_Buffer;
+      m_RunLengthLine = it.m_RunLengthLine;
+      m_Image = it.m_Image;   // copy the smart pointer
+      m_Index0 = it.m_Index0;
+      m_BI = it.m_BI;
 
-        m_RealIndex = it.m_RealIndex;
-        m_SegmentRemainder = it.m_SegmentRemainder;
-        m_BeginIndex0 = it.m_BeginIndex0;
-        m_EndIndex0 = it.m_EndIndex0;
+      m_RealIndex = it.m_RealIndex;
+      m_SegmentRemainder = it.m_SegmentRemainder;
+      m_BeginIndex0 = it.m_BeginIndex0;
+      m_EndIndex0 = it.m_EndIndex0;
       }
     return *this;
   }
@@ -159,8 +159,8 @@ public:
 
     if ( region.GetNumberOfPixels() > 0 ) // If region is non-empty
       {
-        const RegionType& bufferedRegion = m_Image->GetBufferedRegion();
-        itkAssertOrThrowMacro( ( bufferedRegion.IsInside( region ) ), "Region " << region << " is outside of buffered region " << bufferedRegion );
+      const RegionType& bufferedRegion = m_Image->GetBufferedRegion();
+      itkAssertOrThrowMacro( ( bufferedRegion.IsInside( region ) ), "Region " << region << " is outside of buffered region " << bufferedRegion );
       }
 
     m_BI = BufferIterator( m_Buffer, ImageType::truncateRegion( region ) );
@@ -199,9 +199,13 @@ public:
   operator<=( const Self& it ) const
   {
     if ( m_BI < it.m_BI )
+      {
       return true;
+      }
     else if ( m_BI > it.m_BI )
+      {
       return false;
+      }
     return m_Index0 + m_BeginIndex0 <= it.m_Index0 + it.m_BeginIndex0;
   }
 
@@ -211,9 +215,13 @@ public:
   operator<( const Self& it ) const
   {
     if ( m_BI < it.m_BI )
+      {
       return true;
+      }
     else if ( m_BI > it.m_BI )
+      {
       return false;
+      }
     return m_Index0 + m_BeginIndex0 < it.m_Index0 + it.m_BeginIndex0;
   }
 
@@ -223,9 +231,13 @@ public:
   operator>=( const Self& it ) const
   {
     if ( m_BI > it.m_BI )
+      {
       return true;
+      }
     else if ( m_BI < it.m_BI )
+      {
       return false;
+      }
     return m_Index0 + m_BeginIndex0 >= it.m_Index0 + it.m_BeginIndex0;
   }
 
@@ -235,9 +247,13 @@ public:
   operator>( const Self& it ) const
   {
     if ( m_BI > it.m_BI )
+      {
       return true;
+      }
     else if ( m_BI < it.m_BI )
+      {
       return false;
+      }
     return m_Index0 + m_BeginIndex0 > it.m_Index0 + it.m_BeginIndex0;
   }
 
@@ -249,7 +265,9 @@ public:
     indR[0] += m_Index0;
     typename BufferType::IndexType bufInd = m_BI.GetIndex();
     for ( IndexValueType i = 1; i < VImageDimension; i++ )
+      {
       indR[i] = bufInd[i - 1];
+      }
     return indR;
   }
 
@@ -259,7 +277,9 @@ public:
   {
     typename BufferType::IndexType bufInd;
     for ( IndexValueType i = 1; i < VImageDimension; i++ )
+      {
       bufInd[i - 1] = ind[i];
+      }
     m_BI.SetIndex( bufInd );
     SetIndexInternal( ind[0] - m_Image->GetBufferedRegion().GetIndex( 0 ) );
   }
@@ -275,8 +295,8 @@ public:
     typename BufferType::RegionType ir = m_BI.GetRegion();
     for ( IndexValueType i = 1; i < VImageDimension; i++ )
       {
-        r.SetIndex( i, ir.GetIndex( i - 1 ) );
-        r.SetSize( i, ir.GetSize( i - 1 ) );
+      r.SetIndex( i, ir.GetIndex( i - 1 ) );
+      r.SetSize( i, ir.GetSize( i - 1 ) );
       }
     return r;
   }
@@ -350,15 +370,17 @@ protected: // made protected so other iterators can access
     CounterType   t = 0;
     SizeValueType x = 0;
 
-    for ( ; x < ( *m_RunLengthLine ).size(); x++ )
+    for (; x < ( *m_RunLengthLine ).size(); x++ )
       {
-        t += ( *m_RunLengthLine )[x].first;
-        if ( t > m_Index0 )
-          break;
+      t += ( *m_RunLengthLine )[x].first;
+      if ( t > m_Index0 )
+        {
+        break;
+        }
       }
     m_RealIndex = x;
     m_SegmentRemainder = t - m_Index0;
-  }
+  } // SetIndexInternal
 
   typename ImageType::ConstWeakPointer m_Image;
 
@@ -377,9 +399,10 @@ protected: // made protected so other iterators can access
 };
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > : public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
-  // just inherit constructors
+// just inherit constructors
 public:
   /** Image typedef support. */
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
@@ -404,24 +427,26 @@ public:
   * provide a copy constructor. */
   ImageConstIteratorWithIndex()
     : ImageConstIterator< ImageType >()
-  {
-  }
+  {}
 
   /** Copy Constructor. The copy constructor is provided to make sure the
   * handle to the image is properly reference counted. */
-  ImageConstIteratorWithIndex( const ImageConstIteratorWithIndex& it ) { this->ImageConstIterator< ImageType >::operator=( it ); }
+  ImageConstIteratorWithIndex( const ImageConstIteratorWithIndex& it )
+  {
+    this->ImageConstIterator< ImageType >::operator=( it );
+  }
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
   ImageConstIteratorWithIndex( const ImageType* ptr, const RegionType& region )
     : ImageConstIterator< ImageType >( ptr, region )
-  {
-  }
+  {}
 }; // no additional implementation required
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageConstIteratorWithOnlyIndex< RLEImage< TPixel, VImageDimension, CounterType > > : public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageConstIteratorWithOnlyIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
-  // just inherit constructors
+// just inherit constructors
 public:
   /** Image typedef support. */
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
@@ -432,21 +457,21 @@ public:
   * provide a copy constructor. */
   ImageConstIteratorWithOnlyIndex()
     : ImageConstIterator< ImageType >()
-  {
-  }
+  {}
 
 
   /** Copy Constructor. The copy constructor is provided to make sure the
   * handle to the image is properly reference counted. */
-  ImageConstIteratorWithOnlyIndex( const ImageConstIteratorWithOnlyIndex& it ) { this->ImageConstIterator< ImageType >::operator=( it ); }
+  ImageConstIteratorWithOnlyIndex( const ImageConstIteratorWithOnlyIndex& it )
+  {
+    this->ImageConstIterator< ImageType >::operator=( it );
+  }
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
   ImageConstIteratorWithOnlyIndex( const ImageType* ptr, const RegionType& region )
     : ImageConstIterator< ImageType >( ptr, region )
-  {
-  }
+  {}
 }; // no additional implementation required
-
 } // end namespace itk
 
 #endif // itkRLEImageConstIterator_h

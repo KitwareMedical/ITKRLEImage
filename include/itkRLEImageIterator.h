@@ -33,7 +33,8 @@ namespace itk
  */
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageIterator< RLEImage< TPixel, VImageDimension, CounterType > > : public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
@@ -66,15 +67,13 @@ public:
    * handle to the image is properly reference counted. */
   ImageIterator( const Self& it )
     : ImageConstIterator< ImageType >( it )
-  {
-  }
+  {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
   ImageIterator( ImageType* ptr, const RegionType& region )
     : ImageConstIterator< ImageType >( ptr, region )
-  {
-  }
+  {}
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
@@ -116,8 +115,7 @@ protected:
     const-correctness */
   ImageIterator( const ImageConstIterator< ImageType >& it )
     : ImageConstIterator< ImageType >( it )
-  {
-  }
+  {}
   Self&
   operator=( const ImageConstIterator< ImageType >& it )
   {
@@ -127,7 +125,8 @@ protected:
 };
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > : public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
@@ -138,19 +137,20 @@ public:
   * provide a copy constructor. */
   ImageIteratorWithIndex()
     : ImageConstIteratorWithIndex< ImageType >()
-  {
-  }
+  {}
 
 
   /** Copy Constructor. The copy constructor is provided to make sure the
   * handle to the image is properly reference counted. */
-  ImageIteratorWithIndex( const ImageIteratorWithIndex& it ) { this->ImageIterator< ImageType >::operator=( it ); }
+  ImageIteratorWithIndex( const ImageIteratorWithIndex& it )
+  {
+    this->ImageIterator< ImageType >::operator=( it );
+  }
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
   ImageIteratorWithIndex( const ImageType* ptr, const RegionType& region )
     : ImageConstIteratorWithIndex< ImageType >( ptr, region )
-  {
-  }
+  {}
 
   /** Set the pixel value.
   * Changing the RLE structure invalidates all other iterators (except this one). */

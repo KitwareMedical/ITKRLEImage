@@ -50,13 +50,13 @@ class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterTyp
 {
 public:
   /** Standard class typedefs. */
-  typedef RegionOfInterestImageFilter Self;
+  typedef RegionOfInterestImageFilter                      Self;
   typedef RLEImage< TPixel, VImageDimension, CounterType > RLEImageType;
-  typedef RLEImageType ImageType;
+  typedef RLEImageType                                     ImageType;
   typedef ImageToImageFilter< RLEImageType, RLEImageType > Superclass;
-  typedef SmartPointer< Self >                      Pointer;
-  typedef SmartPointer< const Self >                ConstPointer;
-  typedef typename Superclass::InputImageRegionType InputImageRegionType;
+  typedef SmartPointer< Self >                             Pointer;
+  typedef SmartPointer< const Self >                       ConstPointer;
+  typedef typename Superclass::InputImageRegionType        InputImageRegionType;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -139,12 +139,12 @@ public:
   /** Standard class typedefs. */
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > RLEImageType;
 
-  typedef RegionOfInterestImageFilter Self;
+  typedef RegionOfInterestImageFilter                   Self;
   typedef Image< TPixel, VImageDimension >              ImageType;
   typedef ImageToImageFilter< ImageType, RLEImageType > Superclass;
-  typedef SmartPointer< Self >                      Pointer;
-  typedef SmartPointer< const Self >                ConstPointer;
-  typedef typename Superclass::InputImageRegionType InputImageRegionType;
+  typedef SmartPointer< Self >                          Pointer;
+  typedef SmartPointer< const Self >                    ConstPointer;
+  typedef typename Superclass::InputImageRegionType     InputImageRegionType;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -227,12 +227,12 @@ public:
   /** Standard class typedefs. */
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > RLEImageType;
 
-  typedef RegionOfInterestImageFilter Self;
+  typedef RegionOfInterestImageFilter                   Self;
   typedef Image< TPixel, VImageDimension >              ImageType;
   typedef ImageToImageFilter< RLEImageType, ImageType > Superclass;
-  typedef SmartPointer< Self >                      Pointer;
-  typedef SmartPointer< const Self >                ConstPointer;
-  typedef typename Superclass::InputImageRegionType InputImageRegionType;
+  typedef SmartPointer< Self >                          Pointer;
+  typedef SmartPointer< const Self >                    ConstPointer;
+  typedef typename Superclass::InputImageRegionType     InputImageRegionType;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
