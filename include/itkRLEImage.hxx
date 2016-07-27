@@ -139,7 +139,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 int
 RLEImage< TPixel, VImageDimension, CounterType >
-::SetPixel( RLLine& line, IndexValueType& segmentRemainder, IndexValueType& m_RealIndex, const TPixel& value )
+::SetPixel( RLLine& line, IndexValueType& segmentRemainder, SizeValueType& m_RealIndex, const TPixel& value )
 {
   // complete Run-Length Lines have to be buffered
   itkAssertOrThrowMacro( this->GetBufferedRegion().GetSize( 0 ) == this->GetLargestPossibleRegion().GetSize( 0 ), "BufferedRegion must contain complete run-length lines!" );
@@ -237,7 +237,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
   typename BufferType::IndexType bi = truncateIndex( index );
   RLLine&        line = m_Buffer->GetPixel( bi );
   IndexValueType t = 0;
-  for ( IndexValueType x = 0; x < line.size(); x++ )
+  for ( SizeValueType x = 0; x < line.size(); x++ )
     {
     t += line[x].first;
     if ( t > index[0] - bri0 )
@@ -261,7 +261,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
   typename BufferType::IndexType bi = truncateIndex( index );
   RLLine&        line = m_Buffer->GetPixel( bi );
   IndexValueType t = 0;
-  for ( IndexValueType x = 0; x < line.size(); x++ )
+  for ( SizeValueType x = 0; x < line.size(); x++ )
     {
     t += line[x].first;
     if ( t > index[0] - bri0 )
