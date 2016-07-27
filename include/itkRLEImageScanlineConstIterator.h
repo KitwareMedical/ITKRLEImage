@@ -18,8 +18,8 @@
 #ifndef itkRLEImageScanlineConstIterator_h
 #define itkRLEImageScanlineConstIterator_h
 
-#include "itkRLEImageRegionConstIterator.h"
 #include "itkImageScanlineIterator.h"
+#include "itkRLEImageRegionConstIterator.h"
 
 namespace itk
 {
@@ -30,134 +30,151 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType> >
-    :public ImageRegionConstIterator<RLEImage<TPixel, VImageDimension, CounterType> >
+template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+class ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-    /** Standard class typedef. */
-    typedef ImageScanlineConstIterator   Self;
-    typedef ImageRegionConstIterator< RLEImage<TPixel, VImageDimension, CounterType> > Superclass;
+  /** Standard class typedef. */
+  typedef ImageScanlineConstIterator                                                   Self;
+  typedef ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > Superclass;
 
-    /** Dimension of the image that the iterator walks.  This constant is needed so
-    * functions that are templated over image iterator type (as opposed to
-    * being templated over pixel type and dimension) can have compile time
-    * access to the dimension of the image that the iterator walks. */
-    itkStaticConstMacro(ImageIteratorDimension, unsigned int, VImageDimension);
+  /** Dimension of the image that the iterator walks.  This constant is needed so
+  * functions that are templated over image iterator type (as opposed to
+  * being templated over pixel type and dimension) can have compile time
+  * access to the dimension of the image that the iterator walks. */
+  itkStaticConstMacro( ImageIteratorDimension, unsigned int, VImageDimension );
 
-    /**
-    * Index typedef support. While these were already typdef'ed in the superclass,
-    * they need to be redone here for this subclass to compile properly with gcc.
-    */
-    /** Types inherited from the Superclass */
-    typedef typename Superclass::IndexType             IndexType;
-    typedef typename Superclass::SizeType              SizeType;
-    typedef typename Superclass::OffsetType            OffsetType;
-    typedef typename Superclass::RegionType            RegionType;
-    typedef typename Superclass::ImageType             ImageType;
-    typedef typename Superclass::InternalPixelType     InternalPixelType;
-    typedef typename Superclass::PixelType             PixelType;
+  /**
+  * Index typedef support. While these were already typdef'ed in the superclass,
+  * they need to be redone here for this subclass to compile properly with gcc.
+  */
+  /** Types inherited from the Superclass */
+  typedef typename Superclass::IndexType         IndexType;
+  typedef typename Superclass::SizeType          SizeType;
+  typedef typename Superclass::OffsetType        OffsetType;
+  typedef typename Superclass::RegionType        RegionType;
+  typedef typename Superclass::ImageType         ImageType;
+  typedef typename Superclass::InternalPixelType InternalPixelType;
+  typedef typename Superclass::PixelType         PixelType;
 
-    /** Run-time type information (and related methods). */
-    itkTypeMacro(ImageScanlineConstIterator, ImageRegionConstIterator);
+  /** Run-time type information (and related methods). */
+  itkTypeMacro( ImageScanlineConstIterator, ImageRegionConstIterator );
 
-    /** Default constructor. Needed since we provide a cast constructor. */
-    ImageScanlineConstIterator()
-        :ImageRegionConstIterator< ImageType >() {}
+  /** Default constructor. Needed since we provide a cast constructor. */
+  ImageScanlineConstIterator()
+    : ImageRegionConstIterator< ImageType >()
+  {}
 
-    /** Constructor establishes an iterator to walk a particular image and a
-    * particular region of that image. */
-    ImageScanlineConstIterator(const ImageType *ptr, const RegionType & region) :
-        ImageRegionConstIterator< ImageType >(ptr, region) {}
+  /** Constructor establishes an iterator to walk a particular image and a
+  * particular region of that image. */
+  ImageScanlineConstIterator( const ImageType* ptr, const RegionType& region )
+    : ImageRegionConstIterator< ImageType >( ptr, region )
+  {}
 
-    /** Constructor that can be used to cast from an ImageIterator to an
-    * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
-    * particular task, you may want an ImageScanlineConstIterator.  Rather than
-    * provide overloaded APIs that return different types of Iterators, itk
-    * returns ImageIterators and uses constructors to cast from an
-    * ImageIterator to a ImageScanlineConstIterator. */
-    ImageScanlineConstIterator(const ImageIterator< ImageType > & it)
-        :ImageRegionConstIterator< ImageType >(it) {}
+  /** Constructor that can be used to cast from an ImageIterator to an
+  * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
+  * particular task, you may want an ImageScanlineConstIterator.  Rather than
+  * provide overloaded APIs that return different types of Iterators, itk
+  * returns ImageIterators and uses constructors to cast from an
+  * ImageIterator to a ImageScanlineConstIterator. */
+  ImageScanlineConstIterator( const ImageIterator< ImageType >& it )
+    : ImageRegionConstIterator< ImageType >( it )
+  {}
 
-    /** Constructor that can be used to cast from an ImageConstIterator to an
-    * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
-    * particular task, you may want an ImageScanlineConstIterator.  Rather than
-    * provide overloaded APIs that return different types of Iterators, itk
-    * returns ImageIterators and uses constructors to cast from an
-    * ImageIterator to a ImageScanlineConstIterator. */
-    ImageScanlineConstIterator(const ImageConstIterator< ImageType > & it)
-    { this->ImageRegionConstIterator< ImageType >::operator=(it); }
+  /** Constructor that can be used to cast from an ImageConstIterator to an
+  * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
+  * particular task, you may want an ImageScanlineConstIterator.  Rather than
+  * provide overloaded APIs that return different types of Iterators, itk
+  * returns ImageIterators and uses constructors to cast from an
+  * ImageIterator to a ImageScanlineConstIterator. */
+  ImageScanlineConstIterator( const ImageConstIterator< ImageType >& it )
+  {
+    this->ImageRegionConstIterator< ImageType >::operator=( it );
+  }
+  /** Go to the beginning pixel of the current line. */
+  void
+  GoToBeginOfLine( void )
+  {
+    this->m_Index0 = this->m_BeginIndex0;
+    this->m_RealIndex = 0;
+    this->m_SegmentRemainder = ( *this->m_RunLengthLine )[this->m_RealIndex].first;
+  }
 
+  /** Go to the past end pixel of the current line. */
+  void
+  GoToEndOfLine( void )
+  {
+    this->m_Index0 = this->m_EndIndex0;
+    this->m_RealIndex = this->m_RunLengthLine->size() - 1;
+    this->m_SegmentRemainder = 0;
+  }
 
-    /** Go to the beginning pixel of the current line. */
-    void GoToBeginOfLine(void)
-    {
-        this->m_Index0 = this->m_BeginIndex0;
-        this->m_RealIndex = 0;
-        this->m_SegmentRemainder = (*this->m_RunLengthLine)[this->m_RealIndex].first;
-    }
+  /** Test if the index is at the end of line. */
+  inline bool
+  IsAtEndOfLine( void )
+  {
+    return this->m_Index0 == this->m_EndIndex0;
+  }
 
-    /** Go to the past end pixel of the current line. */
-    void GoToEndOfLine(void)
-    {
-        this->m_Index0 = this->m_EndIndex0;
-        this->m_RealIndex = this->m_RunLengthLine->size() - 1;
-        this->m_SegmentRemainder = 0;
-    }
+  /** Go to the next line. */
+  inline void
+  NextLine( void )
+  {
+    ++( this->m_BI );
+    if ( !this->m_BI.IsAtEnd() )
+      {
+      this->SetIndexInternal( this->m_BeginIndex0 );
+      }
+    else
+      {
+      this->m_Index0 = this->m_BeginIndex0; // make this iterator at end too
+      }
+  }
 
-    /** Test if the index is at the end of line. */
-    inline bool IsAtEndOfLine(void)
-    {
-        return this->m_Index0 == this->m_EndIndex0;
-    }
+  /** Increment (prefix) along the scanline.
+  *
+  * If the iterator is at the end of the scanline ( one past the last
+  * valid element in the row ), then the results are undefined. Which
+  * means is may assert in debug mode or result in an undefined
+  * iterator which may have unknown consequences if used.
+  */
+  Self& operator++()
+  {
+    itkAssertInDebugAndIgnoreInReleaseMacro( !this->IsAtEndOfLine() );
+    this->m_Index0++;
+    this->m_SegmentRemainder--;
+    if ( this->m_SegmentRemainder > 0 )
+      {
+      return *this;
+      }
 
-    /** Go to the next line. */
-    inline void NextLine(void)
-    {
-        ++(this->m_BI);
-        if (!this->m_BI.IsAtEnd())
-            this->SetIndexInternal(this->m_BeginIndex0);
-        else
-            this->m_Index0 = this->m_BeginIndex0; //make this iterator at end too
-    }
+    if ( this->IsAtEndOfLine() )
+      {
+      return *this;
+      }
+    this->m_RealIndex++;
+    this->m_SegmentRemainder = ( *this->m_RunLengthLine )[this->m_RealIndex].first;
+    return *this;
+  } // ++
 
-    /** Increment (prefix) along the scanline.
-    *
-    * If the iterator is at the end of the scanline ( one past the last
-    * valid element in the row ), then the results are undefined. Which
-    * means is may assert in debug mode or result in an undefined
-    * iterator which may have unknown consequences if used.
-    */
-    Self& operator++()
-    {
-        itkAssertInDebugAndIgnoreInReleaseMacro(!this->IsAtEndOfLine());
-        this->m_Index0++;
-        this->m_SegmentRemainder--;
-        if (this->m_SegmentRemainder > 0)
-            return *this;
+  /** Decrement (prefix) along the scanline.
+  *
+  */
+  Self& operator--()
+  {
+    this->m_Index0--;
+    this->m_SegmentRemainder++;
+    if ( this->m_SegmentRemainder <= ( *this->m_RunLengthLine )[this->m_RealIndex].first )
+      {
+      return *this;
+      }
 
-        if (this->IsAtEndOfLine())
-            return *this;
-        this->m_RealIndex++;
-        this->m_SegmentRemainder = (*this->m_RunLengthLine)[this->m_RealIndex].first;
-        return *this;
-    }
-
-    /** Decrement (prefix) along the scanline.
-    *
-    */
-    Self& operator--()
-    {
-        this->m_Index0--;
-        this->m_SegmentRemainder++;
-        if (this->m_SegmentRemainder <= (*this->m_RunLengthLine)[this->m_RealIndex].first)
-            return *this;
-
-        this->m_RealIndex--;
-        this->m_SegmentRemainder = 1;
-        return *this;
-    }
+    this->m_RealIndex--;
+    this->m_SegmentRemainder = 1;
+    return *this;
+  }
 };
 } // end namespace itk
 
-#endif //itkRLEImageScanlineConstIterator_h
+#endif // itkRLEImageScanlineConstIterator_h
