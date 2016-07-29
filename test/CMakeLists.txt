@@ -29,7 +29,15 @@ function(ReadWriteTest ImageName Ext)
       DATA{Input/${ImageName}.${Ext}} ${outImage})
 endfunction()
 
-# Handcrafted tests
+# RLEImage specific tests
+ReadWriteTest(brainParc mha)
+ReadWriteTest(vb-seg mha)
+ReadWriteTest(ws nrrd)
+ReadWriteTest(wb-crop nrrd)
+ReadWriteTest(wb-seg nrrd)
+ReadWriteTest(wb-seg32 nrrd)
+
+# Handcrafted tests for MorphologicalContourInterpolation
 ReadWriteTest(Empty nrrd)
 ReadWriteTest(NoSlices nrrd)
 ReadWriteTest(Micro1 nrrd)
