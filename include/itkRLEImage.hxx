@@ -281,7 +281,9 @@ RLEImage< TPixel, VImageDimension, CounterType >
   os << indent << "Internal image (for storage of RLLine-s): " << std::endl;
   m_Buffer->Print( os, indent.GetNextIndent() );
 
-  itk::SizeValueType                          c = 0;
+  itk::SizeValueType c = 0;
+  itk::SizeValueType pixelCount = this->GetOffsetTable()[VImageDimension];
+
   itk::ImageRegionConstIterator< BufferType > it( m_Buffer, m_Buffer->GetBufferedRegion() );
   while ( !it.IsAtEnd() )
     {
@@ -289,11 +291,12 @@ RLEImage< TPixel, VImageDimension, CounterType >
     ++it;
     }
 
-  double cr = double( c * ( sizeof( PixelType ) + sizeof( CounterType ) ) + sizeof( std::vector< RLLine > ) * this->GetOffsetTable()[VImageDimension] / this->GetOffsetTable()[1] ) /
-    ( this->GetOffsetTable()[VImageDimension] * sizeof( PixelType ) );
+  itk::SizeValueType memUsed = c * sizeof(RLSegment) + sizeof(std::vector< RLLine >)
+    * (pixelCount / this->GetOffsetTable()[1]);
+  double cr = double(memUsed) / (pixelCount * sizeof( PixelType ) );
 
   os << indent << "OnTheFlyCleanup: " << ( m_OnTheFlyCleanup ? "On" : "Off" ) << std::endl;
-  os << indent << "RLEImage compressed pixel count: " << c << std::endl;
+  os << indent << "RLSegment count: " << c << std::endl;
   int prec = os.precision( 3 );
   os << indent << "Compressed size in relation to original size: " << cr * 100 << "%" << std::endl;
   os.precision( prec );

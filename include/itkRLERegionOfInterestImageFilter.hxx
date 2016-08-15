@@ -92,7 +92,8 @@ void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferT
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -102,14 +103,16 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateInputRequestedRegion();
 
   // get pointer to the input
-  typename Superclass::InputImagePointer inputPtr = const_cast< RLEImageType* >( this->GetInput() );
+  typename Superclass::InputImagePointer inputPtr
+    = const_cast< RLEImageType* >( this->GetInput() );
 
   if ( inputPtr )
     {
@@ -120,7 +123,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::EnlargeOutputRequestedRegion( DataObject* output )
 {
   // call the superclass' implementation of this method
@@ -141,7 +145,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
 */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::GenerateOutputInformation()
 {
   // do not call the superclass' implementation of this method since
@@ -191,7 +196,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
 */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::ThreadedGenerateData( const RegionType& outputRegionForThread,
   ThreadIdType threadId )
 {
@@ -214,7 +220,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
   inputRegionForThread.SetIndex( start );
 
   bool copyLines = ( in->GetLargestPossibleRegion().GetSize( 0 ) == outputRegionForThread.GetSize( 0 ) );
-  typename ImageType::BufferType::RegionType oReg = ImageType::truncateRegion( outputRegionForThread ), iReg = ImageType::truncateRegion( inputRegionForThread );
+  typename ImageType::BufferType::RegionType oReg = ImageType::truncateRegion( outputRegionForThread );
+  typename ImageType::BufferType::RegionType iReg = ImageType::truncateRegion( inputRegionForThread );
   ImageRegionConstIterator< typename ImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename ImageType::BufferType >      oIt( out->GetBuffer(), oReg );
 
@@ -235,9 +242,11 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, R
 } // >::ThreadedGenerateData
 
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
 void
-RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -245,9 +254,11 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   os << indent << "RegionOfInterest: " << m_RegionOfInterest << std::endl;
 }
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
 void
-RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -263,9 +274,11 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
     }
 }
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
 void
-RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 ::EnlargeOutputRequestedRegion( DataObject* output )
 {
   // call the superclass' implementation of this method
@@ -284,9 +297,11 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 *
 * \sa ProcessObject::GenerateOutputInformaton()
 */
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
 void
-RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 ::GenerateOutputInformation()
 {
   // do not call the superclass' implementation of this method since
@@ -334,9 +349,11 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 * \sa ImageToImageFilter::ThreadedGenerateData(),
 *     ImageToImageFilter::GenerateData()
 */
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
 void
-RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 ::ThreadedGenerateData( const RegionType& outputRegionForThread,
   ThreadIdType threadId )
 {
@@ -369,7 +386,8 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -379,7 +397,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel,
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -397,7 +416,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel,
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::EnlargeOutputRequestedRegion( DataObject* output )
 {
   // call the superclass' implementation of this method
@@ -418,7 +438,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel,
 */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::GenerateOutputInformation()
 {
   // do not call the superclass' implementation of this method since
@@ -468,7 +489,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel,
 */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 ::ThreadedGenerateData( const RegionType& outputRegionForThread,
   ThreadIdType threadId )
 {
@@ -520,7 +542,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel,
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -530,7 +553,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, I
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -548,7 +572,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, I
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 ::EnlargeOutputRequestedRegion( DataObject* output )
 {
   // call the superclass' implementation of this method
@@ -569,7 +594,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, I
  */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 ::GenerateOutputInformation()
 {
   // do not call the superclass' implementation of this method since
@@ -619,7 +645,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, I
    */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
-RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 ::ThreadedGenerateData( const RegionType& outputRegionForThread,
   ThreadIdType threadId )
 {

@@ -433,7 +433,7 @@ public:
   * handle to the image is properly reference counted. */
   ImageConstIteratorWithIndex( const ImageConstIteratorWithIndex& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
@@ -464,7 +464,7 @@ public:
   * handle to the image is properly reference counted. */
   ImageConstIteratorWithOnlyIndex( const ImageConstIteratorWithOnlyIndex& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */

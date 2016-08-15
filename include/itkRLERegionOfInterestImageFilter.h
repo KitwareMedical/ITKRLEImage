@@ -45,8 +45,10 @@ namespace itk
  *  \ingroup ITKCommon
  */
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, RLEImage< TPixel, VImageDimension, CounterType > >
+class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
@@ -131,9 +133,12 @@ private:
   RegionType m_RegionOfInterest;
 };
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn, typename CounterTypeOut >
-class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
-  : public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >, RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+  typename CounterTypeIn, typename CounterTypeOut >
+class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+  : public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 {
 public:
   /** Standard class typedefs. */
@@ -225,14 +230,18 @@ class InputAndOutputImagesMustHaveSameDimension;
 
 //input and output images must have the same dimension (e.g. both 2D or both 3D)
 //so disallow this by inheriting from unimplemented base class
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn, unsigned int VImageDimensionOut, typename CounterTypeIn, typename CounterTypeOut >
-class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimensionIn, CounterTypeIn >, RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > >
+template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn,
+  unsigned int VImageDimensionOut, typename CounterTypeIn, typename CounterTypeOut >
+class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimensionIn, CounterTypeIn >,
+  RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > >
   : InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
 {};
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageToImageFilter< Image< TPixel, VImageDimension >,
+  RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
@@ -319,8 +328,10 @@ private:
 };
 
 template < typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
+  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+  Image< TPixel, VImageDimension > >
 {
 public:
   /** Standard class typedefs. */

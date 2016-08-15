@@ -90,8 +90,7 @@ public:
    * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIterator( const ImageIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
-    // this->ImageConstIterator< ImageType >::operator=(static_cast<const ImageConstIterator<ImageType> >(it));
+    ImageConstIterator< ImageType >::operator=( it );
   }
 
   /** Constructor that can be used to cast from an ImageConstIterator to an
@@ -102,7 +101,7 @@ public:
    * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIterator( const ImageConstIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
   /** Increment (prefix) the fastest moving dimension of the iterator's index.
    * This operator will constrain the iterator within the region (i.e. the

@@ -80,7 +80,7 @@ public:
   Self&
   operator=( const Self& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
     return *this;
   }
 
@@ -89,7 +89,9 @@ public:
   void
   Set( const PixelType& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ), this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
+      this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
   ///** Return a reference to the pixel
@@ -119,7 +121,7 @@ protected:
   Self&
   operator=( const ImageConstIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
     return *this;
   }
 };
@@ -131,7 +133,8 @@ class ImageIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 public:
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
 
-  typedef typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
+  typedef typename itk::ImageConstIterator<
+    RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
 
   /** Default Constructor. Need to provide a default constructor since we
   * provide a copy constructor. */
@@ -139,13 +142,13 @@ public:
     : ImageConstIteratorWithIndex< ImageType >()
   {}
 
-
   /** Copy Constructor. The copy constructor is provided to make sure the
   * handle to the image is properly reference counted. */
   ImageIteratorWithIndex( const ImageIteratorWithIndex& it )
   {
     this->ImageIterator< ImageType >::operator=( it );
   }
+
   /** Constructor establishes an iterator to walk a particular image and a
   * particular region of that image. */
   ImageIteratorWithIndex( const ImageType* ptr, const RegionType& region )
@@ -157,7 +160,9 @@ public:
   void
   Set( const TPixel& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ), this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
+      this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
   /** Get the image that this iterator walks. */
