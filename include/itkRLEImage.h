@@ -20,7 +20,7 @@
 
 #include <itkImage.h>
 #include <itkImageBase.h>
-#include <utility> //std::pair
+#include <utility> // std::pair
 #include <vector>
 
 namespace itk
@@ -48,8 +48,8 @@ namespace itk
  *
  *  \ingroup RLEImage
  */
-template < typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short >
-class RLEImage :
+template< typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short >
+class RLEImage:
   public itk::ImageBase< VImageDimension >
 {
 public:
@@ -185,7 +185,7 @@ public:
   SetPixel( RLLine& line, IndexValueType& segmentRemainder, SizeValueType& m_RealIndex, const TPixel& value );
 
   /** \brief Get a pixel. SLOW! Better use iterators for pixel access. */
-  const TPixel&
+  const TPixel &
   GetPixel( const IndexType& index ) const;
 
   ///** Get a reference to a pixel. Chaning it changes the whole RLE segment! */
@@ -193,22 +193,25 @@ public:
 
   ///** \brief Access a pixel. Chaning it changes the whole RLE segment! */
   // TPixel & operator[](const IndexType & index)
-  //{
+  // {
   //    return this->GetPixel(index);
-  //}
+  // }
 
   /** \brief Access a pixel. This version can only be an rvalue.
   * SLOW -> Use iterators instead. */
-  const TPixel& operator[]( const IndexType& index ) const
+  const TPixel &
+  operator[]( const IndexType& index ) const
   {
     return this->GetPixel( index );
   }
+
   virtual unsigned int
   GetNumberOfComponentsPerPixel() const
   {
     // use the GetLength() method which works with variable length arrays,
     // to make it work with as much pixel types as possible
     PixelType p;
+
     return itk::NumericTraits< PixelType >::GetLength( p );
   }
 
@@ -270,15 +273,15 @@ public:
       }
   }
 
-
 protected:
   RLEImage()
-    : itk::ImageBase< VImageDimension >()
-    , m_OnTheFlyCleanup( true )
+    : itk::ImageBase< VImageDimension >(),
+    m_OnTheFlyCleanup( true )
   {
     // m_OnTheFlyCleanup = true;
     m_Buffer = BufferType::New();
   }
+
   void
   PrintSelf( std::ostream& os, itk::Indent indent ) const;
 
@@ -301,9 +304,9 @@ protected:
 private:
   bool m_OnTheFlyCleanup; // should same-valued segments be merged on the fly
 
-  RLEImage( const Self& ); // purposely not implemented
+  RLEImage( const Self & ); // purposely not implemented
   void
-  operator=( const Self& ); // purposely not implemented
+  operator=( const Self & ); // purposely not implemented
 
   /** Memory for the current buffer. */
   mutable typename BufferType::Pointer m_Buffer;

@@ -30,7 +30,7 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -90,8 +90,9 @@ public:
   * ImageIterator to a ImageScanlineConstIterator. */
   ImageScanlineConstIterator( const ImageConstIterator< ImageType >& it )
   {
-    this->ImageRegionConstIterator< ImageType >::operator=( it );
+    ImageRegionConstIterator< ImageType >::operator=( it );
   }
+
   /** Go to the beginning pixel of the current line. */
   void
   GoToBeginOfLine( void )
@@ -139,7 +140,8 @@ public:
   * means is may assert in debug mode or result in an undefined
   * iterator which may have unknown consequences if used.
   */
-  Self& operator++()
+  Self &
+  operator++()
   {
     itkAssertInDebugAndIgnoreInReleaseMacro( !this->IsAtEndOfLine() );
     this->m_Index0++;
@@ -161,7 +163,8 @@ public:
   /** Decrement (prefix) along the scanline.
   *
   */
-  Self& operator--()
+  Self &
+  operator--()
   {
     this->m_Index0--;
     this->m_SegmentRemainder++;

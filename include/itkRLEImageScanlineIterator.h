@@ -31,7 +31,7 @@ namespace itk
 *  \ingroup RLEImage
 *  \ingroup ITKCommon
 */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -74,16 +74,18 @@ public:
   void
   Set( const PixelType& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ), this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
+      this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
   ///** Return a reference to the pixel
-  //* This method will provide the fastest access to pixel
-  //* data, but it will NOT support ImageAdaptors. */
+  // * This method will provide the fastest access to pixel
+  // * data, but it will NOT support ImageAdaptors. */
   // PixelType & Value(void)
-  //{
+  // {
   //    return m_Buffer[m_Index[2]][m_Index[1]][m_RealIndex].second;
-  //}
+  // }
 
 protected:
   /** the construction from a const iterator is declared protected
@@ -91,7 +93,7 @@ protected:
   ImageScanlineIterator( const ImageScanlineConstIterator< ImageType >& it )
     : ImageScanlineConstIterator< ImageType >( it )
   {}
-  Self&
+  Self &
   operator=( const ImageScanlineConstIterator< ImageType >& it )
   {
     this->ImageScanlineConstIterator< ImageType >::operator=( it );

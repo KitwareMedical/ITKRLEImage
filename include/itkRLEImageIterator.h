@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -77,7 +77,7 @@ public:
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
-  Self&
+  Self &
   operator=( const Self& it )
   {
     ImageConstIterator< ImageType >::operator=( it );
@@ -89,8 +89,8 @@ public:
   void
   Set( const PixelType& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel(
-      *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
       this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
@@ -99,17 +99,17 @@ public:
   // * If we wanted to safely enable it,
   // * we would isolate this pixel into its own segment. */
   // PixelType & Value(void)
-  //{
+  // {
   //    return m_Buffer[m_Index[2]][m_Index[1]][m_RealIndex].second;
-  //}
+  // }
 
   /** Get the image that this iterator walks. */
-  ImageType*
+  ImageType *
   GetImage() const
   {
     // const_cast is needed here because m_Image is declared as a const pointer
     // in the base class which is the ConstIterator.
-    return const_cast< ImageType* >( this->m_Image.GetPointer() );
+    return const_cast< ImageType * >( this->m_Image.GetPointer() );
   }
 
 protected:
@@ -118,7 +118,7 @@ protected:
   ImageIterator( const ImageConstIterator< ImageType >& it )
     : ImageConstIterator< ImageType >( it )
   {}
-  Self&
+  Self &
   operator=( const ImageConstIterator< ImageType >& it )
   {
     ImageConstIterator< ImageType >::operator=( it );
@@ -126,7 +126,7 @@ protected:
   }
 };
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -146,7 +146,7 @@ public:
   * handle to the image is properly reference counted. */
   ImageIteratorWithIndex( const ImageIteratorWithIndex& it )
   {
-    this->ImageIterator< ImageType >::operator=( it );
+    ImageIterator< ImageType >::operator=( it );
   }
 
   /** Constructor establishes an iterator to walk a particular image and a
@@ -160,18 +160,18 @@ public:
   void
   Set( const TPixel& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel(
-      *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
       this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
   /** Get the image that this iterator walks. */
-  ImageType*
+  ImageType *
   GetImage() const
   {
     // const_cast is needed here because m_Image is declared as a const pointer
     // in the base class which is the ConstIterator.
-    return const_cast< ImageType* >( this->m_Image.GetPointer() );
+    return const_cast< ImageType * >( this->m_Image.GetPointer() );
   }
 }; // no additional implementation required
 } // end namespace itk

@@ -29,8 +29,9 @@
 
 namespace itk
 {
-template < typename RLEImageTypeIn, typename RLEImageTypeOut >
-void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt,
+template< typename RLEImageTypeIn, typename RLEImageTypeOut >
+void
+copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt,
   ImageRegionIterator< typename RLEImageTypeOut::BufferType > oIt,
   IndexValueType start0, IndexValueType end0)
 {
@@ -46,7 +47,7 @@ void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferT
     for (; x < iLine.size(); x++ )
       {
       t += iLine[x].first;
-      if ( t > start0)
+      if ( t > start0 )
         {
         break;
         }
@@ -54,7 +55,7 @@ void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferT
     assert( x < iLine.size() );
 
     SizeValueType begin = x;
-    if ( t >= end0)     // both begin and end are in this segment
+    if ( t >= end0 )     // both begin and end are in this segment
       {
       oLine.push_back( typename RLEImageTypeOut::RLSegment( end0 - start0, iLine[x].second ) );
       ++iIt;
@@ -66,7 +67,6 @@ void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferT
       oLine.push_back( typename RLEImageTypeOut::RLSegment( t - start0, iLine[x].second ) );
       begin++;       // start copying from next segment
       }
-
     for ( x++; x < iLine.size(); x++ )
       {
       t += iLine[x].first;
@@ -90,7 +90,7 @@ void copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferT
     }
 } // copyImagePortion
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -101,7 +101,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   os << indent << "RegionOfInterest: " << m_RegionOfInterest << std::endl;
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -112,7 +112,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   // get pointer to the input
   typename Superclass::InputImagePointer inputPtr
-    = const_cast< RLEImageType* >( this->GetInput() );
+    = const_cast< RLEImageType * >( this->GetInput() );
 
   if ( inputPtr )
     {
@@ -121,7 +121,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     }
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -143,7 +143,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 *
 * \sa ProcessObject::GenerateOutputInformaton()
 */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -194,7 +194,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 * \sa ImageToImageFilter::ThreadedGenerateData(),
 *     ImageToImageFilter::GenerateData()
 */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -207,6 +207,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
+
   inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
 
   IndexType start, end;
@@ -225,7 +226,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   ImageRegionConstIterator< typename ImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename ImageType::BufferType >      oIt( out->GetBuffer(), oReg );
 
-  if (copyLines)
+  if ( copyLines )
     {
     while ( !oIt.IsAtEnd() )
       {
@@ -237,12 +238,11 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     }
   else
     {
-    copyImagePortion<ImageType, ImageType>(iIt, oIt, start[0], end[0]);
+    copyImagePortion< ImageType, ImageType >(iIt, oIt, start[0], end[0]);
     }
 } // >::ThreadedGenerateData
 
-
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
@@ -254,7 +254,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   os << indent << "RegionOfInterest: " << m_RegionOfInterest << std::endl;
 }
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
@@ -265,7 +265,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   Superclass::GenerateInputRequestedRegion();
 
   // get pointer to the input
-  typename Superclass::InputImagePointer inputPtr = const_cast< RLEImageTypeIn* >( this->GetInput() );
+  typename Superclass::InputImagePointer inputPtr = const_cast< RLEImageTypeIn * >( this->GetInput() );
 
   if ( inputPtr )
     {
@@ -274,7 +274,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
     }
 }
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
@@ -297,7 +297,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 *
 * \sa ProcessObject::GenerateOutputInformaton()
 */
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
@@ -349,7 +349,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 * \sa ImageToImageFilter::ThreadedGenerateData(),
 *     ImageToImageFilter::GenerateData()
 */
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
@@ -363,6 +363,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
+
   inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
 
   IndexType start, end;
@@ -380,11 +381,10 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename RLEImageTypeOut::BufferType >     oIt( out->GetBuffer(), oReg );
 
-  copyImagePortion<RLEImageTypeIn, RLEImageTypeOut>(iIt, oIt, start[0], end[0]);
+  copyImagePortion< RLEImageTypeIn, RLEImageTypeOut >(iIt, oIt, start[0], end[0]);
 } // >::ThreadedGenerateData
 
-
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -395,7 +395,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   os << indent << "RegionOfInterest: " << m_RegionOfInterest << std::endl;
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -405,7 +405,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   Superclass::GenerateInputRequestedRegion();
 
   // get pointer to the input
-  typename Superclass::InputImagePointer inputPtr = const_cast< ImageType* >( this->GetInput() );
+  typename Superclass::InputImagePointer inputPtr = const_cast< ImageType * >( this->GetInput() );
 
   if ( inputPtr )
     {
@@ -414,7 +414,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
     }
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -436,7 +436,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
 *
 * \sa ProcessObject::GenerateOutputInformaton()
 */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -487,7 +487,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
 * \sa ImageToImageFilter::ThreadedGenerateData(),
 *     ImageToImageFilter::GenerateData()
 */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
@@ -500,6 +500,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
+
   inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
 
   IndexType start, end;
@@ -532,15 +533,16 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
         s.first++;
         ++( iIt );
         }
+
       temp.push_back( s );
       }
+
     oIt.Value() = temp;
     ++oIt;
     }
 } // >::ThreadedGenerateData
 
-
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
@@ -551,7 +553,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   os << indent << "RegionOfInterest: " << m_RegionOfInterest << std::endl;
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
@@ -561,7 +563,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Superclass::GenerateInputRequestedRegion();
 
   // get pointer to the input
-  typename Superclass::InputImagePointer inputPtr = const_cast< RLEImageType* >( this->GetInput() );
+  typename Superclass::InputImagePointer inputPtr = const_cast< RLEImageType * >( this->GetInput() );
 
   if ( inputPtr )
     {
@@ -570,7 +572,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     }
 }
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
@@ -592,7 +594,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
  *
  * \sa ProcessObject::GenerateOutputInformaton()
  */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
@@ -643,7 +645,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()
    */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
@@ -656,6 +658,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
+
   inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
 
   IndexType start, end;
@@ -690,7 +693,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
     if ( t >= end[0] )   // both begin and end are in this segment
       {
-      for (IndexValueType i = start[0]; i < end[0]; i++ )
+      for ( IndexValueType i = start[0]; i < end[0]; i++ )
         {
         oIt.Set( iLine[x].second );
         ++oIt;
@@ -699,7 +702,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
       continue;     // next line
       }
     // else handle the beginning segment
-    for (IndexValueType i = start[0]; i < t; i++ )
+    for ( IndexValueType i = start[0]; i < t; i++ )
       {
       oIt.Set( iLine[x].second );
       ++oIt;
@@ -712,14 +715,14 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
         {
         break;
         }
-      for (CounterType i = 0; i < iLine[x].first; i++ )
+      for ( CounterType i = 0; i < iLine[x].first; i++ )
         {
         oIt.Set( iLine[x].second );
         ++oIt;
         }
       }
     // handle the last segment
-    for (IndexValueType i = 0; i < end[0] + iLine[x].first - t; i++ )
+    for ( IndexValueType i = 0; i < end[0] + iLine[x].first - t; i++ )
       {
       oIt.Set( iLine[x].second );
       ++oIt;

@@ -44,11 +44,11 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  RLEImage< TPixel, VImageDimension, CounterType > >
+  RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+    RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
@@ -85,8 +85,9 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
+  itkConceptMacro( InputConvertibleToOutputCheck,
+    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
 // End concept checking
 #endif
 
@@ -126,19 +127,19 @@ protected:
   ThreadedGenerateData( const RegionType& outputRegionForThread, ThreadIdType threadId );
 
 private:
-  RegionOfInterestImageFilter( const Self& ); // purposely not implemented
+  RegionOfInterestImageFilter( const Self & ); // purposely not implemented
   void
-  operator=( const Self& ); // purposely not implemented
+  operator=( const Self & ); // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
 
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
-  : public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > > :
+  public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+    RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 {
 public:
   /** Standard class typedefs. */
@@ -176,8 +177,9 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
+  itkConceptMacro( InputConvertibleToOutputCheck,
+    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
 // End concept checking
 #endif
 
@@ -217,31 +219,32 @@ protected:
   ThreadedGenerateData( const RegionType& outputRegionForThread, ThreadIdType threadId );
 
 private:
-  RegionOfInterestImageFilter( const Self& ); // purposely not implemented
+  RegionOfInterestImageFilter( const Self & ); // purposely not implemented
   void
-  operator=( const Self& ); // purposely not implemented
+  operator=( const Self & ); // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
 
-//not implemented on purpose, so it will produce a meaningful error message
-template < unsigned int VImageDimensionIn, unsigned int VImageDimensionOut >
+// not implemented on purpose, so it will produce a meaningful error message
+template< unsigned int VImageDimensionIn, unsigned int VImageDimensionOut >
 class InputAndOutputImagesMustHaveSameDimension;
 
-//input and output images must have the same dimension (e.g. both 2D or both 3D)
-//so disallow this by inheriting from unimplemented base class
-template < typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn,
+// input and output images must have the same dimension (e.g. both 2D or both 3D)
+// so disallow this by inheriting from unimplemented base class
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn,
   unsigned int VImageDimensionOut, typename CounterTypeIn, typename CounterTypeOut >
 class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimensionIn, CounterTypeIn >,
-  RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > >
-  : InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
-{};
+  RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > > :
+  InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
+{
+};
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
-  RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< Image< TPixel, VImageDimension >,
-  RLEImage< TPixel, VImageDimension, CounterType > >
+  RLEImage< TPixel, VImageDimension, CounterType > > :
+  public ImageToImageFilter< Image< TPixel, VImageDimension >,
+    RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class typedefs. */
@@ -279,8 +282,9 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
+  itkConceptMacro( InputConvertibleToOutputCheck,
+    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
 // End concept checking
 #endif
 
@@ -320,18 +324,18 @@ protected:
   ThreadedGenerateData( const RegionType& outputRegionForThread, ThreadIdType threadId );
 
 private:
-  RegionOfInterestImageFilter( const Self& ); // purposely not implemented
+  RegionOfInterestImageFilter( const Self & ); // purposely not implemented
   void
-  operator=( const Self& ); // purposely not implemented
+  operator=( const Self & ); // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  Image< TPixel, VImageDimension > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  Image< TPixel, VImageDimension > >
+  Image< TPixel, VImageDimension > > :
+  public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+    Image< TPixel, VImageDimension > >
 {
 public:
   /** Standard class typedefs. */
@@ -369,8 +373,9 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
+  itkConceptMacro( InputConvertibleToOutputCheck,
+    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
 // End concept checking
 #endif
 
@@ -410,9 +415,9 @@ protected:
   ThreadedGenerateData( const RegionType& outputRegionForThread, ThreadIdType threadId );
 
 private:
-  RegionOfInterestImageFilter( const Self& ); // purposely not implemented
+  RegionOfInterestImageFilter( const Self & ); // purposely not implemented
   void
-  operator=( const Self& ); // purposely not implemented
+  operator=( const Self & ); // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
