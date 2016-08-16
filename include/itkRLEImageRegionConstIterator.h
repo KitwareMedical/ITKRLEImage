@@ -38,11 +38,11 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
-friend class ::MultiLabelMeshPipeline;
+  friend class ::MultiLabelMeshPipeline;
 
 public:
   /** Standard class typedef. */
@@ -90,8 +90,7 @@ public:
    * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIterator( const ImageIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
-    // this->ImageConstIterator< ImageType >::operator=(static_cast<const ImageConstIterator<ImageType> >(it));
+    ImageConstIterator< ImageType >::operator=( it );
   }
 
   /** Constructor that can be used to cast from an ImageConstIterator to an
@@ -102,8 +101,9 @@ public:
    * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIterator( const ImageConstIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
+
   /** Increment (prefix) the fastest moving dimension of the iterator's index.
    * This operator will constrain the iterator within the region (i.e. the
    * iterator will automatically wrap from the end of the row of the region
@@ -111,7 +111,8 @@ public:
    * tries to moves past the last pixel of the region.  Here, the iterator
    * will be set to be one pixel past the end of the region.
    * \sa operator++(int) */
-  Self& operator++()
+  Self &
+  operator++()
   {
     this->m_Index0++;
 
@@ -147,7 +148,8 @@ public:
    * tries to moves past the first pixel of the region.  Here, the iterator
    * will be set to be one pixel past the beginning of the region.
    * \sa operator--(int) */
-  Self& operator--()
+  Self &
+  operator--()
   {
     this->m_Index0--;
 
@@ -170,7 +172,7 @@ public:
   } // --
 };
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -213,15 +215,16 @@ public:
   * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIteratorWithIndex( const ImageIterator< ImageType >& it )
   {
-    this->ImageRegionConstIterator< ImageType >::operator=( it );
+    ImageRegionConstIterator< ImageType >::operator=( it );
   }
 }; // no additional implementation required
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageRegionConstIteratorWithOnlyIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 // just inherit constructors
+
 public:
   typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
 
@@ -246,7 +249,7 @@ public:
   * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionConstIteratorWithOnlyIndex( const ImageIterator< ImageType >& it )
   {
-    this->ImageRegionConstIterator< ImageType >::operator=( it );
+    ImageRegionConstIterator< ImageType >::operator=( it );
   }
 }; // no additional implementation required
 } // end namespace itk

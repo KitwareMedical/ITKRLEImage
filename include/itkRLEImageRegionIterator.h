@@ -46,7 +46,7 @@ namespace itk
 * \ingroup ITKCommon
 */
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageRegionIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -83,14 +83,17 @@ public:
   * ImageIterator to a ImageRegionIterator. */
   ImageRegionIterator( const ImageIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
+
   /** Set the pixel value.
   * Changing the RLE structure invalidates all other iterators (except this one). */
   void
   Set( const PixelType& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ), this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
+      this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
 protected:
@@ -98,16 +101,17 @@ protected:
   in order to enforce const correctness. */
   ImageRegionIterator( const ImageRegionConstIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
-  Self&
+
+  Self &
   operator=( const ImageRegionConstIterator< ImageType >& it )
   {
-    this->ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator< ImageType >::operator=( it );
   }
 };
 
-template < typename TPixel, unsigned int VImageDimension, typename CounterType >
+template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class ImageRegionIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
@@ -132,7 +136,9 @@ public:
   void
   Set( const TPixel& value ) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ), this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
+      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
+      this->m_SegmentRemainder, this->m_RealIndex, value );
   }
 
   /** Constructor that can be used to cast from an ImageIterator to an
@@ -143,8 +149,9 @@ public:
   * ImageIterator to a ImageRegionConstIterator. */
   ImageRegionIteratorWithIndex( const ImageIterator< ImageType >& it )
   {
-    this->ImageRegionConstIteratorWithIndex< ImageType >::operator=( it );
+    ImageRegionConstIteratorWithIndex< ImageType >::operator=( it );
   }
+
   /** Constructor that can be used to cast from an ImageConstIterator to an
   * ImageRegionIteratorWithIndex. Many routines return an ImageIterator, but for a
   * particular task, you may want an ImageRegionConstIterator.  Rather than
@@ -153,7 +160,7 @@ public:
   * ImageIterator to a ImageRegionIteratorWithIndex. */
   ImageRegionIteratorWithIndex( const ImageConstIterator< ImageType >& it )
   {
-    this->ImageRegionConstIterator< ImageType >::operator=( it );
+    ImageRegionConstIterator< ImageType >::operator=( it );
   }
 }; // no additional implementation required
 } // end namespace itk
