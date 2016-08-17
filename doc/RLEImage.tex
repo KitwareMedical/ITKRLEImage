@@ -1,0 +1,221 @@
+\documentclass{InsightArticle}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[dvips]{graphicx}
+%  hyperref should be the last package to be loaded.
+\usepackage[%dvips,
+bookmarks,
+bookmarksopen,
+backref,
+%xcolor=table,
+colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
+]{hyperref}
+
+\title{RLEImage: run-length encoded memory compression scheme for an itk::Image}
+
+%
+% NOTE: This is the last number of the "handle" URL that
+% The Insight Journal assigns to your paper as part of the
+% submission process. Please replace the number "1338" with
+% the actual handle number that you get assigned.
+%
+\newcommand{\IJhandlerIDnumber}{1338}
+
+% Increment the release number whenever significant changes are made.
+% The author and/or editor can define 'significant' however they like.
+\release{0.2}
+
+\author{D{\v z}enan Zuki{\' c}$^{1}$, Matthew McCormick$^{2}$, Guido Gerig$^{3}$ and Paul Yushkevich$^{4}$}
+\authoraddress{$^{1}$Kitware Inc., dzenan.zukic@kitware.com\\
+               $^{2}$Kitware Inc., matt.mccormick@kitware.com\\
+               $^{3}$NYU Tandon School of Engineering, Department of Computer Science and Engineering, gerig@nyu.edu\\
+               $^{4}$Penn Image Computing \& Science Laboratory, Department of Radiology, University of Pennsylvania, pauly2@mail.med.upenn.edu}
+
+\begin{document}
+\IJhandlefooter{\IJhandlerIDnumber}
+
+\ifpdf
+\else
+   \DeclareGraphicsExtensions{.eps,.jpg,.gif,.tiff,.bmp,.png}
+   \DeclareGraphicsRule{.jpg}{eps}{.jpg.bb}{`convert #1 eps:-}
+   \DeclareGraphicsRule{.gif}{eps}{.gif.bb}{`convert #1 eps:-}
+   \DeclareGraphicsRule{.tiff}{eps}{.tiff.bb}{`convert #1 eps:-}
+   \DeclareGraphicsRule{.bmp}{eps}{.bmp.bb}{`convert #1 eps:-}
+   \DeclareGraphicsRule{.png}{eps}{.png.bb}{`convert #1 eps:-}
+\fi
+
+\maketitle
+
+\ifhtml
+\chapter*{Front Matter\label{front}}
+\fi
+
+
+\begin{abstract}
+\noindent
+This document describes a new class, \code{itk::RLEImage},
+which uses run-length encoding to reduce the memory needed for storage of label maps.
+This class is accompanied by all the iterators
+to make it a drop-in replacement for \doxygen{Image}.
+By changing the image typedef to \code{itk::RLEImage},
+many ITK image processing algorithms build without modification and
+with minimal performance overhead.
+However, it is not possible if the user code
+uses \code{GetBufferPointer()} or otherwise assumes a linear pixel layout.
+
+This class is implemented to reduce the memory use of ITK-SNAP (\url{www.itksnap.org}),
+so ITK-SNAP is the base for measuring the quantitative results.
+
+The class, accompanying iterator specializations, automated regression tests, and test data
+are all packaged as an ITK remote module \url{https://github.com/KitwareMedical/ITKRLEImage}.
+\end{abstract}
+
+\IJhandlenote{\IJhandlerIDnumber}
+
+\tableofcontents
+
+
+\section{Introduction}
+
+Run-length encoding is used in many image compression applications~\cite{wikiRLE}.
+Images with groups of pixels with the same value are best suited for such compression,
+and label maps (Fig.~\ref{fig:opportunity}) are one such example.
+
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{brainParc.png}
+\includegraphics[scale=0.3]{vb-seg.png}
+\includegraphics[scale=0.3]{wb-seg.png}
+\includegraphics[scale=0.3]{wb-crop.png}
+\itkcaption[Opportunity]{When there are pixels with the same value
+next to each other, it is an opportunity for compression. Left to right:
+brainParc (parcellation of a brain),
+vb-seg (segmentation of vertebral bodies),
+wb-seg (segmentation of a whole-body CT using watersheds algorithm),
+wb-crop (its shoulder-to-hips cropped version).}
+\label{fig:opportunity}
+\end{figure}
+
+Although \doxygen{LabelMap}~\cite{Lehmann2007} is well suited for
+computing statistics on a static label map
+(label map which will not change during the program execution),
+it uses a data structure which is not very suitable for either
+slice extraction (slicing) or pixel modification (editing).
+We therefore propose the new \code{itk::RLEImage} which addresses
+this issue by using a simpler data structure.
+That makes it not just more suited for on-the-fly editing,
+but also significantly faster for slicing (Tab.~\ref{tab:slicingPerformance}).
+
+
+\section{Data structure}
+
+$n$-dimensional RLEImage is implemented as $n-1$-dimensional \doxygen{Image} of run-length lines.
+A run-length line is implemented as \code{std::vector} of run-length segments.
+A run-length segment is a pair consisting of pixel value and its repetition count.
+A run-length line runs along the fastest chaning index, i.e. X-axis. C++ code:
+
+\begin{verbatim}
+typedef std::pair< CounterType, PixelType > RLSegment;
+typedef std::vector< RLSegment > RLLine;
+typedef typename itk::Image< RLLine, VImageDimension - 1 > BufferType;
+typename BufferType::Pointer m_Buffer;
+\end{verbatim}
+
+This data structure is quite simple and very similar to uncompressed image.
+Once a pixel at a given index is changed, there is not much searching needed
+or complex data structure to maintain like in \doxygen{LabelMap}.
+This data structure is very convenient for slice extraction (slicing)
+across all axes except the first one: uncompressing a run-length line
+is about as fast as copying an already uncompressed row of pixels.
+
+Unlike \doxygen{LabelMap}, all the standard iterators are specialized for \code{itk::RLEImage}:
+const/\-writable $\times$ withIndex/\-without explicit index $\times$ plain/\-region/\-scanline.
+In addition to this, \doxygen{RegionOfInterestImageFilter} is specialized for
+Image$\rightarrow$RLEImage, RLEImage$\rightarrow$Image and RLEImage$\rightarrow$RLEImage cases.
+If the RegionOfInterest is set to LargestPossibleRegion, the class effectively
+does only conversion between standard \doxygen{Image} and \code{itk::RLEImage}.
+If RegionOfInterest is smaller than LargestPossibleRegion,
+it really behaves as a classic region of interest filter.
+For RLEImage$\rightarrow$RLEImage case, the \doxygen{RegionOfInterestImageFilter}
+can behave as a caster for template types for repetition counter and pixel values,
+e.g. cast \code{itk::RLEImage<short,short>} into \code{itk::RLEImage<long,char>}.
+
+\section{ITK-SNAP Performance measurements}
+
+ITK-SNAP~\cite{py06nimg} is a software application used to segment structures in 3D medical images.
+The authors' vision was to create a tool that would be dedicated to a specific function,
+segmentation, and would be easy to use and learn.
+ITK-SNAP is free, open-source, and multi-platform.
+
+Since version 3.4, snap uses RLEImage for storing and editing segmentation layer.
+The interaction speed was not noticeable degraded,
+but memory consumption has significantly reduced (Tab~\ref{tab:memoryConsumption}).
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lrrrrrrrr}
+                   & \multicolumn{3}{c}{\textbf{Image Size}} &                                              &                                           & \multicolumn{2}{c}{\textbf{Commit Size {[}MB{]}}} &                                \\
+    \textbf{Image} & X           & Y           & Z           & \multirow{-2}{12mm}{\textbf{Million voxels}} & \multirow{-2}{1 cm}{\textbf{Label count}} & Dense                    & RLE                    & \textbf{Difference}            \\
+    None           &             &             &             &                                              &                                           & 154                      & 165                    & {\color{red} \textbf{+7\%}}    \\
+    vb-seg         & 640         & 633         & 299         & 116                                          & 9                                         & 731                      & 508                    & {\color{green} \textbf{-31\%}} \\
+    wb-seg         & 512         & 512         & 1559        & 390                                          & 58672                                     & 3058                     & 2267                   & {\color{green} \textbf{-26\%}}
+    \end{tabular}
+    \caption{Memory consumption before addition of RLEImage (Dense) and after (RLE).
+    From the first row (without any image loaded) it is clear that
+    program itself takes more memory with version \textbf{3.4} than \textbf{3.2}.
+    This is influenced by many number of factors, not just addition of RLE compression.}
+    \label{tab:memoryConsumption}
+\end{table}
+
+Scrolling through slices along different axes causes
+extraction of slices from the 3D image, called `slicing'.
+Slicing is the most frequently executed operation, and its performance is very important.
+To take full advantage of \code{itk::RLEImage},
+a slicing filter was specialized for it in ITK-SNAP.
+Comparison of slicing speed across the principal axes for different input images
+is given in Tab.~\ref{tab:slicingPerformance}.
+
+\begin{table}[ht]
+  \centering
+    \begin{tabular}{lrrrr}
+    \textbf{Image}                                               &                          & brainParc                   & vb-seg                      & wb-seg                       \\
+    Label count                                                  &                          & 114                         & 9                           & 58672                        \\
+                                                                 & X                        & 256                         & 640                         & 512                          \\
+                                                                 & Y                        & 256                         & 633                         & 512                          \\
+    \multirow{-3}{*}{\textbf{Dimensions}}                        & Z                        & 256                         & 299                         & 1559                         \\
+                                                                 &                          & \multicolumn{3}{c}{\textbf{Slice extraction duration [ms]}}                              \\
+                                                                 & X                        & 51.0                        & 105.9                       & 993.6                        \\
+                                                                 & Y                        & 39.2                        & 71.5                        & 912.1                        \\
+    \multirow{-3}{*}{\textbf{itk::LabelMap}}                     & Z                        & 39.0                        & 94.8                        & 874.7                        \\ \hline
+    {\color[HTML]{036400} }                                      & {\color[HTML]{036400} X} & {\color[HTML]{036400} 11.7} & {\color[HTML]{036400} 30.0} & {\color[HTML]{036400} 154.2} \\
+    {\color[HTML]{036400} }                                      & {\color[HTML]{036400} Y} & {\color[HTML]{036400} 1.1}  & {\color[HTML]{036400} 2.9}  & {\color[HTML]{036400} 15.4}  \\
+    \multirow{-3}{*}{{\color[HTML]{036400} \textbf{SNAP+RLE}}}   & {\color[HTML]{036400} Z} & {\color[HTML]{036400} 1.0}  & {\color[HTML]{036400} 5.6}  & {\color[HTML]{036400} 8.1}   \\ \hline
+    {\color[HTML]{9A0000} }                                      & {\color[HTML]{9A0000} X} & {\color[HTML]{9A0000} 5.2}  & {\color[HTML]{9A0000} 22.5} & {\color[HTML]{9A0000} 73.9}  \\
+    {\color[HTML]{9A0000} }                                      & {\color[HTML]{9A0000} Y} & {\color[HTML]{9A0000} 3.6}  & {\color[HTML]{9A0000} 10.4} & {\color[HTML]{9A0000} 43.4}  \\
+    \multirow{-3}{*}{{\color[HTML]{9A0000} \textbf{SNAP-noRLE}}} & {\color[HTML]{9A0000} Z} & {\color[HTML]{9A0000} 3.6}  & {\color[HTML]{9A0000} 21.8} & {\color[HTML]{9A0000} 14.1}  \\ \hline
+                                                                 & X                        & 10.3                        & 26.3                        & 79.1                         \\
+                                                                 & Y                        & 0.5                         & 0.6                         & 1.4                          \\
+    \multirow{-3}{*}{\textbf{pureITK}}                           & Z                        & 0.4                         & 0.7                         & 0.6
+    \end{tabular}
+  \caption{Slicing performance of \texttt{LabelMap} using \texttt{ChangeRegionLabelMapFilter},
+  ITK-SNAP with \texttt{itk::RLEImage}, ITK-SNAP with \texttt{Image},
+  and \texttt{Image} using \texttt{RegionOfInterestImageFilter}. All durations are in milliseconds.
+  {\color[HTML]{9A0000} \textbf{SNAP-noRLE}} was single-threaded, all the others used 4 processor cores.}
+  \label{tab:slicingPerformance}
+\end{table}
+
+These results show that slicing across the run-length lines is about
+twice slower than through uncompressed image.
+However, slicing along run-length lines is faster than the algorithm
+ITK-SNAP employed before, and not significantly slower than  `pure ITK' RoI filter.
+Additionally, it is a few times faster than slicing through \doxygen{LabelMap}.
+
+\section{Acknowledgments}
+
+This work is supported by NIH grant R01 EB014346,
+`Continued development and maintenance of the ITK-SNAP 3D image segmentation software'.
+
+\bibliographystyle{plain}
+\bibliography{InsightJournal}
+
+\end{document}
