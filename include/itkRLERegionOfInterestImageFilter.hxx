@@ -63,11 +63,11 @@ copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType >
       ++oIt;
       continue; // next line
       }
-    else if ( t - start0 < iLine[x].first )     // not the first pixel in segment
+    else if ( t - start0 < iLine[x].first ) // not the first pixel in segment
       {
       oLine.push_back( typename RLEImageTypeOut::RLSegment(
           typename RLEImageTypeOut::RLCounterType(t - start0), iLine[x].second ) );
-      begin++;       // start copying from next segment
+      begin++; // start copying from next segment
       }
     for ( x++; x < iLine.size(); x++ )
       {
@@ -81,7 +81,7 @@ copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType >
       {
       oLine.insert( oLine.end(), iLine.begin() + begin, iLine.begin() + x + 1 );
       }
-    else     // we need to take special care of the last segment
+    else // we need to take special care of the last segment
       {
       oLine.insert( oLine.end(), iLine.begin() + begin, iLine.begin() + x );
       oLine.push_back( typename RLEImageTypeOut::RLSegment(
@@ -694,7 +694,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
       }
     assert( x < iLine.size() );
 
-    if ( t >= end[0] )   // both begin and end are in this segment
+    if ( t >= end[0] ) // both begin and end are in this segment
       {
       for ( IndexValueType i = start[0]; i < end[0]; i++ )
         {
@@ -702,7 +702,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
         ++oIt;
         }
       ++iIt;
-      continue;     // next line
+      continue; // next line
       }
     // else handle the beginning segment
     for ( IndexValueType i = start[0]; i < t; i++ )

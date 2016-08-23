@@ -196,7 +196,7 @@ public:
   GoToReverseBegin()
   {
     this->m_BI.GoToEnd(); // after last pixel
-    --( this->m_BI );     // go to last valid pixel
+    --( this->m_BI ); // go to last valid pixel
     this->m_Index0 = this->m_EndIndex0 - 1;
     this->SetIndexInternal( this->m_Index0 ); // valid index required
   }

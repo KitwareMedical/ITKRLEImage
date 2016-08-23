@@ -162,7 +162,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
   else if ( line[m_RealIndex].first == 1 ) // single pixel segment
     {
     line[m_RealIndex].second = value;
-    if ( m_OnTheFlyCleanup )   // now see if we can merge it into adjacent segments
+    if ( m_OnTheFlyCleanup ) // now see if we can merge it into adjacent segments
       {
       if ( m_RealIndex > 0 && m_RealIndex < line.size() - 1 && line[m_RealIndex + 1].second == value &&
            line[m_RealIndex - 1].second == value )
@@ -257,7 +257,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
     t += line[x].first;
     if ( t > index[0] - bri0 )
       {
-      t -= index[0] - bri0;     // we need to supply a reference
+      t -= index[0] - bri0; // we need to supply a reference
       SetPixel( line, t, x, value );
       return;
       }

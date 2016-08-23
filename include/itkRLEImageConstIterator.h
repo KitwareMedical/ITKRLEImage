@@ -139,7 +139,7 @@ public:
       {
       m_Buffer = it.m_Buffer;
       m_RunLengthLine = it.m_RunLengthLine;
-      m_Image = it.m_Image;   // copy the smart pointer
+      m_Image = it.m_Image; // copy the smart pointer
       m_Index0 = it.m_Index0;
       m_BI = it.m_BI;
 
@@ -391,12 +391,12 @@ protected: // made protected so other iterators can access
 
   const RLLine* m_RunLengthLine;
 
-  mutable SizeValueType  m_RealIndex;        // index into line's segment
+  mutable SizeValueType  m_RealIndex; // index into line's segment
   mutable IndexValueType m_SegmentRemainder; // how many pixels remain in current segment
 
   IndexValueType m_BeginIndex0; // index to first pixel in region in relation to buffer start
-  IndexValueType m_EndIndex0;   // index to one pixel past last pixel in region in relation to buffer start
-  BufferIterator m_BI;          // iterator over internal buffer image
+  IndexValueType m_EndIndex0; // index to one pixel past last pixel in region in relation to buffer start
+  BufferIterator m_BI;        // iterator over internal buffer image
 
   typename BufferType::Pointer m_Buffer;
 };
