@@ -75,7 +75,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
     == this->GetLargestPossibleRegion().GetSize( 0 ),
     "BufferedRegion must contain complete run-length lines!" );
   itkAssertOrThrowMacro( this->GetLargestPossibleRegion().GetSize( 0 )
-    <= itk::SizeValueType(std::numeric_limits< CounterType >::max()),
+    <= itk::SizeValueType(std::numeric_limits< CounterType >::max() ),
     "CounterType is not large enough to support image's X dimension!" );
   this->ComputeOffsetTable();
   // SizeValueType num = static_cast<SizeValueType>(this->GetOffsetTable()[VImageDimension]);
@@ -83,7 +83,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
   // if (initialize) //there is assumption that the image is fully formed after a call to allocate
     {
     RLSegment segment( CounterType( this->GetBufferedRegion().GetSize( 0 ) ), TPixel() );
-    RLLine    line( 1 );
+    RLLine line( 1 );
     line[0] = segment;
     m_Buffer->FillBuffer( line );
     }
@@ -95,7 +95,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
 ::FillBuffer( const TPixel& value )
 {
   RLSegment segment( CounterType( this->GetBufferedRegion().GetSize( 0 ) ), value );
-  RLLine    line( 1 );
+  RLLine line( 1 );
 
   line[0] = segment;
   m_Buffer->FillBuffer( line );
@@ -107,7 +107,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
 ::CleanUpLine( RLLine& line ) const
 {
   CounterType x = 0;
-  RLLine      out;
+  RLLine out;
 
   out.reserve( this->GetLargestPossibleRegion().GetSize( 0 ) );
 
@@ -162,7 +162,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
   else if ( line[m_RealIndex].first == 1 ) // single pixel segment
     {
     line[m_RealIndex].second = value;
-    if ( m_OnTheFlyCleanup )   // now see if we can merge it into adjacent segments
+    if ( m_OnTheFlyCleanup ) // now see if we can merge it into adjacent segments
       {
       if ( m_RealIndex > 0 && m_RealIndex < line.size() - 1 && line[m_RealIndex + 1].second == value &&
            line[m_RealIndex - 1].second == value )
@@ -250,14 +250,14 @@ RLEImage< TPixel, VImageDimension, CounterType >
     "BufferedRegion must contain complete run-length lines!" );
   IndexValueType bri0 = this->GetBufferedRegion().GetIndex( 0 );
   typename BufferType::IndexType bi = truncateIndex( index );
-  RLLine&        line = m_Buffer->GetPixel( bi );
+  RLLine& line = m_Buffer->GetPixel( bi );
   IndexValueType t = 0;
   for ( SizeValueType x = 0; x < line.size(); x++ )
     {
     t += line[x].first;
     if ( t > index[0] - bri0 )
       {
-      t -= index[0] - bri0;     // we need to supply a reference
+      t -= index[0] - bri0; // we need to supply a reference
       SetPixel( line, t, x, value );
       return;
       }
@@ -276,7 +276,7 @@ RLEImage< TPixel, VImageDimension, CounterType >
     "BufferedRegion must contain complete run-length lines!" );
   IndexValueType bri0 = this->GetBufferedRegion().GetIndex( 0 );
   typename BufferType::IndexType bi = truncateIndex( index );
-  RLLine&        line = m_Buffer->GetPixel( bi );
+  RLLine& line = m_Buffer->GetPixel( bi );
   IndexValueType t = 0;
   for ( SizeValueType x = 0; x < line.size(); x++ )
     {
