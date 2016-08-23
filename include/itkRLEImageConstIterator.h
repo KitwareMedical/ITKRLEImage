@@ -93,7 +93,7 @@ public:
    * provide a copy constructor. */
   ImageConstIterator()
     : m_RunLengthLine(0),
-    m_Buffer( 0 )    
+    m_Buffer( 0 )
   {
     m_Image = ITK_NULLPTR;
     m_Index0 = 0;

@@ -162,6 +162,8 @@ public:
     m_Buffer->SetBufferedRegion( truncateRegion( region ) );
   }
 
+  using ImageBase< VImageDimension >::SetRequestedRegion;
+
   virtual void
   SetRequestedRegion( const RegionType& region )
   {
