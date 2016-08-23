@@ -58,7 +58,7 @@ copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType >
     if ( t >= end0 ) // both begin and end are in this segment
       {
       oLine.push_back( typename RLEImageTypeOut::RLSegment(
-        typename RLEImageTypeOut::RLCounterType(end0 - start0), iLine[x].second ) );
+          typename RLEImageTypeOut::RLCounterType(end0 - start0), iLine[x].second ) );
       ++iIt;
       ++oIt;
       continue; // next line
@@ -66,7 +66,7 @@ copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType >
     else if ( t - start0 < iLine[x].first )     // not the first pixel in segment
       {
       oLine.push_back( typename RLEImageTypeOut::RLSegment(
-        typename RLEImageTypeOut::RLCounterType(t - start0), iLine[x].second ) );
+          typename RLEImageTypeOut::RLCounterType(t - start0), iLine[x].second ) );
       begin++;       // start copying from next segment
       }
     for ( x++; x < iLine.size(); x++ )
@@ -85,7 +85,7 @@ copyImagePortion(ImageRegionConstIterator< typename RLEImageTypeIn::BufferType >
       {
       oLine.insert( oLine.end(), iLine.begin() + begin, iLine.begin() + x );
       oLine.push_back( typename RLEImageTypeOut::RLSegment(
-        typename RLEImageTypeOut::RLCounterType(end0 + iLine[x].first - t), iLine[x].second ) );
+          typename RLEImageTypeOut::RLCounterType(end0 + iLine[x].first - t), iLine[x].second ) );
       }
 
     ++iIt;
@@ -166,7 +166,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   // Set the output image size to the same value as the region of interest.
   RegionType region;
-  IndexType  start;
+  IndexType start;
   start.Fill( 0 );
 
   region.SetSize( m_RegionOfInterest.GetSize() );
@@ -206,7 +206,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 {
   // Get the input and output pointers
   const RLEImageType* in = this->GetInput();
-  RLEImageType*       out = this->GetOutput();
+  RLEImageType* out = this->GetOutput();
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
@@ -227,7 +227,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   typename ImageType::BufferType::RegionType oReg = ImageType::truncateRegion( outputRegionForThread );
   typename ImageType::BufferType::RegionType iReg = ImageType::truncateRegion( inputRegionForThread );
   ImageRegionConstIterator< typename ImageType::BufferType > iIt( in->GetBuffer(), iReg );
-  ImageRegionIterator< typename ImageType::BufferType >      oIt( out->GetBuffer(), oReg );
+  ImageRegionIterator< typename ImageType::BufferType > oIt( out->GetBuffer(), oReg );
 
   if ( copyLines )
     {
@@ -321,7 +321,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 
   // Set the output image size to the same value as the region of interest.
   RegionType region;
-  IndexType  start;
+  IndexType start;
   start.Fill( 0 );
 
   region.SetSize( m_RegionOfInterest.GetSize() );
@@ -362,7 +362,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
 {
   // Get the input and output pointers
   const RLEImageTypeIn* in = this->GetInput();
-  RLEImageTypeOut*      out = this->GetOutput();
+  RLEImageTypeOut* out = this->GetOutput();
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
@@ -382,7 +382,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   typename RLEImageTypeIn::BufferType::RegionType iReg = RLEImageTypeIn::truncateRegion(inputRegionForThread);
   typename RLEImageTypeOut::BufferType::RegionType oReg = RLEImageTypeOut::truncateRegion(outputRegionForThread);
   ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt( in->GetBuffer(), iReg );
-  ImageRegionIterator< typename RLEImageTypeOut::BufferType >     oIt( out->GetBuffer(), oReg );
+  ImageRegionIterator< typename RLEImageTypeOut::BufferType > oIt( out->GetBuffer(), oReg );
 
   copyImagePortion< RLEImageTypeIn, RLEImageTypeOut >(iIt, oIt, start[0], end[0]);
 } // >::ThreadedGenerateData
@@ -459,7 +459,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
 
   // Set the output image size to the same value as the region of interest.
   RegionType region;
-  IndexType  start;
+  IndexType start;
   start.Fill( 0 );
 
   region.SetSize( m_RegionOfInterest.GetSize() );
@@ -499,7 +499,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
 {
   // Get the input and output pointers
   const ImageType* in = this->GetInput();
-  RLEImageType*    out = this->GetOutput();
+  RLEImageType* out = this->GetOutput();
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
@@ -517,9 +517,9 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   inputRegionForThread.SetIndex( start );
 
   typename RLEImageType::BufferType::RegionType oReg = RLEImageType::truncateRegion( outputRegionForThread );
-  ImageRegionConstIterator< ImageType >                    iIt( in, inputRegionForThread );
+  ImageRegionConstIterator< ImageType > iIt( in, inputRegionForThread );
   ImageRegionIterator< typename RLEImageType::BufferType > oIt( out->GetBuffer(), oReg );
-  SizeValueType                                            size0 = outputRegionForThread.GetSize( 0 );
+  SizeValueType size0 = outputRegionForThread.GetSize( 0 );
   typename RLEImageType::RLLine temp;
   temp.reserve( size0 ); // pessimistically preallocate buffer, otherwise reallocations can occur
 
@@ -617,7 +617,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   // Set the output image size to the same value as the region of interest.
   RegionType region;
-  IndexType  start;
+  IndexType start;
   start.Fill( 0 );
 
   region.SetSize( m_RegionOfInterest.GetSize() );
@@ -657,7 +657,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 {
   // Get the input and output pointers
   const RLEImageType* in = this->GetInput();
-  ImageType*          out = this->GetOutput();
+  ImageType* out = this->GetOutput();
 
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
@@ -676,12 +676,12 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
 
   typename RLEImageType::BufferType::RegionType iReg = RLEImageType::truncateRegion( inputRegionForThread );
   ImageRegionConstIterator< typename RLEImageType::BufferType > iIt( in->GetBuffer(), iReg );
-  ImageRegionIterator< ImageType >                              oIt( out, outputRegionForThread );
+  ImageRegionIterator< ImageType > oIt( out, outputRegionForThread );
 
   while ( !iIt.IsAtEnd() )
     {
     const typename RLEImageType::RLLine& iLine = iIt.Value();
-    CounterType   t = 0;
+    CounterType t = 0;
     SizeValueType x = 0;
     // find start
     for (; x < iLine.size(); x++ )

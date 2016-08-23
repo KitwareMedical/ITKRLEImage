@@ -371,7 +371,7 @@ protected: // made protected so other iterators can access
     m_Index0 = ind0;
     m_RunLengthLine = &m_BI.Value();
 
-    CounterType   t = 0;
+    CounterType t = 0;
     SizeValueType x = 0;
     for (; x < ( *m_RunLengthLine ).size(); x++ )
       {
