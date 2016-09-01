@@ -177,7 +177,7 @@ class ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, Coun
   public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
+  typedef RLEImage< TPixel, VImageDimension, CounterType > ImageType;
 
   typedef typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
 
@@ -226,7 +226,7 @@ class ImageRegionConstIteratorWithOnlyIndex< RLEImage< TPixel, VImageDimension, 
 // just inherit constructors
 
 public:
-  typedef itk::RLEImage< TPixel, VImageDimension, CounterType > ImageType;
+  typedef RLEImage< TPixel, VImageDimension, CounterType > ImageType;
 
   typedef typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
 
