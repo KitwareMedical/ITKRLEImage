@@ -7,6 +7,9 @@ CreateTestDriver( RLEImage "${RLEImage-Test_LIBRARIES}" "${RLEImageTests}" )
 add_executable(runFromIDE manualTest.cxx ${RLEImageTests})
 target_link_libraries(runFromIDE ${RLEImage-Test_LIBRARIES})
 
+add_executable(rleStats rleStats.cxx)
+target_link_libraries(rleStats ${RLEImage-Test_LIBRARIES})
+
 ADD_EXECUTABLE(iteratorTests
     itkRegionOfInterestImageFilterTest.cxx
     itkIteratorTests.cxx
