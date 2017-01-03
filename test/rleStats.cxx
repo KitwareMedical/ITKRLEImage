@@ -34,11 +34,11 @@ int main( int argc, char* argv[] )
   typedef itk::RLEImage<short, 3> myRLEImage;
 
   typedef itk::ImageFileReader < ImageType > ReaderType;
-  typename ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName(argv[1]);
 
   typedef itk::RegionOfInterestImageFilter<ImageType, myRLEImage> inConverterType;
-  typename inConverterType::Pointer inConv = inConverterType::New();
+  inConverterType::Pointer inConv = inConverterType::New();
 
   try
     {
@@ -47,7 +47,7 @@ int main( int argc, char* argv[] )
     inConv->SetInput(reader->GetOutput());
     inConv->SetRegionOfInterest(reader->GetOutput()->GetLargestPossibleRegion());
     inConv->Update();
-    typename myRLEImage::Pointer test = inConv->GetOutput();
+    myRLEImage::Pointer test = inConv->GetOutput();
     std::cout << test;
     }
   catch( itk::ExceptionObject & error )

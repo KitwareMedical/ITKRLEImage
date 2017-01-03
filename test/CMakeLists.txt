@@ -32,13 +32,11 @@ function(ReadWriteTest ImageName Ext)
       DATA{Input/${ImageName}.${Ext}} ${outImage})
 endfunction()
 
-# RLEImage specific tests
+# RLEImage specific tests - quick
 ReadWriteTest(brainParc mha)
 ReadWriteTest(vb-seg mha)
 ReadWriteTest(ws nrrd)
 ReadWriteTest(wb-crop nrrd)
-ReadWriteTest(wb-seg nrrd)
-ReadWriteTest(wb-seg32 nrrd)
 
 # Handcrafted tests for MorphologicalContourInterpolation
 ReadWriteTest(Empty nrrd)
@@ -72,4 +70,6 @@ ReadWriteTest(64816L_amygdala_int nii.gz)
 ReadWriteTest(65239R_amygdala_fin nii.gz)
 ReadWriteTest(65239R_amygdala_int nii.gz)
 
-
+# RLEImage specific tests - long
+ReadWriteTest(wb-seg nrrd)
+ReadWriteTest(wb-seg32 nrrd)
