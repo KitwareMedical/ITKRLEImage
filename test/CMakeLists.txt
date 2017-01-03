@@ -21,11 +21,11 @@ ADD_EXECUTABLE(iteratorTests
     itkImageScanlineIteratorTest1.cxx
     iteratorTests.cxx)
 TARGET_LINK_LIBRARIES(iteratorTests "${RLEImage-Test_LIBRARIES}")
-itk_add_test( NAME iteratorTests COMMAND iteratorTests)
+itk_add_test( NAME RLEImageiteratorTests COMMAND iteratorTests)
 
 function(ReadWriteTest ImageName Ext)
   set(outImage "${ITK_TEST_OUTPUT_DIR}/${ImageName}.${Ext}")
-  itk_add_test( NAME ${ImageName}
+  itk_add_test( NAME RLEImage${ImageName}
     COMMAND RLEImageTestDriver
     --compare DATA{Input/${ImageName}.${Ext}} ${outImage}
     itkRLEImageTest
