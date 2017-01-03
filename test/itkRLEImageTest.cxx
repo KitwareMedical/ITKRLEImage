@@ -19,6 +19,7 @@
 #include "itkRLEImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
+#include "itkTestingMacros.h"
 #include <cstdlib>
 #include <string>
 
@@ -31,7 +32,7 @@ void compare(itk::SmartPointer<ImageType1> im1, itk::SmartPointer<ImageType2> im
     {
     if (it1.Get() != it2.Get())
       {
-      itkGenericExceptionMacro(<< "Images differ. Val1: "  << it1.Get() << "  Val2: " << it2.Get() 
+      itkGenericExceptionMacro(<< "Images differ. Val1: "  << it1.Get() << "  Val2: " << it2.Get()
         << "\nInd1: " << it1.GetIndex() << "  Ind2: " << it2.GetIndex());
       }
     ++it1;
@@ -118,7 +119,7 @@ void roiTest(itk::SmartPointer<itk::RLEImage<typename ImageType::PixelType, Imag
 }
 
 template <typename ImageType>
-void doTest(std::string inFilename, std::string outFilename)
+int doTest(std::string inFilename, std::string outFilename)
 {
   typedef itk::ImageFileReader < ImageType > ReaderType;
   typename ReaderType::Pointer reader = ReaderType::New();
@@ -135,34 +136,16 @@ void doTest(std::string inFilename, std::string outFilename)
   inConv->Update();
   typename myRLEImage::Pointer test = inConv->GetOutput();
   itk::SizeValueType xSize = test->GetLargestPossibleRegion().GetSize(0);
-  
+
   std::cout << "Running region of interest tests" << std::endl;
-  bool shouldHaveThrown = false;
   if (xSize > 127)
     {
-    std::cout << "\nThis test should fail because xSize>127" << std::endl;
-    shouldHaveThrown = true;
+    std::cout << "\n  xSize>127 (CHAR_MAX)" << std::endl;
+    TRY_EXPECT_EXCEPTION(roiTest<myRLEImage>(test));
     }
-  try
+  else
     {
-    roiTest<myRLEImage>(test);
-    }
-  catch( itk::ExceptionObject & error )
-    {
-    std::cerr << error << std::endl;
-    if (shouldHaveThrown)
-      {
-      std::cout << "Exception caught successfully" << std::endl;
-      shouldHaveThrown = false;
-      }
-    else
-      {
-      throw error;
-      }
-    }
-  if (shouldHaveThrown)
-    {
-    itkGenericExceptionMacro(<< "Exception was expected but none occurred (xSize>127)");
+    TRY_EXPECT_NO_EXCEPTION(roiTest<myRLEImage>(test));
     }
 
   typedef itk::RegionOfInterestImageFilter<myRLEImage, ImageType> outConverterType;
@@ -180,15 +163,19 @@ void doTest(std::string inFilename, std::string outFilename)
   std::cout << "Writing " << outFilename << std::endl;
   writer->Update();
   std::cout << "Test finished" << std::endl;
+
+  return EXIT_SUCCESS;
 }
 
 void dimTest()
 {
+  typedef itk::RLEImage<short, 2> S2Type; //2D
+  typedef itk::RLEImage<short, 3> S3Type; //3D
+  S2Type::Pointer s2=S2Type::New();
+  S3Type::Pointer s3=S3Type::New();
+
   //instantiation of "RoIType" is dissalowed due to different dimension
   //uncommenting the lines below should give a meaningful error message
-
-  //typedef itk::RLEImage<short, 2> S2Type; //2D
-  //typedef itk::RLEImage<short, 3> S3Type; //2D
   //typedef itk::RegionOfInterestImageFilter<S3Type, S2Type> RoIType;
   //typename RoIType::Pointer roi = RoIType::New();
 }
@@ -221,24 +208,20 @@ int itkRLEImageTest( int argc, char* argv[] )
     //unused cases are not instantiated because they greatly increase compile time
     if (numDimensions==2 && pixelType == itk::ImageIOBase::UCHAR)
       {
-      doTest<itk::Image<unsigned char, 2> >(inputImageFileName, outputImageFileName);
-      return EXIT_SUCCESS;
+      return doTest<itk::Image<unsigned char, 2> >(inputImageFileName, outputImageFileName);
       }
     if (numDimensions==3 && (pixelType == itk::ImageIOBase::SHORT
       || pixelType == itk::ImageIOBase::USHORT))
       {
-      doTest<itk::Image<short, 3> >(inputImageFileName, outputImageFileName);
-      return EXIT_SUCCESS;
+      return doTest<itk::Image<short, 3> >(inputImageFileName, outputImageFileName);
       }
     if (numDimensions==3) //if not (u)short, then interpret as uint
       {
-      doTest<itk::Image<unsigned int, 3> >(inputImageFileName, outputImageFileName);
-      return EXIT_SUCCESS;
+      return doTest<itk::Image<unsigned int, 3> >(inputImageFileName, outputImageFileName);
       }
     if (numDimensions==4 && pixelType == itk::ImageIOBase::UCHAR)
       {
-      doTest<itk::Image<unsigned char, 4> >(inputImageFileName, outputImageFileName);
-      return EXIT_SUCCESS;
+      return doTest<itk::Image<unsigned char, 4> >(inputImageFileName, outputImageFileName);
       }
 
     std::cerr << "Unsupported image type:\n  Dimensions: " << numDimensions;
