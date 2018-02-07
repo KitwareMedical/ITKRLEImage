@@ -51,6 +51,7 @@ void roiTest(itk::SmartPointer<itk::RLEImage<typename ImageType::PixelType, Imag
   cConv->SetRegionOfInterest(orig->GetLargestPossibleRegion());
   cConv->Update();
   typename charRLEImage::Pointer cIn = cConv->GetOutput();
+  cIn->DisconnectPipeline();
 
   typedef itk::RLEImage<typename ImageType::PixelType, ImageType::ImageDimension, unsigned char> ucharRLEImage;
   typedef itk::RegionOfInterestImageFilter<myRLEImage, ucharRLEImage> ucharConverterType;
@@ -59,6 +60,7 @@ void roiTest(itk::SmartPointer<itk::RLEImage<typename ImageType::PixelType, Imag
   ucConv->SetRegionOfInterest(orig->GetLargestPossibleRegion());
   ucConv->Update();
   typename ucharRLEImage::Pointer ucIn = ucConv->GetOutput();
+  ucIn->DisconnectPipeline();
 
   std::cout << "Comparing direct conversions...";
   compare(cIn, ucIn);
