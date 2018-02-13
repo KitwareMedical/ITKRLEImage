@@ -44,7 +44,7 @@ void TestConstPixelAccess(const itk::RLEImage<T> &in,
 
 int itkImageIteratorTest(int, char* [] )
 {
-  const unsigned int ImageDimension = 3;
+  constexpr unsigned int ImageDimension = 3;
 
   std::cout << "Creating an image" << std::endl;
   itk::RLEImage<itk::Vector<unsigned short, 5> >::Pointer
