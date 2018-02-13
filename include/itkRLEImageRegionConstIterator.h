@@ -45,28 +45,28 @@ class ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType >
   friend class ::MultiLabelMeshPipeline;
 
 public:
-  /** Standard class typedef. */
-  typedef ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > Self;
-  typedef ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >       Superclass;
+  /** Standard class type alias. */
+  using Self = ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
+  using Superclass = ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
 
   /** Dimension of the image that the iterator walks.  This constant is needed so
    * functions that are templated over image iterator type (as opposed to
    * being templated over pixel type and dimension) can have compile time
    * access to the dimension of the image that the iterator walks. */
-  static constexpr unsigned int ImageIteratorDimension = VImageDimension ;
+  static constexpr unsigned int ImageIteratorDimension = VImageDimension;
 
   /**
-   * Index typedef support. While these were already typdef'ed in the superclass,
+   * Index type alias support While these were already typdef'ed in the superclass,
    * they need to be redone here for this subclass to compile properly with gcc.
    */
   /** Types inherited from the Superclass */
-  typedef typename Superclass::IndexType         IndexType;
-  typedef typename Superclass::SizeType          SizeType;
-  typedef typename Superclass::OffsetType        OffsetType;
-  typedef typename Superclass::RegionType        RegionType;
-  typedef typename Superclass::ImageType         ImageType;
-  typedef typename Superclass::InternalPixelType InternalPixelType;
-  typedef typename Superclass::PixelType         PixelType;
+  using IndexType = typename Superclass::IndexType;
+  using SizeType = typename Superclass::SizeType;
+  using OffsetType = typename Superclass::OffsetType;
+  using RegionType = typename Superclass::RegionType;
+  using ImageType = typename Superclass::ImageType;
+  using InternalPixelType = typename Superclass::InternalPixelType;
+  using PixelType = typename Superclass::PixelType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( ImageRegionConstIterator, ImageConstIterator );
@@ -177,9 +177,9 @@ class ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, Coun
   public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  typedef RLEImage< TPixel, VImageDimension, CounterType > ImageType;
+  using ImageType = RLEImage< TPixel, VImageDimension, CounterType >;
 
-  typedef typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
+  using RegionType = typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRegionConstIteratorWithIndex()
@@ -226,9 +226,9 @@ class ImageRegionConstIteratorWithOnlyIndex< RLEImage< TPixel, VImageDimension, 
 // just inherit constructors
 
 public:
-  typedef RLEImage< TPixel, VImageDimension, CounterType > ImageType;
+  using ImageType = RLEImage< TPixel, VImageDimension, CounterType >;
 
-  typedef typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
+  using RegionType = typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRegionConstIteratorWithOnlyIndex()

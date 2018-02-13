@@ -37,26 +37,26 @@ class ImageIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
   public ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  /** Standard class typedefs. */
-  typedef ImageIterator Self;
+  /** Standard class type alias. */
+  using Self = ImageIterator;
 
   /** Dimension of the image the iterator walks.  This constant is needed so
    * functions that are templated over image iterator type (as opposed to
    * being templated over pixel type and dimension) can have compile time
    * access to the dimension of the image that the iterator walks. */
-  static constexpr unsigned int ImageIteratorDimension = VImageDimension ;
+  static constexpr unsigned int ImageIteratorDimension = VImageDimension;
 
   /** Define the superclass */
-  typedef ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > Superclass;
+  using Superclass = ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
 
   /** Inherit types from the superclass */
-  typedef typename Superclass::IndexType         IndexType;
-  typedef typename Superclass::SizeType          SizeType;
-  typedef typename Superclass::OffsetType        OffsetType;
-  typedef typename Superclass::RegionType        RegionType;
-  typedef typename Superclass::ImageType         ImageType;
-  typedef typename Superclass::InternalPixelType InternalPixelType;
-  typedef typename Superclass::PixelType         PixelType;
+  using IndexType = typename Superclass::IndexType;
+  using SizeType = typename Superclass::SizeType;
+  using OffsetType = typename Superclass::OffsetType;
+  using RegionType = typename Superclass::RegionType;
+  using ImageType = typename Superclass::ImageType;
+  using InternalPixelType = typename Superclass::InternalPixelType;
+  using PixelType = typename Superclass::PixelType;
 
   /** Default Constructor. Need to provide a default constructor since we
    * provide a copy constructor. */
@@ -131,10 +131,9 @@ class ImageIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
   public ImageConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  typedef RLEImage< TPixel, VImageDimension, CounterType > ImageType;
+  using ImageType = RLEImage< TPixel, VImageDimension, CounterType >;
 
-  typedef typename itk::ImageConstIterator<
-    RLEImage< TPixel, VImageDimension, CounterType > >::RegionType RegionType;
+  using RegionType = typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType;
 
   /** Default Constructor. Need to provide a default constructor since we
   * provide a copy constructor. */

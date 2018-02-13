@@ -54,7 +54,7 @@ int itkImageScanlineIteratorTest1(int, char* [] )
   float origin3D[3] = { 5.f, 2.1f, 8.1f };
   float spacing3D[3] = { 1.5f, 2.1f, 1.f };
 
-  typedef itk::RLEImage<itk::Vector<unsigned short, 5> > ImageType;
+  using ImageType = itk::RLEImage<itk::Vector<unsigned short, 5> >;
 
   ImageType::SizeType imageSize3D = {{ 20, 40, 60 }};
   ImageType::SizeType bufferSize3D = {{ 20, 20, 14 }};
@@ -150,7 +150,7 @@ int itkImageScanlineIteratorTest1(int, char* [] )
   // Iterate over a region, then change the region and iterate over the new region
   {
     // Create an image
-    typedef itk::Image<int, 2> TestImageType;
+    using TestImageType = itk::Image<int, 2>;
     TestImageType::IndexType imageCorner;
     imageCorner.Fill(0);
 
