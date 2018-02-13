@@ -115,9 +115,9 @@ A run-length segment is a pair consisting of pixel value and its repetition coun
 A run-length line runs along the fastest chaning index, i.e. X-axis. C++ code:
 
 \begin{verbatim}
-typedef std::pair< CounterType, PixelType > RLSegment;
-typedef std::vector< RLSegment > RLLine;
-typedef typename itk::Image< RLLine, VImageDimension - 1 > BufferType;
+using RLSegment = std::pair< CounterType, PixelType >;
+using RLLine = std::vector< RLSegment >;
+using BufferType = typename itk::Image< RLLine, VImageDimension - 1 >;
 typename BufferType::Pointer m_Buffer;
 \end{verbatim}
 
