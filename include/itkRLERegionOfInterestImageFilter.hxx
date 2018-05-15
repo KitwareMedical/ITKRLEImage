@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkRLERegionOfInterestImageFilter_hxx
 #define itkRLERegionOfInterestImageFilter_hxx
 
@@ -137,15 +137,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
@@ -185,18 +177,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
@@ -291,15 +272,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
@@ -340,18 +313,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
 template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
@@ -430,15 +392,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
@@ -478,18 +432,8 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
@@ -588,15 +532,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
- * RegionOfInterestImageFilter can produce an image which is a different size
- * than its input image.  As such, RegionOfInterestImageFilter needs to provide an
- * implementation for GenerateOutputInformation() in order to inform
- * the pipeline execution model.  The original documentation of this
- * method is below.
- *
- * \sa ProcessObject::GenerateOutputInformaton()
- */
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
@@ -636,18 +572,6 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-   * RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-   * Therefore, this implementation provides a ThreadedGenerateData()
-   * routine which is called for each processing thread. The output
-   * image data is allocated automatically by the superclass prior to
-   * calling ThreadedGenerateData().  ThreadedGenerateData can only
-   * write to the portion of the output image specified by the
-   * parameter "outputRegionForThread"
-   *
-   * \sa ImageToImageFilter::ThreadedGenerateData(),
-   *     ImageToImageFilter::GenerateData()
-   */
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
