@@ -24,7 +24,7 @@ WORKDIR /usr/src
 
 RUN git clone git://cmake.org/cmake.git CMake && \
   cd CMake && \
-  git checkout v3.6.0 && \
+  git checkout v3.11.1 && \
   cd .. && mkdir CMake-build && cd CMake-build && \
   /usr/src/CMake/bootstrap \
     --parallel=$(nproc) \
@@ -37,8 +37,8 @@ RUN git clone git://cmake.org/cmake.git CMake && \
   cd .. && \
   rm -rf CMake*
 
-# ITK master 2016-07-06
-ENV ITK_GIT_TAG 71a779150ee5797e6ca4bef01906d5c12a18188b
+# ITK master 2018-05-15
+ENV ITK_GIT_TAG aa57caf04732f8c0b56f575b65c532e107720e49
 RUN git clone https://itk.org/ITK.git && \
   cd ITK && \
   git checkout ${ITK_GIT_TAG} && \
