@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkRLEImage_h
 #define itkRLEImage_h
 
@@ -154,14 +154,14 @@ public:
   SetLargestPossibleRegion( const RegionType& region ) override
   {
     Superclass::SetLargestPossibleRegion( region );
-    m_Buffer->SetLargestPossibleRegion( truncateRegion( region ) );
+    m_Buffer->SetLargestPossibleRegion( region.Slice( 0 ) );
   }
 
   void
   SetBufferedRegion( const RegionType& region ) override
   {
     Superclass::SetBufferedRegion( region );
-    m_Buffer->SetBufferedRegion( truncateRegion( region ) );
+    m_Buffer->SetBufferedRegion( region.Slice( 0 ) );
   }
 
   using ImageBase< VImageDimension >::SetRequestedRegion;
@@ -170,7 +170,7 @@ public:
   SetRequestedRegion( const RegionType& region ) override
   {
     Superclass::SetRequestedRegion( region );
-    m_Buffer->SetRequestedRegion( truncateRegion( region ) );
+    m_Buffer->SetRequestedRegion( region.Slice( 0 ) );
   }
 
   /** \brief Set a pixel value.
@@ -240,14 +240,6 @@ public:
   static inline typename BufferType::IndexType
   truncateIndex( const IndexType& index );
 
-  /** Returns N-1-dimensional size, the remainder after 0-size is removed. */
-  static inline typename BufferType::SizeType
-  truncateSize( const SizeType& size );
-
-  /** Returns N-1-dimensional region, the remainder after 0-index and size are removed. */
-  static typename BufferType::RegionType
-  truncateRegion( const RegionType& region );
-
   /** Merges adjacent segments with duplicate values.
   * Automatically called when turning on OnTheFlyCleanup. */
   void
@@ -282,7 +274,6 @@ protected:
     : itk::ImageBase< VImageDimension >(),
     m_OnTheFlyCleanup( true )
   {
-    // m_OnTheFlyCleanup = true;
     m_Buffer = BufferType::New();
   }
 

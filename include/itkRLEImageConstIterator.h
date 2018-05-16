@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkRLEImageConstIterator_h
 #define itkRLEImageConstIterator_h
 
@@ -164,7 +164,7 @@ public:
         "Region " << region << " is outside of buffered region " << bufferedRegion );
       }
 
-    m_BI = BufferIterator( m_Buffer, ImageType::truncateRegion( region ) );
+    m_BI = BufferIterator( m_Buffer, region.Slice( 0 ) );
     m_Index0 = region.GetIndex( 0 );
     m_BeginIndex0 = m_Index0 - m_Image->GetBufferedRegion().GetIndex( 0 );
     m_EndIndex0 = m_BeginIndex0 + region.GetSize( 0 );

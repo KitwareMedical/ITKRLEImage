@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkRLERegionOfInterestImageFilter_hxx
 #define itkRLERegionOfInterestImageFilter_hxx
 
@@ -137,15 +137,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
@@ -185,47 +177,48 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   RLEImage< TPixel, VImageDimension, CounterType > >
-::ThreadedGenerateData( const RegionType& outputRegionForThread,
-  ThreadIdType itkNotUsed(threadId) )
+::DynamicThreadedGenerateData( const RegionType& outputRegionForThread )
 {
   // Get the input and output pointers
   const RLEImageType* in = this->GetInput();
   RLEImageType* out = this->GetOutput();
 
+  // Concurrent writing to RLLine is not supported,
+  // so we ignore all the output regions which do not start
+  // at the beginning of a line.
+  // But the regions which do start at the beginning of a line
+  // must process the whole line
+  RegionType reqRegion = out->GetRequestedRegion();
+  if ( reqRegion.GetIndex(0) != outputRegionForThread.GetIndex(0) )
+    {
+    return; // another thread will process this
+    }
+  RegionType outRegion = outputRegionForThread;
+  outRegion.SetSize( 0, reqRegion.GetSize( 0 ) );
+
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
 
-  inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
+  inputRegionForThread.SetSize( outRegion.GetSize() );
 
   IndexType start, end;
   IndexType roiStart( m_RegionOfInterest.GetIndex() );
-  IndexType threadStart( outputRegionForThread.GetIndex() );
+  IndexType threadStart( outRegion.GetIndex() );
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     start[i] = roiStart[i] + threadStart[i];
-    end[i] = roiStart[i] + threadStart[i] + outputRegionForThread.GetSize( i );
+    end[i] = roiStart[i] + threadStart[i] + outRegion.GetSize( i );
     }
   inputRegionForThread.SetIndex( start );
 
-  bool copyLines = ( in->GetLargestPossibleRegion().GetSize( 0 ) == outputRegionForThread.GetSize( 0 ) );
-  typename ImageType::BufferType::RegionType oReg = ImageType::truncateRegion( outputRegionForThread );
-  typename ImageType::BufferType::RegionType iReg = ImageType::truncateRegion( inputRegionForThread );
+  bool copyLines = ( in->GetLargestPossibleRegion().GetSize( 0 ) == outRegion.GetSize( 0 ) );
+  typename ImageType::BufferType::RegionType oReg = outRegion.Slice( 0 );
+  typename ImageType::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
   ImageRegionConstIterator< typename ImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename ImageType::BufferType > oIt( out->GetBuffer(), oReg );
 
@@ -243,7 +236,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     {
     copyImagePortion< ImageType, ImageType >(iIt, oIt, start[0], end[0]);
     }
-} // >::ThreadedGenerateData
+} // DynamicThreadedGenerateData
 
 template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
@@ -291,15 +284,7 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
@@ -340,52 +325,53 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
 template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
   typename CounterTypeIn, typename CounterTypeOut >
 void
 RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
   RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
-::ThreadedGenerateData( const RegionType& outputRegionForThread,
-  ThreadIdType itkNotUsed(threadId) )
+::DynamicThreadedGenerateData( const RegionType& outputRegionForThread )
 {
   // Get the input and output pointers
   const RLEImageTypeIn* in = this->GetInput();
   RLEImageTypeOut* out = this->GetOutput();
 
+  // Concurrent writing to RLLine is not supported,
+  // so we ignore all the output regions which do not start
+  // at the beginning of a line.
+  // But the regions which do start at the beginning of a line
+  // must process the whole line
+  RegionType reqRegion = out->GetRequestedRegion();
+  if ( reqRegion.GetIndex(0) != outputRegionForThread.GetIndex(0) )
+    {
+    return; // another thread will process this
+    }
+  RegionType outRegion = outputRegionForThread;
+  outRegion.SetSize( 0, reqRegion.GetSize( 0 ) );
+
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
 
-  inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
+  inputRegionForThread.SetSize( outRegion.GetSize() );
 
   IndexType start, end;
   IndexType roiStart( m_RegionOfInterest.GetIndex() );
-  IndexType threadStart( outputRegionForThread.GetIndex() );
+  IndexType threadStart( outRegion.GetIndex() );
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     start[i] = roiStart[i] + threadStart[i];
-    end[i] = roiStart[i] + threadStart[i] + outputRegionForThread.GetSize( i );
+    end[i] = roiStart[i] + threadStart[i] + outRegion.GetSize( i );
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageTypeIn::BufferType::RegionType iReg = RLEImageTypeIn::truncateRegion(inputRegionForThread);
-  typename RLEImageTypeOut::BufferType::RegionType oReg = RLEImageTypeOut::truncateRegion(outputRegionForThread);
+  typename RLEImageTypeIn::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
+  typename RLEImageTypeOut::BufferType::RegionType oReg = outRegion.Slice( 0 );
   ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename RLEImageTypeOut::BufferType > oIt( out->GetBuffer(), oReg );
 
   copyImagePortion< RLEImageTypeIn, RLEImageTypeOut >(iIt, oIt, start[0], end[0]);
-} // >::ThreadedGenerateData
+} // DynamicThreadedGenerateData
 
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
@@ -430,15 +416,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
-* RegionOfInterestImageFilter can produce an image which is a different size
-* than its input image.  As such, RegionOfInterestImageFilter needs to provide an
-* implementation for GenerateOutputInformation() in order to inform
-* the pipeline execution model.  The original documentation of this
-* method is below.
-*
-* \sa ProcessObject::GenerateOutputInformaton()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
@@ -478,48 +456,49 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-* RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-* Therefore, this implementation provides a ThreadedGenerateData()
-* routine which is called for each processing thread. The output
-* image data is allocated automatically by the superclass prior to
-* calling ThreadedGenerateData().  ThreadedGenerateData can only
-* write to the portion of the output image specified by the
-* parameter "outputRegionForThread"
-*
-* \sa ImageToImageFilter::ThreadedGenerateData(),
-*     ImageToImageFilter::GenerateData()
-*/
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
   RLEImage< TPixel, VImageDimension, CounterType > >
-::ThreadedGenerateData( const RegionType& outputRegionForThread,
-  ThreadIdType itkNotUsed(threadId) )
+::DynamicThreadedGenerateData( const RegionType& outputRegionForThread )
 {
   // Get the input and output pointers
   const ImageType* in = this->GetInput();
   RLEImageType* out = this->GetOutput();
 
+  // Concurrent writing to RLLine is not supported,
+  // so we ignore all the output regions which do not start
+  // at the beginning of a line.
+  // But the regions which do start at the beginning of a line
+  // must process the whole line
+  RegionType reqRegion = out->GetRequestedRegion();
+  if ( reqRegion.GetIndex(0) != outputRegionForThread.GetIndex(0) )
+    {
+    return; // another thread will process this
+    }
+  RegionType outRegion = outputRegionForThread;
+  outRegion.SetSize( 0, reqRegion.GetSize( 0 ) );
+
   // Define the portion of the input to walk for this thread
   InputImageRegionType inputRegionForThread;
 
-  inputRegionForThread.SetSize( outputRegionForThread.GetSize() );
+  inputRegionForThread.SetSize( outRegion.GetSize() );
 
   IndexType start, end;
   IndexType roiStart( m_RegionOfInterest.GetIndex() );
-  IndexType threadStart( outputRegionForThread.GetIndex() );
+  IndexType threadStart( outRegion.GetIndex() );
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     start[i] = roiStart[i] + threadStart[i];
-    end[i] = roiStart[i] + threadStart[i] + outputRegionForThread.GetSize( i );
+    end[i] = roiStart[i] + threadStart[i] + outRegion.GetSize( i );
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageType::BufferType::RegionType oReg = RLEImageType::truncateRegion( outputRegionForThread );
+  typename RLEImageType::BufferType::RegionType oReg = outRegion.Slice( 0 );
   ImageRegionConstIterator< ImageType > iIt( in, inputRegionForThread );
   ImageRegionIterator< typename RLEImageType::BufferType > oIt( out->GetBuffer(), oReg );
-  SizeValueType size0 = outputRegionForThread.GetSize( 0 );
+  SizeValueType size0 = outRegion.GetSize( 0 );
   typename RLEImageType::RLLine temp;
   temp.reserve( size0 ); // pessimistically preallocate buffer, otherwise reallocations can occur
 
@@ -543,7 +522,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
     oIt.Value() = temp;
     ++oIt;
     }
-} // >::ThreadedGenerateData
+} // DynamicThreadedGenerateData
 
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
@@ -588,15 +567,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
-/**
- * RegionOfInterestImageFilter can produce an image which is a different size
- * than its input image.  As such, RegionOfInterestImageFilter needs to provide an
- * implementation for GenerateOutputInformation() in order to inform
- * the pipeline execution model.  The original documentation of this
- * method is below.
- *
- * \sa ProcessObject::GenerateOutputInformaton()
- */
+
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
@@ -636,24 +607,11 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   outputPtr->SetOrigin( outputOrigin );
 } // >::GenerateOutputInformation
 
-/**
-   * RegionOfInterestImageFilter can be implemented as a multithreaded filter.
-   * Therefore, this implementation provides a ThreadedGenerateData()
-   * routine which is called for each processing thread. The output
-   * image data is allocated automatically by the superclass prior to
-   * calling ThreadedGenerateData().  ThreadedGenerateData can only
-   * write to the portion of the output image specified by the
-   * parameter "outputRegionForThread"
-   *
-   * \sa ImageToImageFilter::ThreadedGenerateData(),
-   *     ImageToImageFilter::GenerateData()
-   */
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 void
 RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   Image< TPixel, VImageDimension > >
-::ThreadedGenerateData( const RegionType& outputRegionForThread,
-  ThreadIdType itkNotUsed(threadId) )
+::DynamicThreadedGenerateData( const RegionType& outputRegionForThread )
 {
   // Get the input and output pointers
   const RLEImageType* in = this->GetInput();
@@ -674,7 +632,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageType::BufferType::RegionType iReg = RLEImageType::truncateRegion( inputRegionForThread );
+  typename RLEImageType::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
   ImageRegionConstIterator< typename RLEImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< ImageType > oIt( out, outputRegionForThread );
 
@@ -732,7 +690,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
       }
     ++iIt;
     }
-} // >::ThreadedGenerateData
+} // DynamicThreadedGenerateData
 } // end namespace itk
 
 #endif // itkRLERegionOfInterestImageFilter_hxx
