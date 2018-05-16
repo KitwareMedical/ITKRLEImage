@@ -217,8 +217,8 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
   inputRegionForThread.SetIndex( start );
 
   bool copyLines = ( in->GetLargestPossibleRegion().GetSize( 0 ) == outRegion.GetSize( 0 ) );
-  typename ImageType::BufferType::RegionType oReg = ImageType::truncateRegion( outRegion );
-  typename ImageType::BufferType::RegionType iReg = ImageType::truncateRegion( inputRegionForThread );
+  typename ImageType::BufferType::RegionType oReg = outRegion.Slice( 0 );
+  typename ImageType::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
   ImageRegionConstIterator< typename ImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename ImageType::BufferType > oIt( out->GetBuffer(), oReg );
 
@@ -365,8 +365,8 @@ RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn 
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageTypeIn::BufferType::RegionType iReg = RLEImageTypeIn::truncateRegion(inputRegionForThread);
-  typename RLEImageTypeOut::BufferType::RegionType oReg = RLEImageTypeOut::truncateRegion(outRegion);
+  typename RLEImageTypeIn::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
+  typename RLEImageTypeOut::BufferType::RegionType oReg = outRegion.Slice( 0 );
   ImageRegionConstIterator< typename RLEImageTypeIn::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< typename RLEImageTypeOut::BufferType > oIt( out->GetBuffer(), oReg );
 
@@ -495,7 +495,7 @@ RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageType::BufferType::RegionType oReg = RLEImageType::truncateRegion( outRegion );
+  typename RLEImageType::BufferType::RegionType oReg = outRegion.Slice( 0 );
   ImageRegionConstIterator< ImageType > iIt( in, inputRegionForThread );
   ImageRegionIterator< typename RLEImageType::BufferType > oIt( out->GetBuffer(), oReg );
   SizeValueType size0 = outRegion.GetSize( 0 );
@@ -632,7 +632,7 @@ RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
     }
   inputRegionForThread.SetIndex( start );
 
-  typename RLEImageType::BufferType::RegionType iReg = RLEImageType::truncateRegion( inputRegionForThread );
+  typename RLEImageType::BufferType::RegionType iReg = inputRegionForThread.Slice( 0 );
   ImageRegionConstIterator< typename RLEImageType::BufferType > iIt( in->GetBuffer(), iReg );
   ImageRegionIterator< ImageType > oIt( out, outputRegionForThread );
 
