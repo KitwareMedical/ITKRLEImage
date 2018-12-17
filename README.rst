@@ -39,5 +39,5 @@ the *LICENSE* file for details.
 Acknowledgements
 ----------------
 
-This work is supported by NIH grant R01 EB014346, “Continued development and
-maintenance of the ITK-SNAP 3D image segmentation software.”
+This work is supported by NIH grant R01 EB014346, "Continued development and
+maintenance of the ITK-SNAP 3D image segmentation software."
