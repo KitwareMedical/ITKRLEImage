@@ -10,7 +10,7 @@ target_link_libraries(runFromIDE ${RLEImage-Test_LIBRARIES})
 add_executable(rleStats rleStats.cxx)
 target_link_libraries(rleStats ${RLEImage-Test_LIBRARIES})
 
-ADD_EXECUTABLE(iteratorTests
+add_executable(iteratorTests
     itkRegionOfInterestImageFilterTest.cxx
     itkIteratorTests.cxx
     itkImageIteratorsForwardBackwardTest.cxx
@@ -20,16 +20,20 @@ ADD_EXECUTABLE(iteratorTests
     itkImageRegionIteratorTest.cxx
     itkImageScanlineIteratorTest1.cxx
     iteratorTests.cxx)
-TARGET_LINK_LIBRARIES(iteratorTests "${RLEImage-Test_LIBRARIES}")
+target_link_libraries(iteratorTests "${RLEImage-Test_LIBRARIES}")
 itk_add_test( NAME RLEImageiteratorTests COMMAND iteratorTests)
 
-function(ReadWriteTest ImageName Ext)
+function(ReadWriteTest ImageName Ext) # optional: big
   set(outImage "${ITK_TEST_OUTPUT_DIR}/${ImageName}.${Ext}")
   itk_add_test( NAME RLEImage${ImageName}
     COMMAND RLEImageTestDriver
     --compare DATA{Input/${ImageName}.${Ext}} ${outImage}
     itkRLEImageTest
       DATA{Input/${ImageName}.${Ext}} ${outImage})
+  if ("${ARGN}" STREQUAL "big")
+    set_property(TEST RLEImage${ImageName} APPEND PROPERTY LABELS RUNS_LONG)
+    set_property(TEST RLEImage${ImageName} APPEND PROPERTY RUN_SERIAL True)
+  endif()
 endfunction()
 
 # RLEImage specific tests - quick
@@ -72,5 +76,5 @@ ReadWriteTest(65239R_amygdala_fin nii.gz)
 ReadWriteTest(65239R_amygdala_int nii.gz)
 
 # RLEImage specific tests - long
-ReadWriteTest(wb-seg nrrd)
-ReadWriteTest(wb-seg32 nrrd)
+ReadWriteTest(wb-seg nrrd big)
+ReadWriteTest(wb-seg32 nrrd big)
