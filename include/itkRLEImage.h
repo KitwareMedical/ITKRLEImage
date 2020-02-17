@@ -267,7 +267,7 @@ public:
 protected:
   RLEImage()
     : itk::ImageBase< VImageDimension >()
-    , m_OnTheFlyCleanup( true )
+
   {
     m_Buffer = BufferType::New();
   }
@@ -292,7 +292,7 @@ protected:
   CleanUpLine( RLLine& line ) const;
 
 private:
-  bool m_OnTheFlyCleanup; // should same-valued segments be merged on the fly
+  bool m_OnTheFlyCleanup{ true }; // should same-valued segments be merged on the fly
 
   /** Memory for the current buffer. */
   mutable typename BufferType::Pointer m_Buffer;
