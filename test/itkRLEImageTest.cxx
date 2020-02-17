@@ -192,9 +192,9 @@ int itkRLEImageTest( int argc, char* argv[] )
   const char * inputImageFileName = argv[1];
   const char * outputImageFileName = argv[2];
 
-  using ScalarPixelType = itk::ImageIOBase::IOComponentType;
+  using ScalarPixelType = itk::CommonEnums::IOComponent;
   itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(
-    inputImageFileName, itk::ImageIOFactory::FileModeEnum::ReadMode);
+    inputImageFileName, itk::CommonEnums::IOFileMode::ReadMode);
   if (!imageIO)
     {
     std::cerr << "Could not CreateImageIO for: " << inputImageFileName << std::endl;
@@ -208,12 +208,12 @@ int itkRLEImageTest( int argc, char* argv[] )
   try
     {
     //unused cases are not instantiated because they greatly increase compile time
-    if (numDimensions==2 && pixelType == itk::ImageIOBase::UCHAR)
+    if (numDimensions==2 && pixelType == itk::CommonEnums::IOComponent::UCHAR)
       {
       return doTest<itk::Image<unsigned char, 2> >(inputImageFileName, outputImageFileName);
       }
-    if (numDimensions==3 && (pixelType == itk::ImageIOBase::SHORT
-      || pixelType == itk::ImageIOBase::USHORT))
+    if (numDimensions==3 && (pixelType == itk::CommonEnums::IOComponent::SHORT
+      || pixelType == itk::CommonEnums::IOComponent::USHORT))
       {
       return doTest<itk::Image<short, 3> >(inputImageFileName, outputImageFileName);
       }
@@ -221,7 +221,7 @@ int itkRLEImageTest( int argc, char* argv[] )
       {
       return doTest<itk::Image<unsigned int, 3> >(inputImageFileName, outputImageFileName);
       }
-    if (numDimensions==4 && pixelType == itk::ImageIOBase::UCHAR)
+    if (numDimensions==4 && pixelType == itk::CommonEnums::IOComponent::UCHAR)
       {
       return doTest<itk::Image<unsigned char, 4> >(inputImageFileName, outputImageFileName);
       }
