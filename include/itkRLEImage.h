@@ -49,11 +49,10 @@ namespace itk
  *  \ingroup RLEImage
  */
 template< typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short >
-class RLEImage:
-  public itk::ImageBase< VImageDimension >
+class RLEImage : public itk::ImageBase< VImageDimension >
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN(RLEImage);
+  ITK_DISALLOW_COPY_AND_ASSIGN( RLEImage );
 
   /** Standard class type alias */
   using Self = RLEImage;
@@ -69,7 +68,7 @@ public:
   itkTypeMacro( RLEImage, ImageBase );
 
   /** Pixel type alias support. Used to declare pixel type in filters
-  * or other operations. */
+   * or other operations. */
   using PixelType = TPixel;
 
   using RLCounterType = CounterType;
@@ -78,24 +77,24 @@ public:
   using ValueType = TPixel;
 
   /** First element is count of repetitions,
-  * second element is the pixel value. */
+   * second element is the pixel value. */
   using RLSegment = std::pair< CounterType, PixelType >;
 
   /** A Run-Length encoded line of pixels. */
   using RLLine = std::vector< RLSegment >;
 
   /** Internal Pixel representation. Used to maintain a uniform API
-  * with Image Adaptors and allow to keep a particular internal
-  * representation of data while showing a different external
-  * representation. */
+   * with Image Adaptors and allow to keep a particular internal
+   * representation of data while showing a different external
+   * representation. */
   using InternalPixelType = RLLine;
 
   // using IOPixelType = PixelType;
 
   /** Dimension of the image.  This constant is used by functions that are
-  * templated over image type (as opposed to being templated over pixel type
-  * and dimension) when they need compile time access to the dimension of
-  * the image. */
+   * templated over image type (as opposed to being templated over pixel type
+   * and dimension) when they need compile time access to the dimension of
+   * the image. */
   static constexpr unsigned int ImageDimension = VImageDimension;
 
   /** Index type alias support. An index is used to access pixel values. */
@@ -113,29 +112,29 @@ public:
   using DirectionType = typename Superclass::DirectionType;
 
   /** Region type alias support. A region is used to specify a subset of an image.
-  */
+   */
   using RegionType = typename Superclass::RegionType;
 
   /** Spacing type alias support.  Spacing holds the size of a pixel.  The
-  * spacing is the geometric distance between image samples. */
+   * spacing is the geometric distance between image samples. */
   using SpacingType = typename Superclass::SpacingType;
   using SpacingValueType = typename Superclass::SpacingValueType;
 
   /** Origin type alias support.  The origin is the geometric coordinates
-  * of the index (0,0). */
+   * of the index (0,0). */
   using PointType = typename Superclass::PointType;
 
   /** Offset type alias (relative position between indices) */
   using OffsetValueType = typename Superclass::OffsetValueType;
 
   /** Allocate the image memory. The size of the image must
-  * already be set, e.g. by calling SetRegions().
-  * Pixel values are initialized using default constructor. */
+   * already be set, e.g. by calling SetRegions().
+   * Pixel values are initialized using default constructor. */
   void
   Allocate( bool initialize = false ) override;
 
   /** Restore the data object to its initial state. This means releasing
-  * memory. */
+   * memory. */
   void
   Initialize() override
   {
@@ -146,7 +145,7 @@ public:
   }
 
   /** Fill the image buffer with a value.  Be sure to call Allocate()
-  * first. */
+   * first. */
   void
   FillBuffer( const TPixel& value );
 
@@ -174,22 +173,22 @@ public:
   }
 
   /** \brief Set a pixel value.
-  *
-  * Allocate() needs to have been called first -- for efficiency,
-  * this function does not check that the image has actually been
-  * allocated yet. SLOW -> Use iterators instead. */
+   *
+   * Allocate() needs to have been called first -- for efficiency,
+   * this function does not check that the image has actually been
+   * allocated yet. SLOW -> Use iterators instead. */
   void
   SetPixel( const IndexType& index, const TPixel& value );
 
   /** Set a pixel value in the given line and updates segmentRemainder
-  * and m_RealIndex to refer to the same pixel.
-  * Returns difference in line length which happens due to merging or splitting segments.
-  * This method is used by iterators directly. */
+   * and m_RealIndex to refer to the same pixel.
+   * Returns difference in line length which happens due to merging or splitting segments.
+   * This method is used by iterators directly. */
   int
   SetPixel( RLLine& line, IndexValueType& segmentRemainder, SizeValueType& m_RealIndex, const TPixel& value );
 
   /** \brief Get a pixel. SLOW! Better use iterators for pixel access. */
-  const TPixel &
+  const TPixel&
   GetPixel( const IndexType& index ) const;
 
   ///** Get a reference to a pixel. Chaning it changes the whole RLE segment! */
@@ -202,12 +201,8 @@ public:
   // }
 
   /** \brief Access a pixel. This version can only be an rvalue.
-  * SLOW -> Use iterators instead. */
-  const TPixel &
-  operator[]( const IndexType& index ) const
-  {
-    return this->GetPixel( index );
-  }
+   * SLOW -> Use iterators instead. */
+  const TPixel& operator[]( const IndexType& index ) const { return this->GetPixel( index ); }
 
   unsigned int
   GetNumberOfComponentsPerPixel() const override
@@ -241,12 +236,12 @@ public:
   truncateIndex( const IndexType& index );
 
   /** Merges adjacent segments with duplicate values.
-  * Automatically called when turning on OnTheFlyCleanup. */
+   * Automatically called when turning on OnTheFlyCleanup. */
   void
   CleanUp() const;
 
   /** Should same-valued segments be merged on the fly?
-  * On the fly merging usually provides better performance. */
+   * On the fly merging usually provides better performance. */
   bool
   GetOnTheFlyCleanup() const
   {
@@ -254,25 +249,25 @@ public:
   }
 
   /** Should same-valued segments be merged on the fly?
-  * On the fly merging usually provides better performance. */
+   * On the fly merging usually provides better performance. */
   void
   SetOnTheFlyCleanup( bool value )
   {
     if ( value == m_OnTheFlyCleanup )
       {
-      return;
+        return;
       }
     m_OnTheFlyCleanup = value;
     if ( m_OnTheFlyCleanup )
       {
-      CleanUp(); // put the image into a clean state
+        CleanUp(); // put the image into a clean state
       }
   }
 
 protected:
   RLEImage()
-    : itk::ImageBase< VImageDimension >(),
-    m_OnTheFlyCleanup( true )
+    : itk::ImageBase< VImageDimension >()
+    , m_OnTheFlyCleanup( true )
   {
     m_Buffer = BufferType::New();
   }
@@ -282,10 +277,10 @@ protected:
 
   ~RLEImage() override {}
   /** Compute helper matrices used to transform Index coordinates to
-  * PhysicalPoint coordinates and back. This method is virtual and will be
-  * overloaded in derived classes in order to provide backward compatibility
-  * behavior in classes that did not used to take image orientation into
-  * account.  */
+   * PhysicalPoint coordinates and back. This method is virtual and will be
+   * overloaded in derived classes in order to provide backward compatibility
+   * behavior in classes that did not used to take image orientation into
+   * account.  */
   void
   ComputeIndexToPhysicalPointMatrices() override
   {

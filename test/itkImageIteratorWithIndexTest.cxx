@@ -18,105 +18,105 @@
 
 #include <iostream>
 
-#include "itkRLEImage.h"
 #include "itkNumericTraits.h"
+#include "itkRLEImage.h"
 
 
-template <typename TPixelType>
+template< typename TPixelType >
 class itkImageIteratorWithIndexTestIteratorTester
 {
+public:
+  using PixelType = TPixelType;
 
-  public:
-    using PixelType = TPixelType;
+  using ImageType = itk::RLEImage< PixelType >;
 
-    using ImageType = itk::RLEImage< PixelType >;
+  using IteratorType = itk::ImageRegionIteratorWithIndex< ImageType >;
 
-    using IteratorType = itk::ImageRegionIteratorWithIndex< ImageType >;
+  using ConstIteratorType = itk::ImageRegionConstIteratorWithIndex< ImageType >;
 
-    using ConstIteratorType = itk::ImageRegionConstIteratorWithIndex< ImageType >;
+  itkImageIteratorWithIndexTestIteratorTester( const PixelType& value )
+  {
+    m_Image = ImageType::New();
 
-    itkImageIteratorWithIndexTestIteratorTester( const PixelType & value )
-    {
-      m_Image = ImageType::New();
+    typename ImageType::SizeType size;
+    size.Fill( 100 );
 
-      typename ImageType::SizeType size;
-      size.Fill(100);
+    typename ImageType::IndexType start;
+    start.Fill( 0 );
 
-      typename ImageType::IndexType start;
-      start.Fill(0);
+    typename ImageType::RegionType region;
+    region.SetSize( size );
+    region.SetIndex( start );
 
-      typename ImageType::RegionType region;
-      region.SetSize( size );
-      region.SetIndex( start );
+    m_Image->SetRegions( region );
+    m_Image->Allocate();
 
-      m_Image->SetRegions( region );
-      m_Image->Allocate();
+    m_Image->FillBuffer( value );
+  }
 
-      m_Image->FillBuffer( value );
-    }
+  bool
+  TestIterator()
+  {
+    IteratorType it( m_Image, m_Image->GetBufferedRegion() );
+    it.GoToBegin();
+    while ( !it.IsAtEnd() )
+      {
+        PixelType value = it.Get();
+        PixelType testValue = value * static_cast< typename itk::NumericTraits< PixelType >::ValueType >( 2 );
+        it.Set( testValue );
+        if ( it.Get() != testValue )
+          {
+            std::cerr << "TestIterator failed!" << std::endl;
+            return false;
+          }
+        ++it;
+      }
+    return true;
+  }
 
-    bool TestIterator()
-    {
-     IteratorType it( m_Image, m_Image->GetBufferedRegion() );
-     it.GoToBegin();
-     while( !it.IsAtEnd() )
-       {
-       PixelType value = it.Get();
-       PixelType testValue = value * static_cast<typename itk::NumericTraits<PixelType>::ValueType>( 2 );
-       it.Set( testValue);
-       if( it.Get() != testValue )
-        {
-        std::cerr << "TestIterator failed!" << std::endl;
-        return false;
-        }
-       ++it;
-       }
-     return true;
-    }
+  bool
+  TestConstIterator()
+  {
+    ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
+    it.GoToBegin();
+    while ( !it.IsAtEnd() )
+      {
+        PixelType value = it.Get();
+        if ( value != it.Get() ) // check repeatibility
+          {
+            std::cerr << "TestConstIterator failed!" << std::endl;
+            return false;
+          }
+        ++it;
+      }
+    return true;
+  }
 
-    bool TestConstIterator()
-    {
-     ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
-     it.GoToBegin();
-     while( !it.IsAtEnd() )
-       {
-       PixelType value = it.Get();
-       if( value != it.Get() ) // check repeatibility
-         {
-         std::cerr << "TestConstIterator failed!" << std::endl;
-         return false;
-         }
-       ++it;
-       }
-     return true;
-    }
+  bool
+  TestReverseIteration()
+  {
+    ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
+    it.GoToReverseBegin();
+    while ( !it.IsAtReverseEnd() )
+      {
+        PixelType value = it.Get();
+        if ( value != it.Get() ) // check repeatibility
+          {
+            std::cerr << "TestReverseIteration failed!" << std::endl;
+            return false;
+          }
+        --it;
+      }
+    return true;
+  }
 
-    bool TestReverseIteration()
-    {
-     ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
-     it.GoToReverseBegin();
-     while( !it.IsAtReverseEnd() )
-       {
-       PixelType value = it.Get();
-       if( value != it.Get() ) // check repeatibility
-         {
-         std::cerr << "TestReverseIteration failed!" << std::endl;
-         return false;
-         }
-       --it;
-       }
-     return true;
-    }
-
-  private:
-
-    typename ImageType::Pointer m_Image;
-
+private:
+  typename ImageType::Pointer m_Image;
 };
 
-int itkImageIteratorWithIndexTest(int, char* [] )
+int
+itkImageIteratorWithIndexTest( int, char*[] )
 {
-
   bool testPassed = true; // let's be optimistic
 
   // Instantiate image of various types and
@@ -124,306 +124,305 @@ int itkImageIteratorWithIndexTest(int, char* [] )
 
   std::cout << "Testing with Image< char, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< char > TesterC( 10 );
-  if( TesterC.TestIterator() == false )
+  if ( TesterC.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterC.TestConstIterator() == false )
+  if ( TesterC.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterC.TestReverseIteration() == false )
+  if ( TesterC.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
 
   std::cout << "Testing with Image< unsigned char, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< unsigned char > TesterUC( 10 );
-  if( TesterUC.TestIterator() == false )
+  if ( TesterUC.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUC.TestConstIterator() == false )
+  if ( TesterUC.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUC.TestReverseIteration() == false )
+  if ( TesterUC.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< short, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< short > TesterS( 10 );
-  if( TesterS.TestIterator() == false )
+  if ( TesterS.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterS.TestConstIterator() == false )
+  if ( TesterS.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterS.TestReverseIteration() == false )
+  if ( TesterS.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< unsigned short, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< unsigned short > TesterUS( 10 );
-  if( TesterUS.TestIterator() == false )
+  if ( TesterUS.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUS.TestConstIterator() == false )
+  if ( TesterUS.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUS.TestReverseIteration() == false )
+  if ( TesterUS.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< int, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< int > TesterI( 10 );
-  if( TesterI.TestIterator() == false )
+  if ( TesterI.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterI.TestConstIterator() == false )
+  if ( TesterI.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterI.TestReverseIteration() == false )
+  if ( TesterI.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< unsigned int, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< unsigned int > TesterUI( 10 );
-  if( TesterUI.TestIterator() == false )
+  if ( TesterUI.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUI.TestConstIterator() == false )
+  if ( TesterUI.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterUI.TestReverseIteration() == false )
+  if ( TesterUI.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< long long, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< long long > TesterLL( 10 );
   if ( TesterLL.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
   if ( TesterLL.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
   if ( TesterLL.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< unsigned long long, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< unsigned long long > TesterULL( 10 );
   if ( TesterULL.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
   if ( TesterULL.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
   if ( TesterULL.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< float, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< float > TesterF( 10.0 );
-  if( TesterF.TestIterator() == false )
+  if ( TesterF.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterF.TestConstIterator() == false )
+  if ( TesterF.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterF.TestReverseIteration() == false )
+  if ( TesterF.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< double, 3 > " << std::endl;
   itkImageIteratorWithIndexTestIteratorTester< double > TesterD( 10.0 );
-  if( TesterD.TestIterator() == false )
+  if ( TesterD.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterD.TestConstIterator() == false )
+  if ( TesterD.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterD.TestReverseIteration() == false )
+  if ( TesterD.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<char,4>, 3 > " << std::endl;
-  using VC = itk::Vector<char,4>;
+  using VC = itk::Vector< char, 4 >;
   VC vc;
   vc.Fill( 127 );
   itkImageIteratorWithIndexTestIteratorTester< VC > TesterVC( vc );
-  if( TesterVC.TestIterator() == false )
+  if ( TesterVC.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVC.TestConstIterator() == false )
+  if ( TesterVC.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVC.TestReverseIteration() == false )
+  if ( TesterVC.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<unsigned char,4>, 3 > " << std::endl;
-  using VUC = itk::Vector<unsigned char,4>;
+  using VUC = itk::Vector< unsigned char, 4 >;
   VUC vuc;
   vuc.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VUC > TesterVUC( vuc );
-  if( TesterVUC.TestIterator() == false )
+  if ( TesterVUC.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUC.TestConstIterator() == false )
+  if ( TesterVUC.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUC.TestReverseIteration() == false )
+  if ( TesterVUC.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<short,4>, 3 > " << std::endl;
-  using VS = itk::Vector<short,4>;
+  using VS = itk::Vector< short, 4 >;
   VS vs;
   vs.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VS > TesterVS( vs );
-  if( TesterVS.TestIterator() == false )
+  if ( TesterVS.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVS.TestConstIterator() == false )
+  if ( TesterVS.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVS.TestReverseIteration() == false )
+  if ( TesterVS.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<unsigned short,4>, 3 > " << std::endl;
-  using VUS = itk::Vector<unsigned short,4>;
+  using VUS = itk::Vector< unsigned short, 4 >;
   VUS vus;
   vus.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VUS > TesterVUS( vus );
-  if( TesterVUS.TestIterator() == false )
+  if ( TesterVUS.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUS.TestConstIterator() == false )
+  if ( TesterVUS.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUS.TestReverseIteration() == false )
+  if ( TesterVUS.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<int,4>, 3 > " << std::endl;
-  using VI = itk::Vector<int,4>;
+  using VI = itk::Vector< int, 4 >;
   VI vi;
   vi.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VI > TesterVI( vi );
-  if( TesterVI.TestIterator() == false )
+  if ( TesterVI.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVI.TestConstIterator() == false )
+  if ( TesterVI.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVI.TestReverseIteration() == false )
+  if ( TesterVI.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<unsigned int,4>, 3 > " << std::endl;
-  using VUI = itk::Vector<unsigned int,4>;
+  using VUI = itk::Vector< unsigned int, 4 >;
   VUI vui;
   vui.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VUI > TesterVUI( vui );
-  if( TesterVUI.TestIterator() == false )
+  if ( TesterVUI.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUI.TestConstIterator() == false )
+  if ( TesterVUI.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVUI.TestReverseIteration() == false )
+  if ( TesterVUI.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<float,4>, 3 > " << std::endl;
-  using VF = itk::Vector<float,4>;
+  using VF = itk::Vector< float, 4 >;
   VF vf;
   vf.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VF > TesterVF( vf );
-  if( TesterVF.TestIterator() == false )
+  if ( TesterVF.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVF.TestConstIterator() == false )
+  if ( TesterVF.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVF.TestReverseIteration() == false )
+  if ( TesterVF.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   std::cout << "Testing with Image< itk::Vector<double,4>, 3 > " << std::endl;
-  using VD = itk::Vector<double,4>;
+  using VD = itk::Vector< double, 4 >;
   VD vd;
   vd.Fill( 10 );
   itkImageIteratorWithIndexTestIteratorTester< VD > TesterVD( vd );
-  if( TesterVD.TestIterator() == false )
+  if ( TesterVD.TestIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVD.TestConstIterator() == false )
+  if ( TesterVD.TestConstIterator() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
-  if( TesterVD.TestReverseIteration() == false )
+  if ( TesterVD.TestReverseIteration() == false )
     {
-    testPassed = false;
+      testPassed = false;
     }
 
   if ( !testPassed )
     {
-    std::cout << "Failed" << std::endl;
-    return EXIT_FAILURE;
+      std::cout << "Failed" << std::endl;
+      return EXIT_FAILURE;
     }
 
   std::cout << "Success" << std::endl;
   return EXIT_SUCCESS;
-
 }

@@ -25,15 +25,15 @@
 namespace itk
 {
 /** \class ImageScanlineIterator
-*  \brief A multi-dimensional iterator templated over image type that
-*  walks a region of pixels, scanline by scanline or in the direction
-*  of the fastest axis. Read-write access. Specialized for RLEImage.
-*  \ingroup RLEImage
-*  \ingroup ITKCommon
-*/
+ *  \brief A multi-dimensional iterator templated over image type that
+ *  walks a region of pixels, scanline by scanline or in the direction
+ *  of the fastest axis. Read-write access. Specialized for RLEImage.
+ *  \ingroup RLEImage
+ *  \ingroup ITKCommon
+ */
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
-  public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class type alias. */
@@ -52,31 +52,36 @@ public:
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineIterator()
     : ImageScanlineConstIterator< ImageType >()
-  {}
+  {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
-  * particular region of that image. */
+   * particular region of that image. */
   ImageScanlineIterator( ImageType* ptr, const RegionType& region )
     : ImageScanlineConstIterator< ImageType >( ptr, region )
-  {}
+  {
+  }
 
   /** Constructor that can be used to cast from an ImageIterator to an
-  * ImageScanlineIterator. Many routines return an ImageIterator but for a
-  * particular task, you may want an ImageScanlineIterator.  Rather than
-  * provide overloaded APIs that return different types of Iterators, itk
-  * returns ImageIterators and uses constructors to cast from an
-  * ImageIterator to a ImageScanlineIterator. */
+   * ImageScanlineIterator. Many routines return an ImageIterator but for a
+   * particular task, you may want an ImageScanlineIterator.  Rather than
+   * provide overloaded APIs that return different types of Iterators, itk
+   * returns ImageIterators and uses constructors to cast from an
+   * ImageIterator to a ImageScanlineIterator. */
   ImageScanlineIterator( const ImageIterator< ImageType >& it )
     : ImageScanlineConstIterator< ImageType >( it )
-  {}
+  {
+  }
 
   /** Set the pixel value */
   void
   Set( const PixelType& value ) const
   {
-    const_cast< ImageType * >( this->m_Image.GetPointer() )->SetPixel(
-      *const_cast< typename ImageType::RLLine * >( this->m_RunLengthLine ),
-      this->m_SegmentRemainder, this->m_RealIndex, value );
+    const_cast< ImageType* >( this->m_Image.GetPointer() )
+      ->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
+                  this->m_SegmentRemainder,
+                  this->m_RealIndex,
+                  value );
   }
 
   ///** Return a reference to the pixel
@@ -92,8 +97,9 @@ protected:
   in order to enforce const correctness. */
   ImageScanlineIterator( const ImageScanlineConstIterator< ImageType >& it )
     : ImageScanlineConstIterator< ImageType >( it )
-  {}
-  Self &
+  {
+  }
+  Self&
   operator=( const ImageScanlineConstIterator< ImageType >& it )
   {
     this->ImageScanlineConstIterator< ImageType >::operator=( it );

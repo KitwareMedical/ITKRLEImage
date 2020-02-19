@@ -1,20 +1,20 @@
 /*=========================================================================
-*
-*  Copyright Insight Software Consortium
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*         http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #ifndef itkRLERegionOfInterestImageFilter_h
 #define itkRLERegionOfInterestImageFilter_h
 
@@ -46,12 +46,12 @@ namespace itk
  */
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
 class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  RLEImage< TPixel, VImageDimension, CounterType > > :
-  public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-    RLEImage< TPixel, VImageDimension, CounterType > >
+                                   RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
+                               RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
+  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
 
   /** Standard class type alias. */
   using Self = RegionOfInterestImageFilter;
@@ -87,15 +87,13 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
-  itkConceptMacro( InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
+  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
 // End concept checking
 #endif
 
 protected:
-  RegionOfInterestImageFilter()
-    { this->DynamicMultiThreadingOn(); }
+  RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override {}
   void
   PrintSelf( std::ostream& os, Indent indent ) const override;
@@ -133,12 +131,12 @@ private:
   RegionType m_RegionOfInterest;
 };
 
-template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension,
-  typename CounterTypeIn, typename CounterTypeOut >
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn,
+          typename CounterTypeOut >
 class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-  RLEImage< TPixelOut, VImageDimension, CounterTypeOut > > :
-  public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-    RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+                                   RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+  : public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
+                               RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
 {
 public:
   /** Standard class type alias. */
@@ -176,15 +174,13 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
-  itkConceptMacro( InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
+  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
 // End concept checking
 #endif
 
 protected:
-  RegionOfInterestImageFilter()
-    { this->DynamicMultiThreadingOn(); }
+  RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override {}
   void
   PrintSelf( std::ostream& os, Indent indent ) const override;
@@ -219,9 +215,9 @@ protected:
   DynamicThreadedGenerateData( const RegionType& outputRegionForThread ) override;
 
 private:
-  RegionOfInterestImageFilter( const Self & ); // purposely not implemented
+  RegionOfInterestImageFilter( const Self& ); // purposely not implemented
   void
-  operator=( const Self & ); // purposely not implemented
+  operator=( const Self& ); // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
@@ -232,22 +228,20 @@ class InputAndOutputImagesMustHaveSameDimension;
 
 // input and output images must have the same dimension (e.g. both 2D or both 3D)
 // so disallow this by inheriting from unimplemented base class
-template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn,
-  unsigned int VImageDimensionOut, typename CounterTypeIn, typename CounterTypeOut >
+template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn, unsigned int VImageDimensionOut,
+          typename CounterTypeIn, typename CounterTypeOut >
 class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimensionIn, CounterTypeIn >,
-  RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > > :
-  InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
+                                   RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > >
+  : InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
 {
 };
 
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >,
-  RLEImage< TPixel, VImageDimension, CounterType > > :
-  public ImageToImageFilter< Image< TPixel, VImageDimension >,
-    RLEImage< TPixel, VImageDimension, CounterType > >
+class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageToImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
+  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
 
   /** Standard class type alias. */
   using RLEImageType = RLEImage< TPixel, VImageDimension, CounterType >;
@@ -284,15 +278,13 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
-  itkConceptMacro( InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
+  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
 // End concept checking
 #endif
 
 protected:
-  RegionOfInterestImageFilter()
-    { this->DynamicMultiThreadingOn(); }
+  RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override {}
   void
   PrintSelf( std::ostream& os, Indent indent ) const override;
@@ -304,13 +296,13 @@ protected:
   EnlargeOutputRequestedRegion( DataObject* output ) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
-  * size than its input image.  As such, RegionOfInterestImageFilter
-  * needs to provide an implementation for
-  * GenerateOutputInformation() in order to inform the pipeline
-  * execution model.  The original documentation of this method is
-  * below.
-  *
-  * \sa ProcessObject::GenerateOutputInformaton()  */
+   * size than its input image.  As such, RegionOfInterestImageFilter
+   * needs to provide an implementation for
+   * GenerateOutputInformation() in order to inform the pipeline
+   * execution model.  The original documentation of this method is
+   * below.
+   *
+   * \sa ProcessObject::GenerateOutputInformaton()  */
   void
   GenerateOutputInformation() override;
 
@@ -331,13 +323,11 @@ private:
 };
 
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-  Image< TPixel, VImageDimension > > :
-  public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-    Image< TPixel, VImageDimension > >
+class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
+  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
 
   /** Standard class type alias. */
   using RLEImageType = RLEImage< TPixel, VImageDimension, CounterType >;
@@ -374,15 +364,13 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension > ) );
-  itkConceptMacro( InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputImagePixelType, OutputImagePixelType > ) );
+  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
+  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
 // End concept checking
 #endif
 
 protected:
-  RegionOfInterestImageFilter()
-    { this->DynamicMultiThreadingOn(); }
+  RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override {}
   void
   PrintSelf( std::ostream& os, Indent indent ) const override;
@@ -394,13 +382,13 @@ protected:
   EnlargeOutputRequestedRegion( DataObject* output ) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
-  * size than its input image.  As such, RegionOfInterestImageFilter
-  * needs to provide an implementation for
-  * GenerateOutputInformation() in order to inform the pipeline
-  * execution model.  The original documentation of this method is
-  * below.
-  *
-  * \sa ProcessObject::GenerateOutputInformaton()  */
+   * size than its input image.  As such, RegionOfInterestImageFilter
+   * needs to provide an implementation for
+   * GenerateOutputInformation() in order to inform the pipeline
+   * execution model.  The original documentation of this method is
+   * below.
+   *
+   * \sa ProcessObject::GenerateOutputInformaton()  */
   void
   GenerateOutputInformation() override;
 

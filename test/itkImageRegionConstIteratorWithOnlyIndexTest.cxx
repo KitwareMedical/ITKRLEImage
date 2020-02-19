@@ -20,171 +20,172 @@
 
 #include "itkRLEImage.h"
 
-template <typename TImage>
+template< typename TImage >
 class itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester
 {
+public:
+  using ImageType = TImage;
+  using IndexType = typename ImageType::IndexType;
 
-  public:
-    using ImageType = TImage;
-    using IndexType = typename ImageType::IndexType;
+  using ConstIteratorType = itk::ImageRegionConstIteratorWithOnlyIndex< ImageType >;
 
-    using ConstIteratorType = itk::ImageRegionConstIteratorWithOnlyIndex<ImageType >;
+  itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester()
+  {
+    m_Image = ImageType::New();
 
-    itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester( )
-    {
-      m_Image = ImageType::New();
+    typename ImageType::SizeType size;
+    size.Fill( 100 );
 
-      typename ImageType::SizeType size;
-      size.Fill(100);
+    typename ImageType::IndexType start;
+    start.Fill( 0 );
 
-      typename ImageType::IndexType start;
-      start.Fill(0);
+    typename ImageType::RegionType region;
+    region.SetSize( size );
+    region.SetIndex( start );
 
-      typename ImageType::RegionType region;
-      region.SetSize( size );
-      region.SetIndex( start );
+    m_Image->SetRegions( region );
+    m_Image->Allocate();
 
-      m_Image->SetRegions( region );
-      m_Image->Allocate();
+    // Setup a smaller requested region
+    size.Fill( 50 );
+    //      size[0] = 40;
+    start.Fill( 10 );
+    //      start[0] = 8;
+    region.SetSize( size );
+    region.SetIndex( start );
+    m_Image->SetRequestedRegion( region );
+  }
 
-      // Setup a smaller requested region
-      size.Fill( 50 );
-//      size[0] = 40;
-      start.Fill ( 10 );
-//      start[0] = 8;
-      region.SetSize( size );
-      region.SetIndex( start );
-      m_Image->SetRequestedRegion( region );
-    }
-
-    bool TestConstIterator()
-    {
-      typename ImageType::RegionType region = m_Image->GetBufferedRegion();
-      if( TestByRegion( region ) == false )
-        {
+  bool
+  TestConstIterator()
+  {
+    typename ImageType::RegionType region = m_Image->GetBufferedRegion();
+    if ( TestByRegion( region ) == false )
+      {
         std::cout << "Failed testing buffered region." << std::endl;
         return false;
-        }
+      }
 
-      region = m_Image->GetRequestedRegion();
-      if( TestByRegion( region ) == false )
-        {
+    region = m_Image->GetRequestedRegion();
+    if ( TestByRegion( region ) == false )
+      {
         std::cout << "Failed testing requested region." << std::endl;
         return false;
-        }
+      }
 
-      return true;
-    }
+    return true;
+  }
 
-    bool TestByRegion( typename ImageType::RegionType & region )
-    {
-      ConstIteratorType it( m_Image, region );
-      it.GoToBegin();
-      typename ImageType::IndexValueType step = 0;
+  bool
+  TestByRegion( typename ImageType::RegionType& region )
+  {
+    ConstIteratorType it( m_Image, region );
+    it.GoToBegin();
+    typename ImageType::IndexValueType step = 0;
 
-      while( !it.IsAtEnd() )
-        {
+    while ( !it.IsAtEnd() )
+      {
         IndexType index = it.GetIndex();
         // Check to see if the index is within allowed bounds
-        bool isInside = region.IsInside(index);
-        if( !isInside )
+        bool isInside = region.IsInside( index );
+        if ( !isInside )
           {
-          std::cout << "Index is not inside region! - " << index << std::endl;
-          return false;
+            std::cout << "Index is not inside region! - " << index << std::endl;
+            return false;
           }
         // check repeatibility
-        if( index != it.GetIndex() )
+        if ( index != it.GetIndex() )
           {
-          std::cout << "Failed to repeat GetIndex." << std::endl;
-          return false;
+            std::cout << "Failed to repeat GetIndex." << std::endl;
+            return false;
           }
         // increment and test index
         ++it;
         IndexType truthIndex;
         truthIndex[0] = step % region.GetSize()[0] + region.GetIndex()[0];
         truthIndex[1] = step / region.GetSize()[0] + region.GetIndex()[1];
-        if( ImageType::GetImageDimension() > 2 )
+        if ( ImageType::GetImageDimension() > 2 )
           {
-          truthIndex[1] = ( step / region.GetSize()[0] ) % region.GetSize()[1] + region.GetIndex()[1];
-          truthIndex[2] = step / ( region.GetSize()[0] * region.GetSize()[1] ) + region.GetIndex()[2];
+            truthIndex[1] = ( step / region.GetSize()[0] ) % region.GetSize()[1] + region.GetIndex()[1];
+            truthIndex[2] = step / ( region.GetSize()[0] * region.GetSize()[1] ) + region.GetIndex()[2];
           }
 
-        if( index != truthIndex  )
+        if ( index != truthIndex )
           {
-          std::cout << "Failed single increment. step: " << step << " index: " << index << " truthIndex: " << truthIndex << std::endl;
-          return false;
+            std::cout << "Failed single increment. step: " << step << " index: " << index
+                      << " truthIndex: " << truthIndex << std::endl;
+            return false;
           }
         ++step;
         // check repeatibility after decrement
         --it;
-        if( index != it.GetIndex() )
+        if ( index != it.GetIndex() )
           {
-          std::cout << "Failed to increment and decrement." << std::endl;
-          return false;
+            std::cout << "Failed to increment and decrement." << std::endl;
+            return false;
           }
         ++it;
-        }
+      }
 
-      // Test iterating fwd by line
-      IndexType index;
-      it.GoToBegin();
-      index = it.GetIndex();
-      for( unsigned int i=0; i < region.GetSize()[0]; i++ )
-        {
+    // Test iterating fwd by line
+    IndexType index;
+    it.GoToBegin();
+    index = it.GetIndex();
+    for ( unsigned int i = 0; i < region.GetSize()[0]; i++ )
+      {
         ++it;
-        }
-      if( index[0] != it.GetIndex()[0] || index[1] != it.GetIndex()[1] - 1 )
-        {
+      }
+    if ( index[0] != it.GetIndex()[0] || index[1] != it.GetIndex()[1] - 1 )
+      {
         std::cout << "Failed iterating forward by line." << std::endl;
-        }
+      }
 
-      // iterate back
-      for( unsigned int i=0; i < region.GetSize()[0]; i++ )
-        {
+    // iterate back
+    for ( unsigned int i = 0; i < region.GetSize()[0]; i++ )
+      {
         --it;
-        }
-      if( index != it.GetIndex() )
-        {
+      }
+    if ( index != it.GetIndex() )
+      {
         std::cout << "Failed iterating back by line." << std::endl;
-        }
+      }
 
-      // Test iterating fwd by slice
-      if( ImageType::GetImageDimension() > 2 )
-        {
+    // Test iterating fwd by slice
+    if ( ImageType::GetImageDimension() > 2 )
+      {
         it.GoToBegin();
         index = it.GetIndex();
-        for( unsigned int i=0; i < region.GetSize()[0] * region.GetSize()[1]; i++ )
+        for ( unsigned int i = 0; i < region.GetSize()[0] * region.GetSize()[1]; i++ )
           {
-          ++it;
+            ++it;
           }
-        ++it; //extra step
-        if( index[0] != it.GetIndex()[0] - 1 || index[1] != it.GetIndex()[1] || index[2] != it.GetIndex()[2] - 1 )
+        ++it; // extra step
+        if ( index[0] != it.GetIndex()[0] - 1 || index[1] != it.GetIndex()[1] || index[2] != it.GetIndex()[2] - 1 )
           {
-          std::cout << "Failed iterating forward by slice." << std::endl;
+            std::cout << "Failed iterating forward by slice." << std::endl;
           }
 
         // iterate back
-        for( unsigned int i=0; i < region.GetSize()[0] * region.GetSize()[1]; i++ )
+        for ( unsigned int i = 0; i < region.GetSize()[0] * region.GetSize()[1]; i++ )
           {
-          --it;
+            --it;
           }
         --it;
-        if( index != it.GetIndex() )
+        if ( index != it.GetIndex() )
           {
-          std::cout << "Failed iterating back by slice." << std::endl;
+            std::cout << "Failed iterating back by slice." << std::endl;
           }
-        }
+      }
 
-      return true;
-    }
+    return true;
+  }
 
-  private:
-
-    typename ImageType::Pointer m_Image;
-
+private:
+  typename ImageType::Pointer m_Image;
 };
 
-int itkImageRegionConstIteratorWithOnlyIndexTest(int, char* [] )
+int
+itkImageRegionConstIteratorWithOnlyIndexTest( int, char*[] )
 {
   bool testPassed = true; // let's be optimistic
 
@@ -192,39 +193,38 @@ int itkImageRegionConstIteratorWithOnlyIndexTest(int, char* [] )
   // test the iterators on them
 
   {
-  std::cout << "Testing with Image< char, 3 >... " << std::endl;
-  itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::RLEImage< char > > Tester;
-  if( Tester.TestConstIterator() == false )
-    {
-    testPassed = false;
-    }
+    std::cout << "Testing with Image< char, 3 >... " << std::endl;
+    itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::RLEImage< char > > Tester;
+    if ( Tester.TestConstIterator() == false )
+      {
+        testPassed = false;
+      }
   }
 
   {
-  std::cout << "Testing with ImageBase< 2 >... " << std::endl;
-  itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::ImageBase< 2 > > Tester;
-  if( Tester.TestConstIterator() == false )
-    {
-    testPassed = false;
-    }
+    std::cout << "Testing with ImageBase< 2 >... " << std::endl;
+    itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::ImageBase< 2 > > Tester;
+    if ( Tester.TestConstIterator() == false )
+      {
+        testPassed = false;
+      }
   }
 
   {
-  std::cout << "Testing with ImageBase< 3 >... " << std::endl;
-  itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::ImageBase< 3 > > Tester;
-  if( Tester.TestConstIterator() == false )
-    {
-    testPassed = false;
-    }
+    std::cout << "Testing with ImageBase< 3 >... " << std::endl;
+    itkImageRegionConstIteratorWithOnlyIndexTestIteratorTester< itk::ImageBase< 3 > > Tester;
+    if ( Tester.TestConstIterator() == false )
+      {
+        testPassed = false;
+      }
   }
 
   if ( !testPassed )
     {
-    std::cout << "Failed" << std::endl;
-    return EXIT_FAILURE;
+      std::cout << "Failed" << std::endl;
+      return EXIT_FAILURE;
     }
 
   std::cout << "Success" << std::endl;
   return EXIT_SUCCESS;
-
 }
