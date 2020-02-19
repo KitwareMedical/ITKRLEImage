@@ -23,38 +23,38 @@
 #include <string>
 
 int
-main( int argc, char* argv[] )
+main(int argc, char * argv[])
 {
-  if ( argc < 2 )
-    {
-      std::cerr << "Usage: " << argv[0] << " inputImage" << std::endl;
-      return EXIT_FAILURE;
-    }
+  if (argc < 2)
+  {
+    std::cerr << "Usage: " << argv[0] << " inputImage" << std::endl;
+    return EXIT_FAILURE;
+  }
 
-  using ImageType = itk::Image< short, 3 >;
-  using myRLEImage = itk::RLEImage< short, 3 >;
+  using ImageType = itk::Image<short, 3>;
+  using myRLEImage = itk::RLEImage<short, 3>;
 
-  using ReaderType = itk::ImageFileReader< ImageType >;
+  using ReaderType = itk::ImageFileReader<ImageType>;
   ReaderType::Pointer reader = ReaderType::New();
-  reader->SetFileName( argv[1] );
+  reader->SetFileName(argv[1]);
 
-  using inConverterType = itk::RegionOfInterestImageFilter< ImageType, myRLEImage >;
+  using inConverterType = itk::RegionOfInterestImageFilter<ImageType, myRLEImage>;
   inConverterType::Pointer inConv = inConverterType::New();
 
   try
-    {
-      RegisterRequiredFactories();
-      reader->Update();
-      inConv->SetInput( reader->GetOutput() );
-      inConv->SetRegionOfInterest( reader->GetOutput()->GetLargestPossibleRegion() );
-      inConv->Update();
-      myRLEImage::Pointer test = inConv->GetOutput();
-      std::cout << test;
-    }
-  catch ( itk::ExceptionObject& error )
-    {
-      std::cerr << "Error: " << error << std::endl;
-      return EXIT_FAILURE;
-    }
+  {
+    RegisterRequiredFactories();
+    reader->Update();
+    inConv->SetInput(reader->GetOutput());
+    inConv->SetRegionOfInterest(reader->GetOutput()->GetLargestPossibleRegion());
+    inConv->Update();
+    myRLEImage::Pointer test = inConv->GetOutput();
+    std::cout << test;
+  }
+  catch (itk::ExceptionObject & error)
+  {
+    std::cerr << "Error: " << error << std::endl;
+    return EXIT_FAILURE;
+  }
   return EXIT_SUCCESS;
 }

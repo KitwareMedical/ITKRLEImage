@@ -31,14 +31,14 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageScanlineIterator< RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class ImageScanlineIterator<RLEImage<TPixel, VImageDimension, CounterType>>
+  : public ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>
 {
 public:
   /** Standard class type alias. */
   using Self = ImageScanlineIterator;
-  using Superclass = ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
+  using Superclass = ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
 
   /** Types inherited from the Superclass */
   using IndexType = typename Superclass::IndexType;
@@ -51,16 +51,14 @@ public:
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineIterator()
-    : ImageScanlineConstIterator< ImageType >()
-  {
-  }
+    : ImageScanlineConstIterator<ImageType>()
+  {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
-  ImageScanlineIterator( ImageType* ptr, const RegionType& region )
-    : ImageScanlineConstIterator< ImageType >( ptr, region )
-  {
-  }
+  ImageScanlineIterator(ImageType * ptr, const RegionType & region)
+    : ImageScanlineConstIterator<ImageType>(ptr, region)
+  {}
 
   /** Constructor that can be used to cast from an ImageIterator to an
    * ImageScanlineIterator. Many routines return an ImageIterator but for a
@@ -68,20 +66,19 @@ public:
    * provide overloaded APIs that return different types of Iterators, itk
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageScanlineIterator. */
-  ImageScanlineIterator( const ImageIterator< ImageType >& it )
-    : ImageScanlineConstIterator< ImageType >( it )
-  {
-  }
+  ImageScanlineIterator(const ImageIterator<ImageType> & it)
+    : ImageScanlineConstIterator<ImageType>(it)
+  {}
 
   /** Set the pixel value */
   void
-  Set( const PixelType& value ) const
+  Set(const PixelType & value) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )
-      ->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
-                  this->m_SegmentRemainder,
-                  this->m_RealIndex,
-                  value );
+    const_cast<ImageType *>(this->m_Image.GetPointer())
+      ->SetPixel(*const_cast<typename ImageType::RLLine *>(this->m_RunLengthLine),
+                 this->m_SegmentRemainder,
+                 this->m_RealIndex,
+                 value);
   }
 
   ///** Return a reference to the pixel
@@ -95,14 +92,13 @@ public:
 protected:
   /** the construction from a const iterator is declared protected
   in order to enforce const correctness. */
-  ImageScanlineIterator( const ImageScanlineConstIterator< ImageType >& it )
-    : ImageScanlineConstIterator< ImageType >( it )
+  ImageScanlineIterator(const ImageScanlineConstIterator<ImageType> & it)
+    : ImageScanlineConstIterator<ImageType>(it)
+  {}
+  Self &
+  operator=(const ImageScanlineConstIterator<ImageType> & it)
   {
-  }
-  Self&
-  operator=( const ImageScanlineConstIterator< ImageType >& it )
-  {
-    this->ImageScanlineConstIterator< ImageType >::operator=( it );
+    this->ImageScanlineConstIterator<ImageType>::operator=(it);
     return *this;
   }
 };

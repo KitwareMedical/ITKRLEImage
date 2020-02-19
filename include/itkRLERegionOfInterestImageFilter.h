@@ -44,29 +44,29 @@ namespace itk
  *  \ingroup RLEImage
  *  \ingroup ITKCommon
  */
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-                                   RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >,
-                               RLEImage< TPixel, VImageDimension, CounterType > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class RegionOfInterestImageFilter<RLEImage<TPixel, VImageDimension, CounterType>,
+                                  RLEImage<TPixel, VImageDimension, CounterType>>
+  : public ImageToImageFilter<RLEImage<TPixel, VImageDimension, CounterType>,
+                              RLEImage<TPixel, VImageDimension, CounterType>>
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
+  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
 
   /** Standard class type alias. */
   using Self = RegionOfInterestImageFilter;
-  using RLEImageType = RLEImage< TPixel, VImageDimension, CounterType >;
+  using RLEImageType = RLEImage<TPixel, VImageDimension, CounterType>;
   using ImageType = RLEImageType;
-  using Superclass = ImageToImageFilter< RLEImageType, RLEImageType >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using Superclass = ImageToImageFilter<RLEImageType, RLEImageType>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
   using InputImageRegionType = typename Superclass::InputImageRegionType;
 
   /** Method for creation through the object factory. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( RegionOfInterestImageFilter, ImageToImageFilter );
+  itkTypeMacro(RegionOfInterestImageFilter, ImageToImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
@@ -78,8 +78,8 @@ public:
   using InputImagePixelType = typename RLEImageType::PixelType;
 
   /** Set/Get the output image region. */
-  itkSetMacro( RegionOfInterest, RegionType );
-  itkGetConstMacro( RegionOfInterest, RegionType );
+  itkSetMacro(RegionOfInterest, RegionType);
+  itkGetConstMacro(RegionOfInterest, RegionType);
 
   /** ImageDimension enumeration */
   static constexpr unsigned int ImageDimension = VImageDimension;
@@ -87,8 +87,8 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro(SameDimensionCheck, (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+  itkConceptMacro(InputConvertibleToOutputCheck, (Concept::Convertible<InputImagePixelType, OutputImagePixelType>));
 // End concept checking
 #endif
 
@@ -96,13 +96,13 @@ protected:
   RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override = default;
   void
-  PrintSelf( std::ostream& os, Indent indent ) const override;
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   void
   GenerateInputRequestedRegion() override;
 
   void
-  EnlargeOutputRequestedRegion( DataObject* output ) override;
+  EnlargeOutputRequestedRegion(DataObject * output) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
    * size than its input image.  As such, RegionOfInterestImageFilter
@@ -125,35 +125,38 @@ protected:
    * \sa ImageToImageFilter::DynamicThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void
-  DynamicThreadedGenerateData( const RegionType& outputRegionForThread ) override;
+  DynamicThreadedGenerateData(const RegionType & outputRegionForThread) override;
 
 private:
   RegionType m_RegionOfInterest;
 };
 
-template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimension, typename CounterTypeIn,
-          typename CounterTypeOut >
-class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-                                   RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
-  : public ImageToImageFilter< RLEImage< TPixelIn, VImageDimension, CounterTypeIn >,
-                               RLEImage< TPixelOut, VImageDimension, CounterTypeOut > >
+template <typename TPixelIn,
+          typename TPixelOut,
+          unsigned int VImageDimension,
+          typename CounterTypeIn,
+          typename CounterTypeOut>
+class RegionOfInterestImageFilter<RLEImage<TPixelIn, VImageDimension, CounterTypeIn>,
+                                  RLEImage<TPixelOut, VImageDimension, CounterTypeOut>>
+  : public ImageToImageFilter<RLEImage<TPixelIn, VImageDimension, CounterTypeIn>,
+                              RLEImage<TPixelOut, VImageDimension, CounterTypeOut>>
 {
 public:
   /** Standard class type alias. */
   using Self = RegionOfInterestImageFilter;
-  using RLEImageTypeIn = RLEImage< TPixelIn, VImageDimension, CounterTypeIn >;
-  using RLEImageTypeOut = RLEImage< TPixelOut, VImageDimension, CounterTypeOut >;
+  using RLEImageTypeIn = RLEImage<TPixelIn, VImageDimension, CounterTypeIn>;
+  using RLEImageTypeOut = RLEImage<TPixelOut, VImageDimension, CounterTypeOut>;
   using ImageType = RLEImageTypeOut;
-  using Superclass = ImageToImageFilter< RLEImageTypeIn, RLEImageTypeOut >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using Superclass = ImageToImageFilter<RLEImageTypeIn, RLEImageTypeOut>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
   using InputImageRegionType = typename Superclass::InputImageRegionType;
 
   /** Method for creation through the object factory. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( RegionOfInterestImageFilter, ImageToImageFilter );
+  itkTypeMacro(RegionOfInterestImageFilter, ImageToImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageTypeIn::RegionType;
@@ -165,8 +168,8 @@ public:
   using InputImagePixelType = typename RLEImageTypeIn::PixelType;
 
   /** Set/Get the output image region. */
-  itkSetMacro( RegionOfInterest, RegionType );
-  itkGetConstMacro( RegionOfInterest, RegionType );
+  itkSetMacro(RegionOfInterest, RegionType);
+  itkGetConstMacro(RegionOfInterest, RegionType);
 
   /** ImageDimension enumeration */
   static constexpr unsigned int ImageDimension = VImageDimension;
@@ -174,8 +177,8 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro(SameDimensionCheck, (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+  itkConceptMacro(InputConvertibleToOutputCheck, (Concept::Convertible<InputImagePixelType, OutputImagePixelType>));
 // End concept checking
 #endif
 
@@ -183,13 +186,13 @@ protected:
   RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override = default;
   void
-  PrintSelf( std::ostream& os, Indent indent ) const override;
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   void
   GenerateInputRequestedRegion() override;
 
   void
-  EnlargeOutputRequestedRegion( DataObject* output ) override;
+  EnlargeOutputRequestedRegion(DataObject * output) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
    * size than its input image.  As such, RegionOfInterestImageFilter
@@ -212,52 +215,55 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void
-  DynamicThreadedGenerateData( const RegionType& outputRegionForThread ) override;
+  DynamicThreadedGenerateData(const RegionType & outputRegionForThread) override;
 
 private:
-  RegionOfInterestImageFilter( const Self& ) = delete; // purposely not implemented
+  RegionOfInterestImageFilter(const Self &) = delete; // purposely not implemented
   void
-  operator=( const Self& ) = delete; // purposely not implemented
+  operator=(const Self &) = delete; // purposely not implemented
 
   RegionType m_RegionOfInterest;
 };
 
 // not implemented on purpose, so it will produce a meaningful error message
-template< unsigned int VImageDimensionIn, unsigned int VImageDimensionOut >
+template <unsigned int VImageDimensionIn, unsigned int VImageDimensionOut>
 class InputAndOutputImagesMustHaveSameDimension;
 
 // input and output images must have the same dimension (e.g. both 2D or both 3D)
 // so disallow this by inheriting from unimplemented base class
-template< typename TPixelIn, typename TPixelOut, unsigned int VImageDimensionIn, unsigned int VImageDimensionOut,
-          typename CounterTypeIn, typename CounterTypeOut >
-class RegionOfInterestImageFilter< RLEImage< TPixelIn, VImageDimensionIn, CounterTypeIn >,
-                                   RLEImage< TPixelOut, VImageDimensionOut, CounterTypeOut > >
-  : InputAndOutputImagesMustHaveSameDimension< VImageDimensionIn, VImageDimensionOut >
-{
-};
+template <typename TPixelIn,
+          typename TPixelOut,
+          unsigned int VImageDimensionIn,
+          unsigned int VImageDimensionOut,
+          typename CounterTypeIn,
+          typename CounterTypeOut>
+class RegionOfInterestImageFilter<RLEImage<TPixelIn, VImageDimensionIn, CounterTypeIn>,
+                                  RLEImage<TPixelOut, VImageDimensionOut, CounterTypeOut>>
+  : InputAndOutputImagesMustHaveSameDimension<VImageDimensionIn, VImageDimensionOut>
+{};
 
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageToImageFilter< Image< TPixel, VImageDimension >, RLEImage< TPixel, VImageDimension, CounterType > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class RegionOfInterestImageFilter<Image<TPixel, VImageDimension>, RLEImage<TPixel, VImageDimension, CounterType>>
+  : public ImageToImageFilter<Image<TPixel, VImageDimension>, RLEImage<TPixel, VImageDimension, CounterType>>
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
+  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
 
   /** Standard class type alias. */
-  using RLEImageType = RLEImage< TPixel, VImageDimension, CounterType >;
+  using RLEImageType = RLEImage<TPixel, VImageDimension, CounterType>;
 
   using Self = RegionOfInterestImageFilter;
-  using ImageType = Image< TPixel, VImageDimension >;
-  using Superclass = ImageToImageFilter< ImageType, RLEImageType >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using ImageType = Image<TPixel, VImageDimension>;
+  using Superclass = ImageToImageFilter<ImageType, RLEImageType>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
   using InputImageRegionType = typename Superclass::InputImageRegionType;
 
   /** Method for creation through the object factory. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( RegionOfInterestImageFilter, ImageToImageFilter );
+  itkTypeMacro(RegionOfInterestImageFilter, ImageToImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
@@ -269,8 +275,8 @@ public:
   using InputImagePixelType = typename RLEImageType::PixelType;
 
   /** Set/Get the output image region. */
-  itkSetMacro( RegionOfInterest, RegionType );
-  itkGetConstMacro( RegionOfInterest, RegionType );
+  itkSetMacro(RegionOfInterest, RegionType);
+  itkGetConstMacro(RegionOfInterest, RegionType);
 
   /** ImageDimension enumeration */
   static constexpr unsigned int ImageDimension = VImageDimension;
@@ -278,8 +284,8 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro(SameDimensionCheck, (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+  itkConceptMacro(InputConvertibleToOutputCheck, (Concept::Convertible<InputImagePixelType, OutputImagePixelType>));
 // End concept checking
 #endif
 
@@ -287,13 +293,13 @@ protected:
   RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override = default;
   void
-  PrintSelf( std::ostream& os, Indent indent ) const override;
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   void
   GenerateInputRequestedRegion() override;
 
   void
-  EnlargeOutputRequestedRegion( DataObject* output ) override;
+  EnlargeOutputRequestedRegion(DataObject * output) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
    * size than its input image.  As such, RegionOfInterestImageFilter
@@ -316,34 +322,34 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void
-  DynamicThreadedGenerateData( const RegionType& outputRegionForThread ) override;
+  DynamicThreadedGenerateData(const RegionType & outputRegionForThread) override;
 
 private:
   RegionType m_RegionOfInterest;
 };
 
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class RegionOfInterestImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
-  : public ImageToImageFilter< RLEImage< TPixel, VImageDimension, CounterType >, Image< TPixel, VImageDimension > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class RegionOfInterestImageFilter<RLEImage<TPixel, VImageDimension, CounterType>, Image<TPixel, VImageDimension>>
+  : public ImageToImageFilter<RLEImage<TPixel, VImageDimension, CounterType>, Image<TPixel, VImageDimension>>
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN( RegionOfInterestImageFilter );
+  ITK_DISALLOW_COPY_AND_ASSIGN(RegionOfInterestImageFilter);
 
   /** Standard class type alias. */
-  using RLEImageType = RLEImage< TPixel, VImageDimension, CounterType >;
+  using RLEImageType = RLEImage<TPixel, VImageDimension, CounterType>;
 
   using Self = RegionOfInterestImageFilter;
-  using ImageType = Image< TPixel, VImageDimension >;
-  using Superclass = ImageToImageFilter< RLEImageType, ImageType >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using ImageType = Image<TPixel, VImageDimension>;
+  using Superclass = ImageToImageFilter<RLEImageType, ImageType>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
   using InputImageRegionType = typename Superclass::InputImageRegionType;
 
   /** Method for creation through the object factory. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( RegionOfInterestImageFilter, ImageToImageFilter );
+  itkTypeMacro(RegionOfInterestImageFilter, ImageToImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
@@ -355,8 +361,8 @@ public:
   using InputImagePixelType = typename RLEImageType::PixelType;
 
   /** Set/Get the output image region. */
-  itkSetMacro( RegionOfInterest, RegionType );
-  itkGetConstMacro( RegionOfInterest, RegionType );
+  itkSetMacro(RegionOfInterest, RegionType);
+  itkGetConstMacro(RegionOfInterest, RegionType);
 
   /** ImageDimension enumeration */
   static constexpr unsigned int ImageDimension = VImageDimension;
@@ -364,8 +370,8 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
-  itkConceptMacro( SameDimensionCheck, (Concept::SameDimension< ImageDimension, OutputImageDimension >));
-  itkConceptMacro( InputConvertibleToOutputCheck, (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+  itkConceptMacro(SameDimensionCheck, (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+  itkConceptMacro(InputConvertibleToOutputCheck, (Concept::Convertible<InputImagePixelType, OutputImagePixelType>));
 // End concept checking
 #endif
 
@@ -373,13 +379,13 @@ protected:
   RegionOfInterestImageFilter() { this->DynamicMultiThreadingOn(); }
   ~RegionOfInterestImageFilter() override = default;
   void
-  PrintSelf( std::ostream& os, Indent indent ) const override;
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   void
   GenerateInputRequestedRegion() override;
 
   void
-  EnlargeOutputRequestedRegion( DataObject* output ) override;
+  EnlargeOutputRequestedRegion(DataObject * output) override;
 
   /** RegionOfInterestImageFilter can produce an image which is a different
    * size than its input image.  As such, RegionOfInterestImageFilter
@@ -402,7 +408,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void
-  DynamicThreadedGenerateData( const RegionType& outputRegionForThread ) override;
+  DynamicThreadedGenerateData(const RegionType & outputRegionForThread) override;
 
 private:
   RegionType m_RegionOfInterest;
@@ -410,7 +416,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRLERegionOfInterestImageFilter.hxx"
+#  include "itkRLERegionOfInterestImageFilter.hxx"
 #endif
 
 #endif // itkRLERegionOfInterestImageFilter_h
