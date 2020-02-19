@@ -48,24 +48,24 @@ namespace itk
  *
  *  \ingroup RLEImage
  */
-template< typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short >
-class RLEImage : public itk::ImageBase< VImageDimension >
+template <typename TPixel, unsigned int VImageDimension = 3, typename CounterType = unsigned short>
+class RLEImage : public itk::ImageBase<VImageDimension>
 {
 public:
-  ITK_DISALLOW_COPY_AND_ASSIGN( RLEImage );
+  ITK_DISALLOW_COPY_AND_ASSIGN(RLEImage);
 
   /** Standard class type alias */
   using Self = RLEImage;
-  using Superclass = itk::ImageBase< VImageDimension >;
-  using Pointer = itk::SmartPointer< Self >;
-  using ConstPointer = itk::SmartPointer< const Self >;
-  using ConstWeakPointer = itk::WeakPointer< const Self >;
+  using Superclass = itk::ImageBase<VImageDimension>;
+  using Pointer = itk::SmartPointer<Self>;
+  using ConstPointer = itk::SmartPointer<const Self>;
+  using ConstWeakPointer = itk::WeakPointer<const Self>;
 
   /** Method for creation through the object factory. */
-  itkNewMacro( Self );
+  itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( RLEImage, ImageBase );
+  itkTypeMacro(RLEImage, ImageBase);
 
   /** Pixel type alias support. Used to declare pixel type in filters
    * or other operations. */
@@ -78,10 +78,10 @@ public:
 
   /** First element is count of repetitions,
    * second element is the pixel value. */
-  using RLSegment = std::pair< CounterType, PixelType >;
+  using RLSegment = std::pair<CounterType, PixelType>;
 
   /** A Run-Length encoded line of pixels. */
-  using RLLine = std::vector< RLSegment >;
+  using RLLine = std::vector<RLSegment>;
 
   /** Internal Pixel representation. Used to maintain a uniform API
    * with Image Adaptors and allow to keep a particular internal
@@ -131,7 +131,7 @@ public:
    * already be set, e.g. by calling SetRegions().
    * Pixel values are initialized using default constructor. */
   void
-  Allocate( bool initialize = false ) override;
+  Allocate(bool initialize = false) override;
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */
@@ -147,29 +147,29 @@ public:
   /** Fill the image buffer with a value.  Be sure to call Allocate()
    * first. */
   void
-  FillBuffer( const TPixel& value );
+  FillBuffer(const TPixel & value);
 
   void
-  SetLargestPossibleRegion( const RegionType& region ) override
+  SetLargestPossibleRegion(const RegionType & region) override
   {
-    Superclass::SetLargestPossibleRegion( region );
-    m_Buffer->SetLargestPossibleRegion( region.Slice( 0 ) );
+    Superclass::SetLargestPossibleRegion(region);
+    m_Buffer->SetLargestPossibleRegion(region.Slice(0));
   }
 
   void
-  SetBufferedRegion( const RegionType& region ) override
+  SetBufferedRegion(const RegionType & region) override
   {
-    Superclass::SetBufferedRegion( region );
-    m_Buffer->SetBufferedRegion( region.Slice( 0 ) );
+    Superclass::SetBufferedRegion(region);
+    m_Buffer->SetBufferedRegion(region.Slice(0));
   }
 
-  using ImageBase< VImageDimension >::SetRequestedRegion;
+  using ImageBase<VImageDimension>::SetRequestedRegion;
 
   void
-  SetRequestedRegion( const RegionType& region ) override
+  SetRequestedRegion(const RegionType & region) override
   {
-    Superclass::SetRequestedRegion( region );
-    m_Buffer->SetRequestedRegion( region.Slice( 0 ) );
+    Superclass::SetRequestedRegion(region);
+    m_Buffer->SetRequestedRegion(region.Slice(0));
   }
 
   /** \brief Set a pixel value.
@@ -178,18 +178,18 @@ public:
    * this function does not check that the image has actually been
    * allocated yet. SLOW -> Use iterators instead. */
   void
-  SetPixel( const IndexType& index, const TPixel& value );
+  SetPixel(const IndexType & index, const TPixel & value);
 
   /** Set a pixel value in the given line and updates segmentRemainder
    * and m_RealIndex to refer to the same pixel.
    * Returns difference in line length which happens due to merging or splitting segments.
    * This method is used by iterators directly. */
   int
-  SetPixel( RLLine& line, IndexValueType& segmentRemainder, SizeValueType& m_RealIndex, const TPixel& value );
+  SetPixel(RLLine & line, IndexValueType & segmentRemainder, SizeValueType & m_RealIndex, const TPixel & value);
 
   /** \brief Get a pixel. SLOW! Better use iterators for pixel access. */
-  const TPixel&
-  GetPixel( const IndexType& index ) const;
+  const TPixel &
+  GetPixel(const IndexType & index) const;
 
   ///** Get a reference to a pixel. Chaning it changes the whole RLE segment! */
   // TPixel & GetPixel(const IndexType & index);
@@ -202,7 +202,7 @@ public:
 
   /** \brief Access a pixel. This version can only be an rvalue.
    * SLOW -> Use iterators instead. */
-  const TPixel& operator[]( const IndexType& index ) const { return this->GetPixel( index ); }
+  const TPixel & operator[](const IndexType & index) const { return this->GetPixel(index); }
 
   unsigned int
   GetNumberOfComponentsPerPixel() const override
@@ -211,11 +211,11 @@ public:
     // to make it work with as much pixel types as possible
     PixelType p;
 
-    return itk::NumericTraits< PixelType >::GetLength( p );
+    return itk::NumericTraits<PixelType>::GetLength(p);
   }
 
   /** Typedef for the internally used buffer. */
-  using BufferType = typename itk::Image< RLLine, VImageDimension - 1 >;
+  using BufferType = typename itk::Image<RLLine, VImageDimension - 1>;
 
   /** We need to allow itk-style iterators to be constructed. */
   typename BufferType::Pointer
@@ -233,7 +233,7 @@ public:
 
   /** Returns N-1-dimensional index, the remainder after 0-index is removed. */
   static inline typename BufferType::IndexType
-  truncateIndex( const IndexType& index );
+  truncateIndex(const IndexType & index);
 
   /** Merges adjacent segments with duplicate values.
    * Automatically called when turning on OnTheFlyCleanup. */
@@ -251,29 +251,29 @@ public:
   /** Should same-valued segments be merged on the fly?
    * On the fly merging usually provides better performance. */
   void
-  SetOnTheFlyCleanup( bool value )
+  SetOnTheFlyCleanup(bool value)
   {
-    if ( value == m_OnTheFlyCleanup )
-      {
-        return;
-      }
+    if (value == m_OnTheFlyCleanup)
+    {
+      return;
+    }
     m_OnTheFlyCleanup = value;
-    if ( m_OnTheFlyCleanup )
-      {
-        CleanUp(); // put the image into a clean state
-      }
+    if (m_OnTheFlyCleanup)
+    {
+      CleanUp(); // put the image into a clean state
+    }
   }
 
 protected:
   RLEImage()
-    : itk::ImageBase< VImageDimension >()
+    : itk::ImageBase<VImageDimension>()
 
   {
     m_Buffer = BufferType::New();
   }
 
   void
-  PrintSelf( std::ostream& os, itk::Indent indent ) const override;
+  PrintSelf(std::ostream & os, itk::Indent indent) const override;
 
   ~RLEImage() override = default;
   /** Compute helper matrices used to transform Index coordinates to
@@ -289,7 +289,7 @@ protected:
 
   /** Merges adjacent segments with duplicate values in a single line. */
   void
-  CleanUpLine( RLLine& line ) const;
+  CleanUpLine(RLLine & line) const;
 
 private:
   bool m_OnTheFlyCleanup{ true }; // should same-valued segments be merged on the fly
@@ -300,7 +300,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRLEImage.hxx"
+#  include "itkRLEImage.hxx"
 #endif
 
 #endif // itkRLEImage_h

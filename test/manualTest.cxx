@@ -17,17 +17,17 @@
  *=========================================================================*/
 
 #ifdef _MSC_VER
-#pragma warning( disable : 4996 ) /* deprecation */
+#  pragma warning(disable : 4996) /* deprecation */
 #endif
 
 #include "itkTestDriverIncludeRequiredIOFactories.h"
 
 extern int
-itkRLEImageTest( int argc, char* argv[] );
+itkRLEImageTest(int argc, char * argv[]);
 
 int
-main( int argc, char* argv[] )
+main(int argc, char * argv[])
 {
   RegisterRequiredFactories();
-  itkRLEImageTest( argc, argv );
+  itkRLEImageTest(argc, argv);
 }

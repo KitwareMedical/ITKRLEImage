@@ -19,35 +19,35 @@
 #include "itkRLEImage.h"
 
 extern int
-itkImageScanlineIteratorTest1( int argc, char* argv[] );
+itkImageScanlineIteratorTest1(int argc, char * argv[]);
 extern int
-itkIteratorTests( int argc, char* argv[] );
+itkIteratorTests(int argc, char * argv[]);
 extern int
-itkImageIteratorTest( int argc, char* argv[] );
+itkImageIteratorTest(int argc, char * argv[]);
 extern int
-itkImageIteratorsForwardBackwardTest( int argc, char* argv[] );
+itkImageIteratorsForwardBackwardTest(int argc, char * argv[]);
 extern int
-itkImageIteratorWithIndexTest( int argc, char* argv[] );
+itkImageIteratorWithIndexTest(int argc, char * argv[]);
 extern int
-itkImageRegionConstIteratorWithOnlyIndexTest( int argc, char* argv[] );
+itkImageRegionConstIteratorWithOnlyIndexTest(int argc, char * argv[]);
 extern int
-itkImageRegionIteratorTest( int argc, char* argv[] );
+itkImageRegionIteratorTest(int argc, char * argv[]);
 extern int
-itkRegionOfInterestImageFilterTest( int argc, char* argv[] );
+itkRegionOfInterestImageFilterTest(int argc, char * argv[]);
 
 int
-main( int argc, char* argv[] )
+main(int argc, char * argv[])
 {
-  itkImageRegionIteratorTest( argc, argv );
-  itkImageScanlineIteratorTest1( argc, argv );
-  itkIteratorTests( argc, argv );
-  itkImageIteratorTest( argc, argv );
-  itkImageIteratorsForwardBackwardTest( argc, argv );
-  itkImageIteratorWithIndexTest( argc, argv );
-  itkImageRegionConstIteratorWithOnlyIndexTest( argc, argv );
-  itkRegionOfInterestImageFilterTest( argc, argv );
-  using charred2dType = itk::RLEImage< char, 2, char >; // test size 256
+  itkImageRegionIteratorTest(argc, argv);
+  itkImageScanlineIteratorTest1(argc, argv);
+  itkIteratorTests(argc, argv);
+  itkImageIteratorTest(argc, argv);
+  itkImageIteratorsForwardBackwardTest(argc, argv);
+  itkImageIteratorWithIndexTest(argc, argv);
+  itkImageRegionConstIteratorWithOnlyIndexTest(argc, argv);
+  itkRegionOfInterestImageFilterTest(argc, argv);
+  using charred2dType = itk::RLEImage<char, 2, char>; // test size 256
   charred2dType::Pointer t2 = charred2dType::New();
-  using charred4dType = itk::RLEImage< char, 4 >; // test size 65536
+  using charred4dType = itk::RLEImage<char, 4>; // test size 65536
   charred4dType::Pointer t4 = charred4dType::New();
 }

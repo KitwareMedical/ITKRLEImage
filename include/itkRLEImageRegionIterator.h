@@ -46,14 +46,14 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageRegionIterator< RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class ImageRegionIterator<RLEImage<TPixel, VImageDimension, CounterType>>
+  : public ImageRegionConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>
 {
 public:
   /** Standard class type alias. */
   using Self = ImageRegionIterator;
-  using Superclass = ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
+  using Superclass = ImageRegionConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
 
   /** Types inherited from the Superclass */
   using IndexType = typename Superclass::IndexType;
@@ -66,16 +66,14 @@ public:
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRegionIterator()
-    : ImageRegionConstIterator< ImageType >()
-  {
-  }
+    : ImageRegionConstIterator<ImageType>()
+  {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
-  ImageRegionIterator( ImageType* ptr, const RegionType& region )
-    : ImageRegionConstIterator< ImageType >( ptr, region )
-  {
-  }
+  ImageRegionIterator(ImageType * ptr, const RegionType & region)
+    : ImageRegionConstIterator<ImageType>(ptr, region)
+  {}
 
   /** Constructor that can be used to cast from an ImageIterator to an
    * ImageRegionIterator. Many routines return an ImageIterator but for a
@@ -83,67 +81,62 @@ public:
    * provide overloaded APIs that return different types of Iterators, itk
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionIterator. */
-  ImageRegionIterator( const ImageIterator< ImageType >& it ) { ImageConstIterator< ImageType >::operator=( it ); }
+  ImageRegionIterator(const ImageIterator<ImageType> & it) { ImageConstIterator<ImageType>::operator=(it); }
 
   /** Set the pixel value.
    * Changing the RLE structure invalidates all other iterators (except this one). */
   void
-  Set( const PixelType& value ) const
+  Set(const PixelType & value) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )
-      ->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
-                  this->m_SegmentRemainder,
-                  this->m_RealIndex,
-                  value );
+    const_cast<ImageType *>(this->m_Image.GetPointer())
+      ->SetPixel(*const_cast<typename ImageType::RLLine *>(this->m_RunLengthLine),
+                 this->m_SegmentRemainder,
+                 this->m_RealIndex,
+                 value);
   }
 
 protected:
   /** the construction from a const iterator is declared protected
   in order to enforce const correctness. */
-  ImageRegionIterator( const ImageRegionConstIterator< ImageType >& it )
-  {
-    ImageConstIterator< ImageType >::operator=( it );
-  }
+  ImageRegionIterator(const ImageRegionConstIterator<ImageType> & it) { ImageConstIterator<ImageType>::operator=(it); }
 
-  Self&
-  operator=( const ImageRegionConstIterator< ImageType >& it )
+  Self &
+  operator=(const ImageRegionConstIterator<ImageType> & it)
   {
-    ImageConstIterator< ImageType >::operator=( it );
+    ImageConstIterator<ImageType>::operator=(it);
   }
 };
 
-template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageRegionIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
-  : public ImageRegionConstIteratorWithIndex< RLEImage< TPixel, VImageDimension, CounterType > >
+template <typename TPixel, unsigned int VImageDimension, typename CounterType>
+class ImageRegionIteratorWithIndex<RLEImage<TPixel, VImageDimension, CounterType>>
+  : public ImageRegionConstIteratorWithIndex<RLEImage<TPixel, VImageDimension, CounterType>>
 {
 public:
-  using ImageType = RLEImage< TPixel, VImageDimension, CounterType >;
+  using ImageType = RLEImage<TPixel, VImageDimension, CounterType>;
 
-  using RegionType = typename itk::ImageConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >::RegionType;
+  using RegionType = typename itk::ImageConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>::RegionType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageRegionIteratorWithIndex()
-    : ImageRegionConstIteratorWithIndex< ImageType >()
-  {
-  }
+    : ImageRegionConstIteratorWithIndex<ImageType>()
+  {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
-  ImageRegionIteratorWithIndex( ImageType* ptr, const RegionType& region )
-    : ImageRegionConstIteratorWithIndex< ImageType >( ptr, region )
-  {
-  }
+  ImageRegionIteratorWithIndex(ImageType * ptr, const RegionType & region)
+    : ImageRegionConstIteratorWithIndex<ImageType>(ptr, region)
+  {}
 
   /** Set the pixel value.
    * Changing the RLE structure invalidates all other iterators (except this one). */
   void
-  Set( const TPixel& value ) const
+  Set(const TPixel & value) const
   {
-    const_cast< ImageType* >( this->m_Image.GetPointer() )
-      ->SetPixel( *const_cast< typename ImageType::RLLine* >( this->m_RunLengthLine ),
-                  this->m_SegmentRemainder,
-                  this->m_RealIndex,
-                  value );
+    const_cast<ImageType *>(this->m_Image.GetPointer())
+      ->SetPixel(*const_cast<typename ImageType::RLLine *>(this->m_RunLengthLine),
+                 this->m_SegmentRemainder,
+                 this->m_RealIndex,
+                 value);
   }
 
   /** Constructor that can be used to cast from an ImageIterator to an
@@ -152,9 +145,9 @@ public:
    * provide overloaded APIs that return different types of Iterators, itk
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionConstIterator. */
-  ImageRegionIteratorWithIndex( const ImageIterator< ImageType >& it )
+  ImageRegionIteratorWithIndex(const ImageIterator<ImageType> & it)
   {
-    ImageRegionConstIteratorWithIndex< ImageType >::operator=( it );
+    ImageRegionConstIteratorWithIndex<ImageType>::operator=(it);
   }
 
   /** Constructor that can be used to cast from an ImageConstIterator to an
@@ -163,9 +156,9 @@ public:
    * provide overloaded APIs that return different types of Iterators, itk
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionIteratorWithIndex. */
-  ImageRegionIteratorWithIndex( const ImageConstIterator< ImageType >& it )
+  ImageRegionIteratorWithIndex(const ImageConstIterator<ImageType> & it)
   {
-    ImageRegionConstIterator< ImageType >::operator=( it );
+    ImageRegionConstIterator<ImageType>::operator=(it);
   }
 }; // no additional implementation required
 } // end namespace itk

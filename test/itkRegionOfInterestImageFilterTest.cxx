@@ -21,14 +21,14 @@
 #include <iostream>
 
 int
-itkRegionOfInterestImageFilterTest( int, char*[] )
+itkRegionOfInterestImageFilterTest(int, char *[])
 {
   constexpr unsigned int Dimension = 3;
-  using PixelType = itk::Index< Dimension >;
+  using PixelType = itk::Index<Dimension>;
 
-  using ImageType = itk::RLEImage< PixelType >;
+  using ImageType = itk::RLEImage<PixelType>;
 
-  using FilterType = itk::RegionOfInterestImageFilter< ImageType, ImageType >;
+  using FilterType = itk::RegionOfInterestImageFilter<ImageType, ImageType>;
 
 
   using RegionType = ImageType::RegionType;
@@ -36,7 +36,7 @@ itkRegionOfInterestImageFilterTest( int, char*[] )
   using IndexType = ImageType::IndexType;
   using DirectionType = ImageType::DirectionType;
 
-  using IteratorType = itk::ImageRegionIterator< ImageType >;
+  using IteratorType = itk::ImageRegionIterator<ImageType>;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -44,7 +44,7 @@ itkRegionOfInterestImageFilterTest( int, char*[] )
   ImageType::Pointer image = ImageType::New();
 
   IndexType start;
-  start.Fill( 0 );
+  start.Fill(0);
 
   SizeType size;
   size[0] = 40;
@@ -52,10 +52,10 @@ itkRegionOfInterestImageFilterTest( int, char*[] )
   size[2] = 40;
 
   RegionType region;
-  region.SetIndex( start );
-  region.SetSize( size );
+  region.SetIndex(start);
+  region.SetSize(size);
 
-  image->SetRegions( region );
+  image->SetRegions(region);
   image->Allocate();
 
   DirectionType directions;
@@ -66,19 +66,19 @@ itkRegionOfInterestImageFilterTest( int, char*[] )
   directions[0][1] = 1.0;
   directions[1][1] = 0.0;
   directions[2][1] = 0.0;
-  image->SetDirection( directions );
+  image->SetDirection(directions);
 
   // Fill the image pixels with their own index.
-  IteratorType intr( image, region );
+  IteratorType intr(image, region);
   intr.GoToBegin();
-  while ( !intr.IsAtEnd() )
-    {
-      intr.Set( intr.GetIndex() );
-      ++intr;
-    }
+  while (!intr.IsAtEnd())
+  {
+    intr.Set(intr.GetIndex());
+    ++intr;
+  }
 
 
-  filter->SetInput( image );
+  filter->SetInput(image);
 
   SizeType roiSize;
   roiSize[0] = 20;
@@ -91,45 +91,45 @@ itkRegionOfInterestImageFilterTest( int, char*[] )
   roiStart[2] = 9;
 
   RegionType regionOfInterest;
-  regionOfInterest.SetIndex( roiStart );
-  regionOfInterest.SetSize( roiSize );
+  regionOfInterest.SetIndex(roiStart);
+  regionOfInterest.SetSize(roiSize);
 
   // itk::SimpleFilterWatcher watcher(filter);
-  filter->SetRegionOfInterest( regionOfInterest );
+  filter->SetRegionOfInterest(regionOfInterest);
 
   // filter->SetNumberOfWorkUnits(1);
   filter->Update();
-  filter->GetOutput()->Print( std::cout );
+  filter->GetOutput()->Print(std::cout);
 
 
-  IteratorType ot( filter->GetOutput(), filter->GetOutput()->GetLargestPossibleRegion() );
+  IteratorType ot(filter->GetOutput(), filter->GetOutput()->GetLargestPossibleRegion());
 
-  IteratorType it( image, regionOfInterest );
+  IteratorType it(image, regionOfInterest);
 
   it.GoToBegin();
   ot.GoToBegin();
 
   bool passed = true;
-  while ( !it.IsAtEnd() )
+  while (!it.IsAtEnd())
+  {
+    IndexType inIndex = it.Get();
+    IndexType outIndex = ot.Get();
+    if (inIndex[0] != outIndex[0] || inIndex[1] != outIndex[1] || inIndex[2] != outIndex[2])
     {
-      IndexType inIndex = it.Get();
-      IndexType outIndex = ot.Get();
-      if ( inIndex[0] != outIndex[0] || inIndex[1] != outIndex[1] || inIndex[2] != outIndex[2] )
-        {
-          std::cerr << "Test failed at pixel " << inIndex << std::endl;
-          std::cerr << "pixel value is       " << outIndex << std::endl;
-          passed = false;
-          break;
-        }
-
-      ++it;
-      ++ot;
+      std::cerr << "Test failed at pixel " << inIndex << std::endl;
+      std::cerr << "pixel value is       " << outIndex << std::endl;
+      passed = false;
+      break;
     }
 
-  if ( !passed )
-    {
-      return EXIT_FAILURE;
-    }
+    ++it;
+    ++ot;
+  }
+
+  if (!passed)
+  {
+    return EXIT_FAILURE;
+  }
 
   std::cout << "Test PASSED !" << std::endl;
   return EXIT_SUCCESS;
