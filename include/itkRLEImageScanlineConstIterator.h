@@ -31,8 +31,8 @@ namespace itk
  *  \ingroup ITKCommon
  */
 template< typename TPixel, unsigned int VImageDimension, typename CounterType >
-class ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > > :
-  public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+class ImageScanlineConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
+  : public ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >
 {
 public:
   /** Standard class type alias. */
@@ -40,15 +40,15 @@ public:
   using Superclass = ImageRegionConstIterator< RLEImage< TPixel, VImageDimension, CounterType > >;
 
   /** Dimension of the image that the iterator walks.  This constant is needed so
-  * functions that are templated over image iterator type (as opposed to
-  * being templated over pixel type and dimension) can have compile time
-  * access to the dimension of the image that the iterator walks. */
+   * functions that are templated over image iterator type (as opposed to
+   * being templated over pixel type and dimension) can have compile time
+   * access to the dimension of the image that the iterator walks. */
   static constexpr unsigned int ImageIteratorDimension = VImageDimension;
 
   /**
-  * Index type alias support While these were already typdef'ed in the superclass,
-  * they need to be redone here for this subclass to compile properly with gcc.
-  */
+   * Index type alias support While these were already typdef'ed in the superclass,
+   * they need to be redone here for this subclass to compile properly with gcc.
+   */
   /** Types inherited from the Superclass */
   using IndexType = typename Superclass::IndexType;
   using SizeType = typename Superclass::SizeType;
@@ -64,30 +64,33 @@ public:
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineConstIterator()
     : ImageRegionConstIterator< ImageType >()
-  {}
+  {
+  }
 
   /** Constructor establishes an iterator to walk a particular image and a
-  * particular region of that image. */
+   * particular region of that image. */
   ImageScanlineConstIterator( const ImageType* ptr, const RegionType& region )
     : ImageRegionConstIterator< ImageType >( ptr, region )
-  {}
+  {
+  }
 
   /** Constructor that can be used to cast from an ImageIterator to an
-  * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
-  * particular task, you may want an ImageScanlineConstIterator.  Rather than
-  * provide overloaded APIs that return different types of Iterators, itk
-  * returns ImageIterators and uses constructors to cast from an
-  * ImageIterator to a ImageScanlineConstIterator. */
+   * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
+   * particular task, you may want an ImageScanlineConstIterator.  Rather than
+   * provide overloaded APIs that return different types of Iterators, itk
+   * returns ImageIterators and uses constructors to cast from an
+   * ImageIterator to a ImageScanlineConstIterator. */
   ImageScanlineConstIterator( const ImageIterator< ImageType >& it )
     : ImageRegionConstIterator< ImageType >( it )
-  {}
+  {
+  }
 
   /** Constructor that can be used to cast from an ImageConstIterator to an
-  * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
-  * particular task, you may want an ImageScanlineConstIterator.  Rather than
-  * provide overloaded APIs that return different types of Iterators, itk
-  * returns ImageIterators and uses constructors to cast from an
-  * ImageIterator to a ImageScanlineConstIterator. */
+   * ImageScanlineConstIterator. Many routines return an ImageIterator, but for a
+   * particular task, you may want an ImageScanlineConstIterator.  Rather than
+   * provide overloaded APIs that return different types of Iterators, itk
+   * returns ImageIterators and uses constructors to cast from an
+   * ImageIterator to a ImageScanlineConstIterator. */
   ImageScanlineConstIterator( const ImageConstIterator< ImageType >& it )
   {
     ImageRegionConstIterator< ImageType >::operator=( it );
@@ -125,22 +128,22 @@ public:
     ++( this->m_BI );
     if ( !this->m_BI.IsAtEnd() )
       {
-      this->SetIndexInternal( this->m_BeginIndex0 );
+        this->SetIndexInternal( this->m_BeginIndex0 );
       }
     else
       {
-      this->m_Index0 = this->m_BeginIndex0; // make this iterator at end too
+        this->m_Index0 = this->m_BeginIndex0; // make this iterator at end too
       }
   }
 
   /** Increment (prefix) along the scanline.
-  *
-  * If the iterator is at the end of the scanline ( one past the last
-  * valid element in the row ), then the results are undefined. Which
-  * means is may assert in debug mode or result in an undefined
-  * iterator which may have unknown consequences if used.
-  */
-  Self &
+   *
+   * If the iterator is at the end of the scanline ( one past the last
+   * valid element in the row ), then the results are undefined. Which
+   * means is may assert in debug mode or result in an undefined
+   * iterator which may have unknown consequences if used.
+   */
+  Self&
   operator++()
   {
     itkAssertInDebugAndIgnoreInReleaseMacro( !this->IsAtEndOfLine() );
@@ -148,12 +151,12 @@ public:
     this->m_SegmentRemainder--;
     if ( this->m_SegmentRemainder > 0 )
       {
-      return *this;
+        return *this;
       }
 
     if ( this->IsAtEndOfLine() )
       {
-      return *this;
+        return *this;
       }
     this->m_RealIndex++;
     this->m_SegmentRemainder = ( *this->m_RunLengthLine )[this->m_RealIndex].first;
@@ -161,16 +164,16 @@ public:
   } // ++
 
   /** Decrement (prefix) along the scanline.
-  *
-  */
-  Self &
+   *
+   */
+  Self&
   operator--()
   {
     this->m_Index0--;
     this->m_SegmentRemainder++;
     if ( this->m_SegmentRemainder <= ( *this->m_RunLengthLine )[this->m_RealIndex].first )
       {
-      return *this;
+        return *this;
       }
 
     this->m_RealIndex--;
