@@ -48,6 +48,6 @@ setup(
     keywords='ITK InsightToolkit Run-length-encoding',
     url=r'https://github.com/KitwareMedical/ITKRLEImage',
     install_requires=[
-        r'itk'
+        r'itk>=5.1.1'
     ]
     )

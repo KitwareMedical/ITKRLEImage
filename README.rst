@@ -1,20 +1,15 @@
 ITKRLEImage
 ===========
 
-.. |CircleCI| image:: https://circleci.com/gh/KitwareMedical/ITKRLEImage.svg?style=shield
-    :target: https://circleci.com/gh/KitwareMedical/ITKRLEImage
+.. image:: https://github.com/KitwareMedical/ITKRLEImage/workflows/Build,%20test,%20package/badge.svg
 
-.. |TravisCI| image:: https://travis-ci.org/KitwareMedical/ITKRLEImage.svg?branch=master
-    :target: https://travis-ci.org/KitwareMedical/ITKRLEImage
+.. image:: https://img.shields.io/pypi/v/itk-rleimage.svg
+    :target: https://pypi.python.org/pypi/itk-rleimage
+    :alt: PyPI
 
-.. |AppVeyor| image:: https://img.shields.io/appveyor/ci/itkrobot/itkrleimage.svg
-    :target: https://ci.appveyor.com/project/itkrobot/itkrleimage
-
-=========== =========== ===========
-   Linux      macOS       Windows
-=========== =========== ===========
-|CircleCI|  |TravisCI|  |AppVeyor|
-=========== =========== ===========
+.. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+    :target: https://github.com/KitwareMedical/ITKRLEImage/blob/master/LICENSE)
+    :alt: License
 
 
 Overview
