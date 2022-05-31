@@ -15,7 +15,7 @@ ITKRLEImage
 Overview
 --------
 
-Run-length encoded memory compression scheme for an `ITK <http://itk.org>`_
+Run-length encoded memory compression scheme for an `ITK <https://itk.org>`_
 image.
 
 The module provides run-length encoded storage for image content, iterators
