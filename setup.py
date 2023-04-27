@@ -13,7 +13,7 @@ except ImportError:
 
 setup(
     name='itk-rleimage',
-    version='1.0.0',
+    version='1.0.1',
     author='Paul A. Yushkevich',
     author_email='pauly2@mail.med.upenn.edu',
     packages=['itk'],
@@ -48,6 +48,6 @@ setup(
     keywords='ITK InsightToolkit Run-length-encoding',
     url=r'https://github.com/KitwareMedical/ITKRLEImage',
     install_requires=[
-        r'itk>=5.2rc1'
+        r'itk>=5.3.0'
     ]
     )
