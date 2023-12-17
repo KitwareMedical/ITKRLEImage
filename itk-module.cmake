@@ -10,6 +10,7 @@ file(READ "${MY_CURENT_DIR}/README.rst" DOCUMENTATION)
 
 # define the dependencies of the include module and the tests
 itk_module(RLEImage
+  ENABLE_SHARED
   DEPENDS
     ITKImageGrid
   TEST_DEPENDS

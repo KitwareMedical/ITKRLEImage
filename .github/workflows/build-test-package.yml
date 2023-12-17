@@ -4,5 +4,5 @@ on: [push,pull_request]
 
 jobs:
   cxx-build-workflow:
-    uses: InsightSoftwareConsortium/ITKRemoteModuleBuildTestPackageAction/.github/workflows/build-test-cxx.yml@e885a99c2e34497c4c5c0c1428a269fb0aae7902
+    uses: InsightSoftwareConsortium/ITKRemoteModuleBuildTestPackageAction/.github/workflows/build-test-cxx.yml@3f63de316255a285b0cac4c819d3d45649738999
 
