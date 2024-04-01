@@ -209,9 +209,7 @@ public:
   {
     // use the GetLength() method which works with variable length arrays,
     // to make it work with as much pixel types as possible
-    PixelType p;
-
-    return itk::NumericTraits<PixelType>::GetLength(p);
+    return itk::NumericTraits<PixelType>::GetLength({});
   }
 
   /** Typedef for the internally used buffer. */
