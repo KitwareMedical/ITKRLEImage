@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "itk-rleimage"
-version = "1.0.1"
+version = "1.0.2"
 description = "ITKRLEImage provides run-length encoded storage for ITK images"
 readme = "README.rst"
 license = {file = "LICENSE"}
