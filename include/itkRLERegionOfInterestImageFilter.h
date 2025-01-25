@@ -66,7 +66,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-   itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
+  itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
@@ -158,7 +158,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-   itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
+  itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageTypeIn::RegionType;
@@ -261,7 +261,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-   itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
+  itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
@@ -347,7 +347,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-   itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
+  itkOverrideGetNameOfClassMacro(RegionOfInterestImageFilter);
 
   /** Typedef to describe the input image region types. */
   using RegionType = typename RLEImageType::RegionType;
