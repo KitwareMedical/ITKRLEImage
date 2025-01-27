@@ -59,7 +59,7 @@ public:
   using PixelType = typename Superclass::PixelType;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(ImageScanlineConstIterator, ImageRegionConstIterator);
+  itkOverrideGetNameOfClassMacro(ImageScanlineConstIterator);
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineConstIterator()
@@ -183,12 +183,12 @@ public:
 template <typename TPixel, unsigned int VImageDimension, typename CounterType>
 ImageScanlineConstIterator(SmartPointer<const RLEImage<TPixel, VImageDimension, CounterType>>,
                            const typename RLEImage<TPixel, VImageDimension, CounterType>::RegionType &)
-  ->ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
+  -> ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
 
 template <typename TPixel, unsigned int VImageDimension, typename CounterType>
 ImageScanlineConstIterator(const RLEImage<TPixel, VImageDimension, CounterType> *,
                            const typename RLEImage<TPixel, VImageDimension, CounterType>::RegionType &)
-  ->ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
+  -> ImageScanlineConstIterator<RLEImage<TPixel, VImageDimension, CounterType>>;
 
 } // end namespace itk
 

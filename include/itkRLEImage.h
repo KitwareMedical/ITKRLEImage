@@ -65,7 +65,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(RLEImage, ImageBase);
+  itkOverrideGetNameOfClassMacro(RLEImage);
 
   /** Pixel type alias support. Used to declare pixel type in filters
    * or other operations. */
@@ -202,7 +202,11 @@ public:
 
   /** \brief Access a pixel. This version can only be an rvalue.
    * SLOW -> Use iterators instead. */
-  const TPixel & operator[](const IndexType & index) const { return this->GetPixel(index); }
+  const TPixel &
+  operator[](const IndexType & index) const
+  {
+    return this->GetPixel(index);
+  }
 
   unsigned int
   GetNumberOfComponentsPerPixel() const override

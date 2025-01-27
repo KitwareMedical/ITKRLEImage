@@ -15,4 +15,4 @@ jobs:
         fetch-depth: 1
     - uses: InsightSoftwareConsortium/ITKClangFormatLinterAction@master
       with:
-        itk-branch: release-5.4
+        itk-branch: master
